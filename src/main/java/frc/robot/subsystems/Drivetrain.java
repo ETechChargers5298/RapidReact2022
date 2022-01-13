@@ -39,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Takes in speeds for left and right wheel, and moves robot. 
+   * Takes in speeds for left and right wheel and moves robot. 
    * @param leftSpeed
    * @param rightSpeed
    * @author Kenneth Wong
@@ -50,7 +50,20 @@ public class Drivetrain extends SubsystemBase {
     diffDrive.tankDrive(leftSpeed, rightSpeed);
  
   }
+  
+  /**
+   * Takes in linear and rotational velocities and moves robot.
+   * @param linear
+   * @param rotational
+   * @author Kenneth Wong
+   */
+  public void arcadeDrive(double linear, double rotational) {
+    
+    // Using arcadeDrive from differentialDrive to move the robot.
+    diffDrive.arcadeDrive(linear, rotational);
 
+  }
+  
   /**
    * Stops motorLeft and motorRight for wheels. 
    * @author Kenneth Wong
