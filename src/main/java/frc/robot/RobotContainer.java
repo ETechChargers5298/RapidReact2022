@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ArcadeDRive;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +28,7 @@ public class RobotContainer {
 
   // Commands are created here 
   private final TankDrive tankDrive = new TankDrive(drivetrain, () -> -driveController.getLeftY(), () -> -driveController.getRightY());
+  private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getLeftX());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,7 +52,7 @@ public class RobotContainer {
    * Maps joystick axes to commands 
    */
   private void configureAxes() {
-    drivetrain.setDefaultCommand(tankDrive);
+    drivetrain.setDefaultCommand(arcadeDrive);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
