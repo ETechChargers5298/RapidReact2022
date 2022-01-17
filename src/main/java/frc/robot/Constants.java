@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
 
     //Port for the turret motor
-    public static final int TURRET_MOTOR_PORT = 4;
+    public static final int TURRET_MOTOR_PORT = 72;
 
     //Speed of the turret motor
     public static final double TURRET_SPEED = 0.75;
