@@ -12,4 +12,14 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+
+    //Port for the turret motor
+    public static final int TURRET_MOTOR_PORT = 4;
+
+    //Speed of the turret motor
+    public static final double TURRET_SPEED = 0.75;
+
+    //Inversion of the turret motor
+    public static final boolean TURRET_INVERSION = false;
+}
