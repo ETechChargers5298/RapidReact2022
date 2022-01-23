@@ -15,10 +15,13 @@ package frc.robot;
 public final class Constants {
     
     // Motor constants for drive wheels 
-    public static final int DRIVE_LEFT_A = 0;
-    public static final int DRIVE_LEFT_B = 1;
-    public static final int DRIVE_RIGHT_A = 2;
-    public static final int DRIVE_RIGHT_B = 3; 
+    public static final int DRIVE_LEFT_A = 1;
+    public static final int DRIVE_LEFT_B = 2;
+    public static final int DRIVE_LEFT_C = 3;
+    
+    public static final int DRIVE_RIGHT_A = 4;
+    public static final int DRIVE_RIGHT_B = 5; 
+    public static final int DRIVE_RIGHT_C = 6;
 
     // Inversion for drive wheels
     public static final boolean LEFT_INVERTED = true;

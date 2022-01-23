@@ -17,14 +17,16 @@ public class Drivetrain extends SubsystemBase {
   // Left side wheel motors
   private static CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
   private static CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
+  private static CANSparkMax motorLeftC = new CANSparkMax(Constants.DRIVE_LEFT_C, MotorType.kBrushless);
   
   // Right side wheel motors 
   private static CANSparkMax motorRightA = new CANSparkMax(Constants.DRIVE_RIGHT_A, MotorType.kBrushless);
   private static CANSparkMax motorRightB = new CANSparkMax(Constants.DRIVE_RIGHT_B, MotorType.kBrushless);
+  private static CANSparkMax motorRightC = new CANSparkMax(Constants.DRIVE_RIGHT_C, MotorType.kBrushless);
 
   // Groups the left and right motors
-  private static MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB);
-  private static MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB);
+  private static MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
+  private static MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
 
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
   private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
