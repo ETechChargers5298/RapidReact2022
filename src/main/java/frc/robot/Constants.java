@@ -13,6 +13,14 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //Port for the turret motor
+    public static final int TURRET_MOTOR_PORT = 72;
+
+    //Speed of the turret motor
+    public static final double TURRET_SPEED = 0.75;
+
+    //Inversion of the turret motor
+    public static final boolean TURRET_INVERSION = false;
     
     // Motor constants for drive wheels 
     public static final int DRIVE_LEFT_A = 1;
