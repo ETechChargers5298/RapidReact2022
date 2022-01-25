@@ -4,13 +4,19 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
   
@@ -28,8 +34,15 @@ public class Drivetrain extends SubsystemBase {
   private static MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
   private static MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
 
+  // Created encoders
+  private static Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
+  private static Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
   private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
+  
+  //Creates Gyro/navX
+  private static AHRS navX = new AHRS(SPI.Port.kMXP);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -37,7 +50,18 @@ public class Drivetrain extends SubsystemBase {
     // Inversion of Motors 
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
+    //inversion of encoders
+    encoderLeft.setReverseDirection(Constants.LEFT_INVERTED);
+    encoderRight.setReverseDirection(Constants.RIGHT_INVERTED);
 
+    // convert rotations to meters
+    encoderLeft.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER*Math.PI)/Constants.COUNTS_PER_REVOLUTION);
+    encoderRight.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER*Math.PI)/Constants.COUNTS_PER_REVOLUTION);
+  
+    //reset the encoders
+    resetEncoders();
+    //reset the gyro
+    resetGyro();
   }
 
   /**
@@ -77,8 +101,100 @@ public class Drivetrain extends SubsystemBase {
     motorRight.set(0);
  
   }
+  /**
+   * Gets distance for left encoder
+   * @author cat ears
+   * @return distance in meters
+   */
+  public double getLeftEncoderDistance(){
+    return encoderLeft.getDistance();
+  }
+  /**
+   * Gets distance for right encoders
+   * @author cat ears
+   * @return distance in meters
+   */
+  public double getRightEncoderDistance(){
+    return encoderRight.getDistance();
+  }
+  /**
+   * Returns velocity for right encoder
+   * @author cat ears and kenneth wong
+   * @return right encoder velocity in meters per second
+   */
+  public double getRightEncoderVelocity(){
+    return encoderRight.getRate();
+  }
+  /**
+   * returns left encoder velocity
+   * @author cat ears and kenneth wong
+   * @return left encoder velocity in meters per second
+   */
+  public double getLeftEncoderVelocity(){
+    return encoderLeft.getRate();
+  }
+  /**
+   * resets right encoder to 0
+   * @author cat ears and kenneth wong
+   */
+  public void resetRightEncoder(){
+    encoderRight.reset();
+  }
+  /**
+   * resets left encoder to 0
+   * @author cat ears and kenneth wong
+   */
+  public void resetLeftEncoder(){
+    encoderLeft.reset();
+  }
+  /**
+   * resets both encoders
+   * @author cat ears and kenneth wong
+   */
+  public void resetEncoders(){
+    resetLeftEncoder();
+    resetRightEncoder();
+  }
+  /**
+   * resets gyro
+   * @author cat ears and kenneth wong
+   */
+  public void resetGyro(){
+    navX.reset();
+  }
+   /**
+    * returns angle in degrees
+    * @author cat ears and kenneth wong
+    * @return angle in degrees
+    */ 
+  public double getAngleInDegrees(){
+    return Math.IEEEremainder(navX.getAngle(), 360);
+  }
+  /**
+   * returns angle in radians
+   * @author cat ears and kenneth wong
+   * @return angle in radians
+   */
+  public double getAngleInRadian(){
+    return Units.degreesToRadians(getAngleInDegrees());
+  }
+  /**
+   * returns object for angle
+   * @author cat ears and kenneth wong
+   * @return object for angle
+   */
+  public Rotation2d getAngle(){
+    return Rotation2d.fromDegrees(-getAngleInDegrees());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Position", getLeftEncoderDistance());
+    SmartDashboard.putNumber("Right Position", getRightEncoderDistance());
+    SmartDashboard.putNumber("Left Velocity", getLeftEncoderVelocity());
+    SmartDashboard.putNumber("Right Velocity", getRightEncoderVelocity());
+    SmartDashboard.putNumber("Gyro", getAngleInDegrees());
+  
   }
 }

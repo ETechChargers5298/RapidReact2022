@@ -38,4 +38,16 @@ public final class Constants {
     // Controller ports
     public static final int DRIVER_PORT = 0;
     public static final int OPERATOR_PORT = 1;
+    
+    //Port for encoders
+    public static final int LEFT_ENCODER_PORT_A = 1;
+    public static final int LEFT_ENCODER_PORT_B = 5;
+    public static final int RIGHT_ENCODER_PORT_A = 3;
+    public static final int RIGHT_ENCODER_PORT_B = 8;
+    
+    //states wheel diameter
+    public static final double WHEEL_DIAMETER = 4.0;
+
+    //states counts per revolution
+    public static final int COUNTS_PER_REVOLUTION = 8192;
 }
