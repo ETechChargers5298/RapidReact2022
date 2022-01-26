@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
   private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
 
   // We made a object to control which ports control the gearshift
-  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 7);
+  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_FORWARD, Constants.GEAR_SHIFT_REVERSE);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -42,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     // Inversion of Motors 
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
-
+    
   }
 
   /**
@@ -82,8 +83,36 @@ public class Drivetrain extends SubsystemBase {
     motorRight.set(0);
  
   }
+
+  /**
+   * Air is going into the shifttorque tube
+   * @author Tahlei Richardson
+   */
+  public void shiftTorque() {
+    gearShifter.set(Value.kForward);
+  }
+
+  /**
+   * Air is going into the shiftSpeed tube
+   * @author Tahlei Richardson
+   */
+  public void shiftSpeed() {
+    gearShifter.set(Value.kReverse);
+
+  }
+  
+  /**
+   * Inverts the ports for the gearshift.
+   * @author Tahlei Richardson 
+   */
+  public void shiftInvert() {
+    if(Constants.GEAR_SHIFT_INVERSION){
+      gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_REVERSE, Constants.GEAR_SHIFT_FORWARD);
+    }
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }
