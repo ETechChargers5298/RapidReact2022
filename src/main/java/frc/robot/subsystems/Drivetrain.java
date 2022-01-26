@@ -7,7 +7,10 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
@@ -44,12 +47,21 @@ public class Drivetrain extends SubsystemBase {
   //Creates Gyro/navX
   private static AHRS navX = new AHRS(SPI.Port.kMXP);
 
+  // We made a object to control which ports control the gearshift
+  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_FORWARD, Constants.GEAR_SHIFT_REVERSE);
+
+  
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     
     // Inversion of Motors 
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
+    
+    // Inversion of gear shift solenoids
+    shiftInvert();
+
     //inversion of encoders
     encoderLeft.setReverseDirection(Constants.LEFT_INVERTED);
     encoderRight.setReverseDirection(Constants.RIGHT_INVERTED);
@@ -101,6 +113,39 @@ public class Drivetrain extends SubsystemBase {
     motorRight.set(0);
  
   }
+
+
+  /**
+   * Air is going into the shifttorque tube
+   * @author Tahlei Richardson
+   */
+  public void shiftTorque() {
+   
+    gearShifter.set(Value.kForward);
+  
+  }
+
+  /**
+   * Air is going into the shiftSpeed tube
+   * @author Tahlei Richardson
+   */
+  public void shiftSpeed() {
+    
+    gearShifter.set(Value.kReverse);
+  
+  }
+  
+  /**
+   * Inverts the ports for the gearshift.
+   * @author Tahlei Richardson 
+   */
+  public void shiftInvert() {
+    
+    if(Constants.GEAR_SHIFT_INVERSION){
+      gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_REVERSE, Constants.GEAR_SHIFT_FORWARD);
+    
+    }
+
   /**
    * Gets distance for left encoder
    * @author cat ears
@@ -185,6 +230,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public Rotation2d getAngle(){
     return Rotation2d.fromDegrees(-getAngleInDegrees());
+
   }
 
   @Override
@@ -195,6 +241,6 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Left Velocity", getLeftEncoderVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightEncoderVelocity());
     SmartDashboard.putNumber("Gyro", getAngleInDegrees());
-  
+ 
   }
 }
