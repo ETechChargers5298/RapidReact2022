@@ -46,4 +46,15 @@ public final class Constants {
     // Invert between torque and speed 
     public static final boolean GEAR_SHIFT_INVERSION = true;
     
+    //Port for encoders
+    public static final int RIGHT_ENCODER_PORT_A = 0;
+    public static final int RIGHT_ENCODER_PORT_B = 1;
+    public static final int LEFT_ENCODER_PORT_A = 2;
+    public static final int LEFT_ENCODER_PORT_B = 3;
+    
+    //states wheel diameter
+    public static final double WHEEL_DIAMETER = 4.0;
+
+    //states counts per revolution
+    public static final int COUNTS_PER_REVOLUTION = 8192;
 }
