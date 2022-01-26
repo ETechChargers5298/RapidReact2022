@@ -40,7 +40,7 @@ public final class Constants {
     public static final int OPERATOR_PORT = 1;
 
     // Gearshift doublesolenoid port #'s
-    public static final int GEAR_SHIFT_FORWARD = 7;
+    public static final int GEAR_SHIFT_FORWARD = 5;
     public static final int GEAR_SHIFT_REVERSE = 4;
     
     // Invert between torque and speed 
