@@ -47,10 +47,10 @@ public final class Constants {
     public static final boolean GEAR_SHIFT_INVERSION = true;
     
     //Port for encoders
-    public static final int RIGHT_ENCODER_PORT_A = 0;
-    public static final int RIGHT_ENCODER_PORT_B = 1;
-    public static final int LEFT_ENCODER_PORT_A = 2;
-    public static final int LEFT_ENCODER_PORT_B = 3;
+    public static final int LEFT_ENCODER_PORT_A = 1;
+    public static final int LEFT_ENCODER_PORT_B = 5;
+    public static final int RIGHT_ENCODER_PORT_A = 3;
+    public static final int RIGHT_ENCODER_PORT_B = 8;
     
     //states wheel diameter
     public static final double WHEEL_DIAMETER = 4.0;

@@ -143,8 +143,8 @@ public class Drivetrain extends SubsystemBase {
     
     if(Constants.GEAR_SHIFT_INVERSION){
       gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_REVERSE, Constants.GEAR_SHIFT_FORWARD);
-    
     }
+  }
 
   /**
    * Gets distance for left encoder
@@ -154,6 +154,7 @@ public class Drivetrain extends SubsystemBase {
   public double getLeftEncoderDistance(){
     return encoderLeft.getDistance();
   }
+  
   /**
    * Gets distance for right encoders
    * @author cat ears
@@ -162,6 +163,7 @@ public class Drivetrain extends SubsystemBase {
   public double getRightEncoderDistance(){
     return encoderRight.getDistance();
   }
+
   /**
    * Returns velocity for right encoder
    * @author cat ears and kenneth wong
@@ -170,6 +172,7 @@ public class Drivetrain extends SubsystemBase {
   public double getRightEncoderVelocity(){
     return encoderRight.getRate();
   }
+
   /**
    * returns left encoder velocity
    * @author cat ears and kenneth wong
@@ -178,6 +181,7 @@ public class Drivetrain extends SubsystemBase {
   public double getLeftEncoderVelocity(){
     return encoderLeft.getRate();
   }
+
   /**
    * resets right encoder to 0
    * @author cat ears and kenneth wong
@@ -185,6 +189,7 @@ public class Drivetrain extends SubsystemBase {
   public void resetRightEncoder(){
     encoderRight.reset();
   }
+
   /**
    * resets left encoder to 0
    * @author cat ears and kenneth wong
