@@ -6,10 +6,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import frc.robot.commands.ArcadeDrive;
+//import frc.robot.commands.ShiftSpeed;
+//import frc.robot.commands.ShiftTorque;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.TurretLeft;
+import frc.robot.commands.TurretRight;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // Subsystems are created here
   private static final Drivetrain drivetrain = new Drivetrain();
+  private static final Turret turret = new Turret();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
@@ -44,7 +53,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+   // new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
+   // new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ShiftTorque(drivetrain));
 
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(new TurretLeft(turret), true);
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(new TurretRight(turret), true);
   }
   
   /**
