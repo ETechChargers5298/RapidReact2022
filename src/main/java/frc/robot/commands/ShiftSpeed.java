@@ -7,17 +7,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class ShiftTorque extends CommandBase {
+public class ShiftSpeed extends CommandBase {
+  /** Creates a new ShiftSpped. */
 
-  // Drivetrain subsystem needed for this command
-  private Drivetrain drivetrain; 
-  
-  /** Creates a new ShiftTorque. */
-  public ShiftTorque(Drivetrain drivetrain) {
+  private Drivetrain drivetrain;
+
+  public ShiftSpeed(Drivetrain drivetrain) {
     
-    // Assigns drivetrain parameter to drivetrain field 
-    this.drivetrain = drivetrain;
-  
+    this.drivetrain = drivetrain; 
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -27,8 +25,7 @@ public class ShiftTorque extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //changing the gear to torque mode
-    drivetrain.shiftTorque();
+    drivetrain.shiftSpeed();
   }
 
   // Called once the command ends or is interrupted.
@@ -38,7 +35,6 @@ public class ShiftTorque extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  //loops once than finishes 
-    return true;
+    return false;
   }
 }

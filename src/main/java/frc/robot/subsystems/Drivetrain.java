@@ -37,6 +37,8 @@ public class Drivetrain extends SubsystemBase {
   // We made a object to control which ports control the gearshift
   private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_FORWARD, Constants.GEAR_SHIFT_REVERSE);
 
+  
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     
@@ -44,6 +46,8 @@ public class Drivetrain extends SubsystemBase {
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
     
+    // Inversion of gear shift solenoids
+    shiftInvert();
   }
 
   /**
@@ -89,7 +93,9 @@ public class Drivetrain extends SubsystemBase {
    * @author Tahlei Richardson
    */
   public void shiftTorque() {
+   
     gearShifter.set(Value.kForward);
+  
   }
 
   /**
@@ -97,8 +103,9 @@ public class Drivetrain extends SubsystemBase {
    * @author Tahlei Richardson
    */
   public void shiftSpeed() {
+    
     gearShifter.set(Value.kReverse);
-
+  
   }
   
   /**
@@ -106,10 +113,13 @@ public class Drivetrain extends SubsystemBase {
    * @author Tahlei Richardson 
    */
   public void shiftInvert() {
+    
     if(Constants.GEAR_SHIFT_INVERSION){
       gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_REVERSE, Constants.GEAR_SHIFT_FORWARD);
+    
     }
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
