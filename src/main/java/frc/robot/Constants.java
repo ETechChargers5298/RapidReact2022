@@ -13,13 +13,13 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    //Port for the turret motor
-    public static final int TURRET_MOTOR_PORT = 72;
+    // Port for the turret motor
+    public static final int TURRET_MOTOR_PORT = 45;
 
-    //Speed of the turret motor
+    // Speed of the turret motor
     public static final double TURRET_SPEED = 0.75;
 
-    //Inversion of the turret motor
+    // Inversion of the turret motor
     public static final boolean TURRET_INVERSION = false;
     
     // Motor constants for drive wheels 
@@ -40,21 +40,24 @@ public final class Constants {
     public static final int OPERATOR_PORT = 1;
 
     // Gearshift doublesolenoid port #'s
-    public static final int GEAR_SHIFT_FORWARD = 5;
-    public static final int GEAR_SHIFT_REVERSE = 4;
+    public static final int GEAR_SHIFT_SPEED_PORT = 5;
+    public static final int GEAR_SHIFT_TORQUE_PORT = 4;
     
-    // Invert between torque and speed 
-    public static final boolean GEAR_SHIFT_INVERSION = true;
+    // Port for encoders
+    public static final int LEFT_ENCODER_PORT_A = 3;
+    public static final int LEFT_ENCODER_PORT_B = 4;
+    public static final int RIGHT_ENCODER_PORT_A = 1;
+    public static final int RIGHT_ENCODER_PORT_B = 2;
     
-    //Port for encoders
-    public static final int LEFT_ENCODER_PORT_A = 1;
-    public static final int LEFT_ENCODER_PORT_B = 5;
-    public static final int RIGHT_ENCODER_PORT_A = 3;
-    public static final int RIGHT_ENCODER_PORT_B = 8;
-    
-    //states wheel diameter
-    public static final double WHEEL_DIAMETER = 4.0;
+    // States wheel diameter
+    public static final double WHEEL_DIAMETER_INCH = 4.0;
 
-    //states counts per revolution
+    // States counts per revolution
     public static final int COUNTS_PER_REVOLUTION = 8192;
+
+    // Holds the port number for testing motors
+    public static final int TEST_MOTOR_PORT = 55;
+
+    // Holds the inversion of the motor
+    public static final boolean TEST_MOTOR_INVERSION = false;
 }

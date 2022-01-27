@@ -12,12 +12,12 @@ import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
 
-  //Creates a motor that rotates the turret
+  // Creates a motor that rotates the turret
   private static CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
 
   /** Creates a new Turret. */
   public Turret() {
-    //Controls the inversion so that the right is always positive
+    // Controls the inversion so that the right is always positive
     motor.setInverted(Constants.TURRET_INVERSION);
   }
 

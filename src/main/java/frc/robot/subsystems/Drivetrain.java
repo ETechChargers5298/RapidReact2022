@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,7 +21,6 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
-  
   // Left side wheel motors
   private static CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
   private static CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
@@ -44,35 +42,30 @@ public class Drivetrain extends SubsystemBase {
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
   private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
   
-  //Creates Gyro/navX
+  // Creates gyro/navX
   private static AHRS navX = new AHRS(SPI.Port.kMXP);
 
   // We made a object to control which ports control the gearshift
-  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_FORWARD, Constants.GEAR_SHIFT_REVERSE);
-
-  
+  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    
-    // Inversion of Motors 
+    // Inversion of motors 
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
-    
-    // Inversion of gear shift solenoids
-    shiftInvert();
 
-    //inversion of encoders
+    // Inversion of encoders
     encoderLeft.setReverseDirection(Constants.LEFT_INVERTED);
     encoderRight.setReverseDirection(Constants.RIGHT_INVERTED);
 
-    // convert rotations to meters
-    encoderLeft.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER*Math.PI)/Constants.COUNTS_PER_REVOLUTION);
-    encoderRight.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER*Math.PI)/Constants.COUNTS_PER_REVOLUTION);
+    // Convert rotations to meters
+    encoderLeft.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER_INCH * Math.PI) / Constants.COUNTS_PER_REVOLUTION);
+    encoderRight.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER_INCH * Math.PI) / Constants.COUNTS_PER_REVOLUTION);
   
-    //reset the encoders
+    // Reset the encoders
     resetEncoders();
-    //reset the gyro
+
+    // Reset the gyro
     resetGyro();
   }
 
@@ -83,10 +76,8 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void tankDrive(double leftSpeed, double rightSpeed) {
-
     // Using tankDrive method from differentialDrive object to move the robot. 
     diffDrive.tankDrive(leftSpeed, rightSpeed);
- 
   }
   
   /**
@@ -96,10 +87,8 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void arcadeDrive(double linear, double rotational) {
-    
     // Using arcadeDrive from differentialDrive to move the robot.
     diffDrive.arcadeDrive(linear, rotational);
-
   }
   
   /**
@@ -107,22 +96,18 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void motorStop() {
-    
     // Sets motor speeds to 0, causing it to stop moving. 
     motorLeft.set(0);
     motorRight.set(0);
- 
   }
 
 
   /**
-   * Air is going into the shifttorque tube
+   * Air is going into the shiftTorque tube
    * @author Tahlei Richardson
    */
   public void shiftTorque() {
-   
-    gearShifter.set(Value.kForward);
-  
+    gearShifter.set(Value.kReverse);
   }
 
   /**
@@ -130,114 +115,105 @@ public class Drivetrain extends SubsystemBase {
    * @author Tahlei Richardson
    */
   public void shiftSpeed() {
-    
-    gearShifter.set(Value.kReverse);
-  
-  }
-  
-  /**
-   * Inverts the ports for the gearshift.
-   * @author Tahlei Richardson 
-   */
-  public void shiftInvert() {
-    
-    if(Constants.GEAR_SHIFT_INVERSION){
-      gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_REVERSE, Constants.GEAR_SHIFT_FORWARD);
-    }
+    gearShifter.set(Value.kForward);
   }
 
   /**
    * Gets distance for left encoder
-   * @author cat ears
-   * @return distance in meters
+   * @author Cat Ears
+   * @return Distance in meters
    */
-  public double getLeftEncoderDistance(){
+  public double getLeftEncoderDistance() {
     return encoderLeft.getDistance();
   }
   
   /**
    * Gets distance for right encoders
-   * @author cat ears
-   * @return distance in meters
+   * @author Cat Ears
+   * @return Distance in meters
    */
-  public double getRightEncoderDistance(){
+  public double getRightEncoderDistance() {
     return encoderRight.getDistance();
   }
 
   /**
    * Returns velocity for right encoder
-   * @author cat ears and kenneth wong
-   * @return right encoder velocity in meters per second
+   * @author Cat Ears and Kenneth Wong
+   * @return Right encoder velocity in meters per second
    */
-  public double getRightEncoderVelocity(){
+  public double getRightEncoderVelocity() {
     return encoderRight.getRate();
   }
 
   /**
-   * returns left encoder velocity
-   * @author cat ears and kenneth wong
-   * @return left encoder velocity in meters per second
+   * Returns left encoder velocity
+   * @author Cat Ears and Kenneth Wong
+   * @return Left encoder velocity in meters per second
    */
-  public double getLeftEncoderVelocity(){
+  public double getLeftEncoderVelocity() {
     return encoderLeft.getRate();
   }
 
   /**
-   * resets right encoder to 0
-   * @author cat ears and kenneth wong
+   * Resets right encoder to 0
+   * @author Cat Ears and Kenneth Wong
    */
-  public void resetRightEncoder(){
+  public void resetRightEncoder() {
     encoderRight.reset();
   }
 
   /**
-   * resets left encoder to 0
+   * Resets left encoder to 0
    * @author cat ears and kenneth wong
    */
-  public void resetLeftEncoder(){
+  public void resetLeftEncoder() {
     encoderLeft.reset();
   }
+
   /**
-   * resets both encoders
-   * @author cat ears and kenneth wong
+   * Resets both encoders
+   * @author Cat Ears and Kenneth Wong
    */
-  public void resetEncoders(){
+  public void resetEncoders() {
     resetLeftEncoder();
     resetRightEncoder();
   }
+
   /**
-   * resets gyro
-   * @author cat ears and kenneth wong
+   * Resets gyro
+   * @author Cat Ears and Kenneth Wong
    */
-  public void resetGyro(){
+  public void resetGyro() {
     navX.reset();
   }
-   /**
-    * returns angle in degrees
-    * @author cat ears and kenneth wong
-    * @return angle in degrees
-    */ 
-  public double getAngleInDegrees(){
+
+  /**
+  * Returns angle in degrees
+  * @author Cat Ears and Kenneth Wong
+  * @return Angle in degrees
+  */
+  public double getAngleInDegrees() {
     return Math.IEEEremainder(navX.getAngle(), 360);
   }
+
   /**
-   * returns angle in radians
-   * @author cat ears and kenneth wong
-   * @return angle in radians
+   * Returns angle in radians
+   * @author Cat Ears and Kenneth Wong
+   * @return Angle in radians
    */
-  public double getAngleInRadian(){
+  public double getAngleInRadian() {
     return Units.degreesToRadians(getAngleInDegrees());
   }
+
   /**
-   * returns object for angle
-   * @author cat ears and kenneth wong
-   * @return object for angle
+   * Returns object for angle
+   * @author Cat Ears and Kenneth Wong
+   * @return Object for angle
    */
-  public Rotation2d getAngle(){
+  public Rotation2d getAngle() {
     return Rotation2d.fromDegrees(-getAngleInDegrees());
-
   }
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -246,6 +222,5 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Left Velocity", getLeftEncoderVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightEncoderVelocity());
     SmartDashboard.putNumber("Gyro", getAngleInDegrees());
- 
   }
 }

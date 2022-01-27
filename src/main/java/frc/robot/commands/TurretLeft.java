@@ -14,8 +14,7 @@ public class TurretLeft extends CommandBase {
 
   /** Creates a new TurretLeft. */
   public TurretLeft(Turret turret) {
-    
-    //Obtaining the turret
+    // Obtaining the turret
     this.turret = turret;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,28 +24,28 @@ public class TurretLeft extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //The turret doesn't move at the start
+    // The turret doesn't move at the start
     turret.stopTurret();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //The turret moves left
+    // The turret moves left
     turret.moveTurretLeft();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //The turret stops in the end
+    // The turret stops in the end
     turret.stopTurret();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //It never stops
+    // It never stops
     return false;
   }
 }

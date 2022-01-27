@@ -22,7 +22,6 @@ public class ArcadeDrive extends CommandBase {
 
   /** Creates a new ArcadeDrive. */
   public ArcadeDrive(Drivetrain drivetrain, DoubleSupplier linear, DoubleSupplier rotational) {
-    
     // Obtains drivetrain from RobotContainer
     this.drivetrain = drivetrain;
 
@@ -37,7 +36,6 @@ public class ArcadeDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
     // Robot starts out not moving
     drivetrain.motorStop();
   }
@@ -45,7 +43,6 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     // Robot will move depending on left joystick 
     drivetrain.arcadeDrive(linear.getAsDouble(), rotational.getAsDouble());
   }
@@ -60,8 +57,7 @@ public class ArcadeDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    // Driving shall never stop.
+    // Driving shall never stop
     return false;
   }
 }

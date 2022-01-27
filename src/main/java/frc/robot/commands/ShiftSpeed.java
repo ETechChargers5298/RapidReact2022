@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class ShiftSpeed extends CommandBase {
-  /** Creates a new ShiftSpped. */
 
+  // Drivetrain subsystem needed for this command
   private Drivetrain drivetrain;
 
+  /** Creates a new ShiftSpeed. */
   public ShiftSpeed(Drivetrain drivetrain) {
-    
-    this.drivetrain = drivetrain; 
-    // Use addRequirements() here to declare subsystem dependencies.
+    // Stores drivetrain which is provided by RobotContainer
+    this.drivetrain = drivetrain;
   }
 
   // Called when the command is initially scheduled.
@@ -25,6 +25,7 @@ public class ShiftSpeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Shifts to speed mode
     drivetrain.shiftSpeed();
   }
 
@@ -35,6 +36,7 @@ public class ShiftSpeed extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // It is true because this command only runs once
     return true;
   }
 }
