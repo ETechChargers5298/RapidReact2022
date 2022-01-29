@@ -56,8 +56,13 @@ public final class Constants {
     public static final int COUNTS_PER_REVOLUTION = 8192;
 
     // Holds the port number for testing motors
-    public static final int TEST_MOTOR_PORT = 55;
+    public static final int TEST_MOTOR_PORT50 = 50;
+    public static final int TEST_MOTOR_PORT51 = 51;
+    public static final int TEST_MOTOR_PORT52 = 52;
 
     // Holds the inversion of the motor
-    public static final boolean TEST_MOTOR_INVERSION = false;
+    public static final boolean TEST_MOTOR50_INVERSION = false;
+    public static final boolean TEST_MOTOR51_INVERSION = false;
+    public static final boolean TEST_MOTOR52_INVERSION = false;
+
 }

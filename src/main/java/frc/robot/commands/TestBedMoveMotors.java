@@ -9,22 +9,26 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TestBed;
 
-public class TestBedMoveMotor extends CommandBase {
+public class TestBedMoveMotors extends CommandBase {
 
   // We need the testbed subsystem for this command
   private TestBed testBed;
 
   // For joystick input
-  private DoubleSupplier speed;
+  private DoubleSupplier speed50;
+  private DoubleSupplier speed51;
+  private DoubleSupplier speed52;
   
   /** Creates a new TestBedMoveMotor. */
-  public TestBedMoveMotor(TestBed testBed, DoubleSupplier speed) {
+  public TestBedMoveMotors(TestBed testBed, DoubleSupplier speed50, DoubleSupplier speed51, DoubleSupplier speed52) {
 
     // Stores testBed we get from RobotContainer
     this.testBed = testBed;
 
     // Links using lambda the joystick with this command
-    this.speed = speed;
+    this.speed50 = speed50;
+    this.speed51 = speed51;
+    this.speed52 = speed52;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(testBed);
@@ -34,21 +38,21 @@ public class TestBedMoveMotor extends CommandBase {
   @Override
   public void initialize() {
     // Starts with the motor not moving
-    testBed.stopMotor();
+    testBed.stopMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Moves the motor based on joystick input
-    testBed.moveMotor(speed.getAsDouble());
+    testBed.moveMotors(speed50.getAsDouble(), speed51.getAsDouble(), speed52.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Should stop the motors at the end
-    testBed.stopMotor();
+    testBed.stopMotors();
   }
 
   // Returns true when the command should end.
