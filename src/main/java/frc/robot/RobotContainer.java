@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ShiftSpeed;
 import frc.robot.commands.ShiftTorque;
-import frc.robot.commands.TestBedMoveMotor;
+import frc.robot.commands.TestBedMoveMotors;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.subsystems.Drivetrain;
@@ -41,7 +41,7 @@ public class RobotContainer {
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
-  private final TestBedMoveMotor testBedMoveMotor = new TestBedMoveMotor(testBed, () -> operatorController.getLeftY());
+  private final TestBedMoveMotors testBedMoveMotors = new TestBedMoveMotors(testBed, () -> operatorController.getLeftY(), () -> operatorController.getRightX(), () -> operatorController.getLeftX());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -75,7 +75,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    testBed.setDefaultCommand(testBedMoveMotor);
+    testBed.setDefaultCommand(testBedMoveMotors);
   }
 
   /**
