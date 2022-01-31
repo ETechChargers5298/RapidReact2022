@@ -65,4 +65,7 @@ public final class Constants {
     public static final boolean TEST_MOTOR51_INVERSION = false;
     public static final boolean TEST_MOTOR52_INVERSION = false;
 
+    // Measurements between left wheel to right wheel 
+    public static final double TRACK_WIDTH_METERS = 20.0;
+
 }

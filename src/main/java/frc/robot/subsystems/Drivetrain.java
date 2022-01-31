@@ -77,6 +77,9 @@ public class Drivetrain extends SubsystemBase {
 
     // Reset the gyro
     resetGyro();
+
+    // Reset the position
+    resetOdometry();
   }
 
   /**
@@ -224,21 +227,31 @@ public class Drivetrain extends SubsystemBase {
     return Rotation2d.fromDegrees(-getAngleInDegrees());
   }
 
-  //
+  /**
+   * Updates the robot's position on the field
+   * @author Kenneth Wong
+   */
   public void updateOdometry() {
     diffDriveOdometry.update(getAngle(), getLeftEncoderDistance(), getRightEncoderDistance());
   }
   
-  //
+  /**
+   * Resets the robot's position
+   * @author Kenneth Wong
+   */
   public void resetOdometry() {
     diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getAngle());
   }
   
-  //
+  /**
+   * Resets the robot's position with a parameter on the robot's position
+   * @author Kenneth Wong
+   * @param position
+   */
   public void resetOdometry(Pose2d position) {
     diffDriveOdometry.resetPosition(position, getAngle());
   }
-  
+
   @Override
   public void periodic() {
     // This method will be called once per sch    eduler run

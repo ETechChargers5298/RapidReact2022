@@ -13,9 +13,9 @@ import frc.robot.Constants;
 public class TestBed extends SubsystemBase {
 
   // Motor for testing mechanisms
-  private static final CANSparkMax testMotor50 = new CANSparkMax(Constants.TEST_MOTOR_PORT50, MotorType.kBrushless);
-  private static final CANSparkMax testMotor51 = new CANSparkMax(Constants.TEST_MOTOR_PORT51, MotorType.kBrushless);
-  private static final CANSparkMax testMotor52 = new CANSparkMax(Constants.TEST_MOTOR_PORT52, MotorType.kBrushless);
+  private final CANSparkMax testMotor50 = new CANSparkMax(Constants.TEST_MOTOR_PORT50, MotorType.kBrushless);
+  private final CANSparkMax testMotor51 = new CANSparkMax(Constants.TEST_MOTOR_PORT51, MotorType.kBrushless);
+  private final CANSparkMax testMotor52 = new CANSparkMax(Constants.TEST_MOTOR_PORT52, MotorType.kBrushless);
 
   /** Creates a new TestBed. */
   public TestBed() {
