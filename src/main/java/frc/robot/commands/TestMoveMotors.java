@@ -7,52 +7,53 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TestBed;
+import frc.robot.subsystems.TestMotors;
 
-public class TestBedMoveMotors extends CommandBase {
+public class TestMoveMotors extends CommandBase {
 
   // We need the testbed subsystem for this command
-  private TestBed testBed;
+  private TestMotors testMotors;
 
   // For joystick input
-  private DoubleSupplier speed50;
-  private DoubleSupplier speed51;
-  private DoubleSupplier speed52;
-  
+  private DoubleSupplier speedA;
+  private DoubleSupplier speedB;
+  private DoubleSupplier speedC;
+  private DoubleSupplier speedD;
+
   /** Creates a new TestBedMoveMotor. */
-  public TestBedMoveMotors(TestBed testBed, DoubleSupplier speed50, DoubleSupplier speed51, DoubleSupplier speed52) {
+  public TestMoveMotors(TestMotors testMotors, DoubleSupplier speedA, DoubleSupplier speedB, DoubleSupplier speedC, DoubleSupplier speedD) {
 
     // Stores testBed we get from RobotContainer
-    this.testBed = testBed;
+    this.testMotors = testMotors;
 
     // Links using lambda the joystick with this command
-    this.speed50 = speed50;
-    this.speed51 = speed51;
-    this.speed52 = speed52;
-
+    this.speedA = speedA;
+    this.speedB = speedB;
+    this.speedC = speedC;
+    this.speedD = speedD;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(testBed);
+    addRequirements(testMotors);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Starts with the motor not moving
-    testBed.stopMotors();
+    testMotors.stopMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Moves the motor based on joystick input
-    testBed.moveMotors(speed50.getAsDouble(), speed51.getAsDouble(), speed52.getAsDouble());
+    testMotors.moveMotors(speedA.getAsDouble(), speedB.getAsDouble(), speedC.getAsDouble(), speedD.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Should stop the motors at the end
-    testBed.stopMotors();
+    testMotors.stopMotors();
   }
 
   // Returns true when the command should end.
