@@ -7,7 +7,11 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -22,31 +26,37 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
   // Left side wheel motors
-  private static CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
-  private static CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
-  private static CANSparkMax motorLeftC = new CANSparkMax(Constants.DRIVE_LEFT_C, MotorType.kBrushless);
+  private CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
+  private CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
+  private CANSparkMax motorLeftC = new CANSparkMax(Constants.DRIVE_LEFT_C, MotorType.kBrushless);
   
   // Right side wheel motors 
-  private static CANSparkMax motorRightA = new CANSparkMax(Constants.DRIVE_RIGHT_A, MotorType.kBrushless);
-  private static CANSparkMax motorRightB = new CANSparkMax(Constants.DRIVE_RIGHT_B, MotorType.kBrushless);
-  private static CANSparkMax motorRightC = new CANSparkMax(Constants.DRIVE_RIGHT_C, MotorType.kBrushless);
+  private CANSparkMax motorRightA = new CANSparkMax(Constants.DRIVE_RIGHT_A, MotorType.kBrushless);
+  private CANSparkMax motorRightB = new CANSparkMax(Constants.DRIVE_RIGHT_B, MotorType.kBrushless);
+  private CANSparkMax motorRightC = new CANSparkMax(Constants.DRIVE_RIGHT_C, MotorType.kBrushless);
 
   // Groups the left and right motors
-  private static MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
-  private static MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
+  private MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
+  private MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
 
   // Created encoders
-  private static Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
-  private static Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+  private Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
+  private Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
 
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
-  private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
+  private DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
   
   // Creates gyro/navX
-  private static AHRS navX = new AHRS(SPI.Port.kMXP);
+  private AHRS navX = new AHRS(SPI.Port.kMXP);
 
   // We made a object to control which ports control the gearshift
-  private static DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
+  private DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
+
+  // Establishes kinematics object
+  private DifferentialDriveKinematics diffDriveKinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);
+
+  // Establishes odometry object 
+  private DifferentialDriveOdometry diffDriveOdometry = new DifferentialDriveOdometry(getAngle(), new Pose2d(0, 0, new Rotation2d()));
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -213,14 +223,32 @@ public class Drivetrain extends SubsystemBase {
   public Rotation2d getAngle() {
     return Rotation2d.fromDegrees(-getAngleInDegrees());
   }
+
+  //
+  public void updateOdometry() {
+    diffDriveOdometry.update(getAngle(), getLeftEncoderDistance(), getRightEncoderDistance());
+  }
+  
+  //
+  public void resetOdometry() {
+    diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getAngle());
+  }
+  
+  //
+  public void resetOdometry(Pose2d position) {
+    diffDriveOdometry.resetPosition(position, getAngle());
+  }
   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // This method will be called once per sch    eduler run
     SmartDashboard.putNumber("Left Position", getLeftEncoderDistance());
     SmartDashboard.putNumber("Right Position", getRightEncoderDistance());
     SmartDashboard.putNumber("Left Velocity", getLeftEncoderVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightEncoderVelocity());
     SmartDashboard.putNumber("Gyro", getAngleInDegrees());
+    
+    // Updates robot's position as it's on the field
+    updateOdometry();
   }
 }
