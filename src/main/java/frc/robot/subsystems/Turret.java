@@ -13,7 +13,7 @@ import frc.robot.Constants;
 public class Turret extends SubsystemBase {
 
   // Creates a motor that rotates the turret
-  private static CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
 
   /** Creates a new Turret. */
   public Turret() {
