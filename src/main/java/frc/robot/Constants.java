@@ -66,6 +66,18 @@ public final class Constants {
     public static final boolean TEST_MOTOR52_INVERSION = false;
 
     // Measurements between left wheel to right wheel 
-    public static final double TRACK_WIDTH_METERS = 20.0;
+    public static final double TRACK_WIDTH_INCHES = 20.0;
 
+    // Constants for modeling drivetrain
+    public static final double DRIVE_FEEDFORWARD_STATIC_GAIN = 2.0;
+    public static final double DRIVE_FEEDFORWARD_VELOCITY_GAIN = 10.0;
+    public static final double DRIVE_FEEDFORWARD_ACCELERATION_GAIN = 3.0;
+
+    // Constants for Drivetrain PID wheels
+    public static final double DRIVE_LEFT_P_GAIN = 1;
+    public static final double DRIVE_RIGHT_P_GAIN = 1;
+    public static final double DRIVE_LEFT_I_GAIN = 0;
+    public static final double DRIVE_RIGHT_I_GAIN = 0;
+    public static final double DRIVE_LEFT_D_GAIN = 0;
+    public static final double DRIVE_RIGHT_D_GAIN = 0;
 }

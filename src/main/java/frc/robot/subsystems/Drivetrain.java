@@ -8,16 +8,21 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,10 +58,17 @@ public class Drivetrain extends SubsystemBase {
   private DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
 
   // Establishes kinematics object
-  private DifferentialDriveKinematics diffDriveKinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH_METERS);
+  private DifferentialDriveKinematics diffDriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.TRACK_WIDTH_INCHES));
 
   // Establishes odometry object 
   private DifferentialDriveOdometry diffDriveOdometry = new DifferentialDriveOdometry(getAngle(), new Pose2d(0, 0, new Rotation2d()));
+
+  // Model robot using feedforward
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DRIVE_FEEDFORWARD_STATIC_GAIN, Constants.DRIVE_FEEDFORWARD_VELOCITY_GAIN, Constants.DRIVE_FEEDFORWARD_ACCELERATION_GAIN);
+
+  // PID controller for left and right wheels
+  private final PIDController leftWheelPID = new PIDController(Constants.DRIVE_LEFT_P_GAIN, Constants.DRIVE_LEFT_I_GAIN, Constants.DRIVE_LEFT_D_GAIN);
+  private final PIDController rightWheelPID = new PIDController(Constants.DRIVE_RIGHT_P_GAIN, Constants.DRIVE_RIGHT_I_GAIN, Constants.DRIVE_RIGHT_D_GAIN);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -227,6 +239,82 @@ public class Drivetrain extends SubsystemBase {
     return Rotation2d.fromDegrees(-getAngleInDegrees());
   }
 
+  /**
+   * Sets the velocities of each motors
+   * @author Cat ears and kenneth Wong
+   * @param speeds
+   */
+public void setWheelSpeeds(DifferentialDriveWheelSpeeds speeds) {
+  // Calculates voltage required to attain speeds using voltage balance equation
+  double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
+  double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
+
+  // Error correction for each wheel velocity
+  double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
+  double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
+
+  // Sets speed of each wheel seperately
+  motorLeft.setVoltage(leftVoltage + leftOffset);
+  motorRight.setVoltage(rightVoltage + rightOffset);
+}
+
+// Overloaded version of setWheelSpeeds
+public void setWheelSpeeds(double leftSpeed, double rightSpeed) {
+  setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
+}
+
+/**
+ * Set the velocity of the chassis itself
+ * @author Cat ears Kenneth Wong
+ * @param speeds
+ */
+public void setChassisSpeeds(ChassisSpeeds speeds) {
+  // Converts chassis velocity to wheel velocities and sets the speeds
+  setWheelSpeeds(diffDriveKinematics.toWheelSpeeds(speeds));
+}
+// Gets feedforward controller
+public SimpleMotorFeedforward getFeedforward() {
+  return feedforward;
+}
+// Gets left wheel PID controller
+public PIDController getLeftWheelPID() {
+  return leftWheelPID;
+}
+
+// Gets right wheel PID controller
+public PIDController getRightWheelPID() {
+  return rightWheelPID;
+}
+
+  /**
+   * converts chassis speeds to wheel speeds
+   * @author cat ears and Kenneth Wong
+   * @param chassisSpeeds
+   * @return Wheel speeds
+   */
+  public DifferentialDriveWheelSpeeds chassisToWheelSpeeds(ChassisSpeeds chassisSpeeds){
+    return diffDriveKinematics.toWheelSpeeds(chassisSpeeds);
+  }
+
+  /** 
+   * converts wheels speed to chassis speeds
+   * @author Cat ears and Kenneth Wong
+   * @param wheelSpeeds
+   * @return Chassis speeds
+   */
+  public ChassisSpeeds wheelToChassisSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds){
+    return diffDriveKinematics.toChassisSpeeds(wheelSpeeds);
+  }
+
+  /**
+   * getting position for robot
+   * @author Cat ears and Kenneth Wong
+   * @return POSITION
+   */
+  public Pose2d getPosition(){
+    return diffDriveOdometry.getPoseMeters();
+  }
+  
   /**
    * Updates the robot's position on the field
    * @author Kenneth Wong
