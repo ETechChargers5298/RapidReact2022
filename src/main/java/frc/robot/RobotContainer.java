@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ShiftSpeed;
 import frc.robot.commands.ShiftTorque;
-import frc.robot.commands.TestBedMoveMotors;
+import frc.robot.commands.TestMoveMotors;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.TestBed;
+import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -29,11 +29,12 @@ public class RobotContainer {
   // Subsystems are created here
   private static final Drivetrain drivetrain = new Drivetrain();
   private static final Turret turret = new Turret();
-  private static final TestBed testBed = new TestBed();
+  private static final TestMotors testMotors = new TestMotors();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
+  private static final XboxController testController = new XboxController(Constants.TEST_PORT);
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getLeftX());
@@ -41,7 +42,7 @@ public class RobotContainer {
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
-  private final TestBedMoveMotors testBedMoveMotors = new TestBedMoveMotors(testBed, () -> operatorController.getLeftY(), () -> operatorController.getRightX(), () -> operatorController.getLeftX());
+  private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> testController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -75,7 +76,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    testBed.setDefaultCommand(testBedMoveMotors);
+    testMotors.setDefaultCommand(testMoveMotors);
   }
 
   /**

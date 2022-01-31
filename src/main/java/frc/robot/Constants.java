@@ -38,6 +38,7 @@ public final class Constants {
     // Controller ports
     public static final int DRIVER_PORT = 0;
     public static final int OPERATOR_PORT = 1;
+    public static final int TEST_PORT = 2;
 
     // Gearshift doublesolenoid port #'s
     public static final int GEAR_SHIFT_SPEED_PORT = 5;
@@ -56,14 +57,16 @@ public final class Constants {
     public static final int COUNTS_PER_REVOLUTION = 8192;
 
     // Holds the port number for testing motors
-    public static final int TEST_MOTOR_PORT50 = 50;
-    public static final int TEST_MOTOR_PORT51 = 51;
-    public static final int TEST_MOTOR_PORT52 = 52;
+    public static final int TEST_MOTOR_PORT_A = 50;
+    public static final int TEST_MOTOR_PORT_B = 51;
+    public static final int TEST_MOTOR_PORT_C = 52;
+    public static final int TEST_MOTOR_PORT_D = 53;
 
     // Holds the inversion of the motor
-    public static final boolean TEST_MOTOR50_INVERSION = false;
-    public static final boolean TEST_MOTOR51_INVERSION = false;
-    public static final boolean TEST_MOTOR52_INVERSION = false;
+    public static final boolean TEST_MOTOR_A_INVERSION = false;
+    public static final boolean TEST_MOTOR_B_INVERSION = false;
+    public static final boolean TEST_MOTOR_C_INVERSION = false;
+    public static final boolean TEST_MOTOR_D_INVERSION = false;
 
     // Measurements between left wheel to right wheel 
     public static final double TRACK_WIDTH_INCHES = 20.0;
