@@ -18,10 +18,18 @@ public final class Constants {
 
     // Speed of the turret motor
     public static final double TURRET_SPEED = 0.75;
-
+    
     // Inversion of the turret motor
     public static final boolean TURRET_INVERSION = false;
-    
+   
+    // Port for the Loader Motor
+    public static final int LOADER_MOTOR_PORT = 15;
+
+    //Speed of how fast it loads
+    public static final double LOADER_SPEED = 0.75;
+    //Inversion of the loader motor
+    public static final boolean LOADER_INVERSION = false;
+   
     // Motor constants for drive wheels 
     public static final int DRIVE_LEFT_A = 1;
     public static final int DRIVE_LEFT_B = 2;
@@ -83,4 +91,5 @@ public final class Constants {
     public static final double DRIVE_RIGHT_I_GAIN = 0;
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
+
 }
