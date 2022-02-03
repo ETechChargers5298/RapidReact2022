@@ -12,13 +12,13 @@ import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
 
-  //Creates a motor that rotates the turret
-  private static CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
+  // Creates a motor that rotates the turret
+  private CANSparkMax turretMotor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
 
   /** Creates a new Turret. */
   public Turret() {
-    //Controls the inversion so that the right is always positive
-    motor.setInverted(Constants.TURRET_INVERSION);
+    // Controls the inversion so that the right is always positive
+    turretMotor.setInverted(Constants.TURRET_INVERSION);
   }
 
   /**
@@ -26,7 +26,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretLeft() {
-    motor.set(-Constants.TURRET_SPEED);
+    turretMotor.set(-Constants.TURRET_SPEED);
   }
 
   /**
@@ -34,7 +34,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretRight() {
-    motor.set(Constants.TURRET_SPEED);
+    turretMotor.set(Constants.TURRET_SPEED);
   }
 
   /**
@@ -42,7 +42,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void stopTurret() {
-    motor.set(0);
+    turretMotor.set(0);
   }
 
   @Override

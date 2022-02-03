@@ -4,40 +4,95 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
-  
+
   // Left side wheel motors
-  private static CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
-  private static CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
-  private static CANSparkMax motorLeftC = new CANSparkMax(Constants.DRIVE_LEFT_C, MotorType.kBrushless);
+  private CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
+  private CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
+  private CANSparkMax motorLeftC = new CANSparkMax(Constants.DRIVE_LEFT_C, MotorType.kBrushless);
   
   // Right side wheel motors 
-  private static CANSparkMax motorRightA = new CANSparkMax(Constants.DRIVE_RIGHT_A, MotorType.kBrushless);
-  private static CANSparkMax motorRightB = new CANSparkMax(Constants.DRIVE_RIGHT_B, MotorType.kBrushless);
-  private static CANSparkMax motorRightC = new CANSparkMax(Constants.DRIVE_RIGHT_C, MotorType.kBrushless);
+  private CANSparkMax motorRightA = new CANSparkMax(Constants.DRIVE_RIGHT_A, MotorType.kBrushless);
+  private CANSparkMax motorRightB = new CANSparkMax(Constants.DRIVE_RIGHT_B, MotorType.kBrushless);
+  private CANSparkMax motorRightC = new CANSparkMax(Constants.DRIVE_RIGHT_C, MotorType.kBrushless);
 
   // Groups the left and right motors
-  private static MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
-  private static MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
+  private MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
+  private MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
 
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
-  private static DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
+  private DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
+
+  // We made a object to control which ports control the gearshift
+  private DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
+
+  // Created encoders
+  private Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
+  private Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+  
+  // Creates gyro/navX
+  private AHRS navX = new AHRS(SPI.Port.kMXP);
+
+  // Establishes kinematics object
+  private DifferentialDriveKinematics diffDriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.TRACK_WIDTH_INCHES));
+
+  // Establishes odometry object 
+  private DifferentialDriveOdometry diffDriveOdometry = new DifferentialDriveOdometry(getAngle(), new Pose2d(0, 0, new Rotation2d()));
+
+  // Model robot using feedforward
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DRIVE_FEEDFORWARD_STATIC_GAIN, Constants.DRIVE_FEEDFORWARD_VELOCITY_GAIN, Constants.DRIVE_FEEDFORWARD_ACCELERATION_GAIN);
+
+  // PID controller for left and right wheels
+  private final PIDController leftWheelPID = new PIDController(Constants.DRIVE_LEFT_P_GAIN, Constants.DRIVE_LEFT_I_GAIN, Constants.DRIVE_LEFT_D_GAIN);
+  private final PIDController rightWheelPID = new PIDController(Constants.DRIVE_RIGHT_P_GAIN, Constants.DRIVE_RIGHT_I_GAIN, Constants.DRIVE_RIGHT_D_GAIN);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    
-    // Inversion of Motors 
+    // Inversion of motors 
     motorLeft.setInverted(Constants.LEFT_INVERTED);
     motorRight.setInverted(Constants.RIGHT_INVERTED);
 
+    // Inversion of encoders
+    encoderLeft.setReverseDirection(Constants.LEFT_INVERTED);
+    encoderRight.setReverseDirection(Constants.RIGHT_INVERTED);
+
+
+    // Convert rotations to meters
+    encoderLeft.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER_INCH * Math.PI) / Constants.COUNTS_PER_REVOLUTION);
+    encoderRight.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER_INCH * Math.PI) / Constants.COUNTS_PER_REVOLUTION);
+  
+    // Reset the encoders
+    resetEncoders();
+
+    // Reset the gyro
+    resetGyro();
+
+    // Reset the position
+    resetOdometry();
   }
 
   /**
@@ -47,10 +102,8 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void tankDrive(double leftSpeed, double rightSpeed) {
-
     // Using tankDrive method from differentialDrive object to move the robot. 
     diffDrive.tankDrive(leftSpeed, rightSpeed);
- 
   }
   
   /**
@@ -60,10 +113,8 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void arcadeDrive(double linear, double rotational) {
-    
     // Using arcadeDrive from differentialDrive to move the robot.
     diffDrive.arcadeDrive(linear, rotational);
-
   }
   
   /**
@@ -71,14 +122,240 @@ public class Drivetrain extends SubsystemBase {
    * @author Kenneth Wong
    */
   public void motorStop() {
-    
     // Sets motor speeds to 0, causing it to stop moving. 
     motorLeft.set(0);
     motorRight.set(0);
- 
   }
+
+  /**
+   * Air is going into the shiftTorque tube
+   * @author Tahlei Richardson
+   */
+  public void shiftTorque() {
+    gearShifter.set(Value.kReverse);
+  }
+
+  /**
+   * Air is going into the shiftSpeed tube
+   * @author Tahlei Richardson
+   */
+  public void shiftSpeed() {
+    gearShifter.set(Value.kForward);
+  }
+
+  /**
+   * Gets distance for left encoder
+   * @author Cat Ears
+   * @return Distance in meters
+   */
+  public double getLeftEncoderDistance() {
+    return encoderLeft.getDistance();
+  }
+  
+  /**
+   * Gets distance for right encoders
+   * @author Cat Ears
+   * @return Distance in meters
+   */
+  public double getRightEncoderDistance() {
+    return encoderRight.getDistance();
+  }
+
+  /**
+   * Returns velocity for right encoder
+   * @author Cat Ears and Kenneth Wong
+   * @return Right encoder velocity in meters per second
+   */
+  public double getRightEncoderVelocity() {
+    return encoderRight.getRate();
+  }
+
+  /**
+   * Returns left encoder velocity
+   * @author Cat Ears and Kenneth Wong
+   * @return Left encoder velocity in meters per second
+   */
+  public double getLeftEncoderVelocity() {
+    return encoderLeft.getRate();
+  }
+
+  /**
+   * Resets right encoder to 0
+   * @author Cat Ears and Kenneth Wong
+   */
+  public void resetRightEncoder() {
+    encoderRight.reset();
+  }
+
+  /**
+   * Resets left encoder to 0
+   * @author cat ears and kenneth wong
+   */
+  public void resetLeftEncoder() {
+    encoderLeft.reset();
+  }
+
+  /**
+   * Resets both encoders
+   * @author Cat Ears and Kenneth Wong
+   */
+  public void resetEncoders() {
+    resetLeftEncoder();
+    resetRightEncoder();
+  }
+
+  /**
+   * Resets gyro
+   * @author Cat Ears and Kenneth Wong
+   */
+  public void resetGyro() {
+    navX.reset();
+  }
+
+  /**
+  * Returns angle in degrees
+  * @author Cat Ears and Kenneth Wong
+  * @return Angle in degrees
+  */
+  public double getAngleInDegrees() {
+    return Math.IEEEremainder(navX.getAngle(), 180);
+  }
+
+  /**
+   * Returns angle in radians
+   * @author Cat Ears and Kenneth Wong
+   * @return Angle in radians
+   */
+  public double getAngleInRadian() {
+    return Units.degreesToRadians(getAngleInDegrees());
+  }
+
+  /**
+   * Returns object for angle
+   * @author Cat Ears and Kenneth Wong
+   * @return Object for angle
+   */
+  public Rotation2d getAngle() {
+    return Rotation2d.fromDegrees(-getAngleInDegrees());
+  }
+
+  /**
+   * converts chassis speeds to wheel speeds
+   * @author cat ears and Kenneth Wong
+   * @param chassisSpeeds
+   * @return Wheel speeds
+   */
+  public DifferentialDriveWheelSpeeds chassisToWheelSpeeds(ChassisSpeeds chassisSpeeds){
+    return diffDriveKinematics.toWheelSpeeds(chassisSpeeds);
+  }
+
+  /** 
+   * converts wheels speed to chassis speeds
+   * @author Cat ears and Kenneth Wong
+   * @param wheelSpeeds
+   * @return Chassis speeds
+   */
+  public ChassisSpeeds wheelToChassisSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds){
+    return diffDriveKinematics.toChassisSpeeds(wheelSpeeds);
+  }
+
+  /**
+   * Sets the velocities of each motors
+   * @author Cat ears and kenneth Wong
+   * @param speeds
+   */
+  public void setWheelSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    // Calculates voltage required to attain speeds using voltage balance equation
+    double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
+    double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
+
+    // Error correction for each wheel velocity
+    double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
+    double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
+
+    // Sets speed of each wheel seperately
+    motorLeft.setVoltage(leftVoltage + leftOffset);
+    motorRight.setVoltage(rightVoltage + rightOffset);
+  }
+
+  // Overloaded version of setWheelSpeeds
+  public void setWheelSpeeds(double leftSpeed, double rightSpeed) {
+    setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
+  }
+
+  /**
+   * Set the velocity of the chassis itself
+   * @author Cat ears Kenneth Wong
+   * @param speeds
+   */
+  public void setChassisSpeeds(ChassisSpeeds speeds) {
+    // Converts chassis velocity to wheel velocities and sets the speeds
+    setWheelSpeeds(diffDriveKinematics.toWheelSpeeds(speeds));
+  }
+
+  // Gets feedforward controller
+  public SimpleMotorFeedforward getFeedforward() {
+    return feedforward;
+  }
+
+  // Gets left wheel PID controller
+  public PIDController getLeftWheelPID() {
+    return leftWheelPID;
+  }
+
+  // Gets right wheel PID controller
+  public PIDController getRightWheelPID() {
+    return rightWheelPID;
+  }
+
+  /**
+   * getting position for robot
+   * @author Cat ears and Kenneth Wong
+   * @return POSITION
+   */
+  public Pose2d getPosition(){
+    return diffDriveOdometry.getPoseMeters();
+  }
+  
+  /**
+   * Updates the robot's position on the field
+   * @author Kenneth Wong
+   */
+  public void updateOdometry() {
+    diffDriveOdometry.update(getAngle(), getLeftEncoderDistance(), getRightEncoderDistance());
+  }
+  
+  /**
+   * Resets the robot's position
+   * @author Kenneth Wong
+   */
+  public void resetOdometry() {
+    diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getAngle());
+  }
+  
+  /**
+   * Resets the robot's position with a parameter on the robot's position
+   * @author Kenneth Wong
+   * @param position
+   */
+  public void resetOdometry(Pose2d position) {
+    diffDriveOdometry.resetPosition(position, getAngle());
+  }
+
+  public void updateData() {
+    SmartDashboard.putNumber("Drivetrain/LeftPosition", getLeftEncoderDistance());
+    SmartDashboard.putNumber("Drivetrain/RightPosition", getRightEncoderDistance());
+    SmartDashboard.putNumber("Drivetrain/LeftVelocity", getLeftEncoderVelocity());
+    SmartDashboard.putNumber("Drivetrain/RightVelocity", getRightEncoderVelocity());
+    SmartDashboard.putNumber("Drivetrain/Gyro", getAngleInDegrees());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateData();
+    
+    // Updates robot's position as it's on the field
+    updateOdometry();
   }
 }

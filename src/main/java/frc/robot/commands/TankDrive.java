@@ -19,7 +19,6 @@ public class TankDrive extends CommandBase {
   
   /** Creates a new TankDrive. */
   public TankDrive(Drivetrain drivetrain, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed) {
-    
     // Obtains drivetrain from RobotContainer
     this.drivetrain = drivetrain;
     
@@ -34,7 +33,6 @@ public class TankDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
     // Robot doesn't move when it starts
     drivetrain.motorStop();
   }
@@ -42,7 +40,6 @@ public class TankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     // Robot will move depending on controller input
     drivetrain.tankDrive(leftSpeed.getAsDouble(), rightSpeed.getAsDouble());
   }
@@ -50,7 +47,6 @@ public class TankDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
     // Stops the robot when we stop running
     drivetrain.motorStop();
   }
@@ -58,7 +54,6 @@ public class TankDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
     // We don't stop driving 
     return false;
   }

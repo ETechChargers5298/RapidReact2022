@@ -6,10 +6,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.ShiftSpeed;
+import frc.robot.commands.ShiftTorque;
+import frc.robot.commands.TestMoveMotors;
+import frc.robot.commands.TurretLeft;
+import frc.robot.commands.TurretRight;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.TestMotors;
+import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,20 +28,27 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // Subsystems are created here
   private static final Drivetrain drivetrain = new Drivetrain();
+  private static final Turret turret = new Turret();
+  private static final TestMotors testMotors = new TestMotors();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
+  private static final XboxController testController = new XboxController(Constants.TEST_PORT);
 
-  // Commands are created here 
-  private final TankDrive tankDrive = new TankDrive(drivetrain, () -> -driveController.getLeftY(), () -> -driveController.getRightY());
-  private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getLeftX());
+  // Commands are created here
+  private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
+  private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
+  private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
+  private final TurretLeft turretLeft = new TurretLeft(turret);
+  private final TurretRight turretRight = new TurretRight(turret);
+  private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configures the button bindings
     configureButtonBindings();
-    // Configures the axes bindings 
+    // Configures the axes bindings D
     configureAxes();
   }
 
@@ -44,22 +59,33 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Buttons to control gear shifting
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
+    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
+    // Buttons to control turrets
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(turretLeft, true);
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(turretRight, true);
   }
   
   /**
    * Maps joystick axes to commands 
    */
   private void configureAxes() {
+    // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
+
+    // Sets the test bed to always move the test motor
+    testMotors.setDefaultCommand(testMoveMotors);
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    // No autonomous code exists because we are not team 1678
     return null;
   }
 }
