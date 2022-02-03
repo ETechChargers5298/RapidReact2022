@@ -33,6 +33,7 @@ public class TurretLeft extends CommandBase {
   public void execute() {
     // The turret moves left
     turret.moveTurretLeft();
+    System.out.println("o wow left works");
   }
 
   // Called once the command ends or is interrupted.
