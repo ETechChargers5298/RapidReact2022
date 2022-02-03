@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
    * @author catears
    */
   public void climberClimb(){
-    motor.set(Constants.CLIMBER_MOTOR_SPEED);
+    motor.set(-Constants.CLIMBER_MOTOR_SPEED);
   }
 
   /**
