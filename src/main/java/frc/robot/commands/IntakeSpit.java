@@ -5,48 +5,49 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Intake;
 
-public class TurretLeft extends CommandBase {
-  
-  // Declares the turret
-  private Turret turret;
+public class IntakeSpit extends CommandBase {
 
-  /** Creates a new TurretLeft. */
-  public TurretLeft(Turret turret) {
-    // Obtaining the turret
-    this.turret = turret;
+  private Intake intake;
+  /** Creates a new IntakeSpit. */
+  public IntakeSpit(Intake intake) {
+
+    // obtains the intake
+    this.intake = intake;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret);
+    addRequirements(intake);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // The turret doesn't move at the start
-    turret.stopTurret();
+
+    // makes sure the intake does not move at start
+    intake.stopIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // The turret moves left
-    turret.moveTurretLeft();
-    System.out.println("o wow left works");
+
+    // moves the intake motor back
+    intake.intakeSpit();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // The turret stops in the end
-    turret.stopTurret();
+
+    // stops intake in the end
+    intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // It never stops
     return false;
   }
 }

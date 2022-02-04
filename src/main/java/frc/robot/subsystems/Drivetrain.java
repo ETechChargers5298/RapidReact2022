@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +29,7 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
+
   // Left side wheel motors
   private CANSparkMax motorLeftA = new CANSparkMax(Constants.DRIVE_LEFT_A, MotorType.kBrushless);
   private CANSparkMax motorLeftB = new CANSparkMax(Constants.DRIVE_LEFT_B, MotorType.kBrushless);
@@ -44,18 +44,18 @@ public class Drivetrain extends SubsystemBase {
   private MotorControllerGroup motorLeft = new MotorControllerGroup(motorLeftA, motorLeftB, motorLeftC);
   private MotorControllerGroup motorRight = new MotorControllerGroup(motorRightA, motorRightB, motorRightC);
 
-  // Created encoders
-  private Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
-  private Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
-
   // Establishes Differential Drive, a drivetrain with 2 sides and cannot strafe
   private DifferentialDrive diffDrive = new DifferentialDrive(motorLeft, motorRight);
-  
-  // Creates gyro/navX
-  private AHRS navX = new AHRS(SPI.Port.kMXP);
 
   // We made a object to control which ports control the gearshift
   private DoubleSolenoid gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
+
+  // Created encoders
+  private Encoder encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
+  private Encoder encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+  
+  // Creates gyro/navX
+  private AHRS navX = new AHRS(SPI.Port.kMXP);
 
   // Establishes kinematics object
   private DifferentialDriveKinematics diffDriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.TRACK_WIDTH_INCHES));
@@ -79,6 +79,7 @@ public class Drivetrain extends SubsystemBase {
     // Inversion of encoders
     encoderLeft.setReverseDirection(Constants.LEFT_INVERTED);
     encoderRight.setReverseDirection(Constants.RIGHT_INVERTED);
+
 
     // Convert rotations to meters
     encoderLeft.setDistancePerPulse(Units.inchesToMeters(Constants.WHEEL_DIAMETER_INCH * Math.PI) / Constants.COUNTS_PER_REVOLUTION);
@@ -125,7 +126,6 @@ public class Drivetrain extends SubsystemBase {
     motorLeft.set(0);
     motorRight.set(0);
   }
-
 
   /**
    * Air is going into the shiftTorque tube
@@ -218,7 +218,7 @@ public class Drivetrain extends SubsystemBase {
   * @return Angle in degrees
   */
   public double getAngleInDegrees() {
-    return Math.IEEEremainder(navX.getAngle(), 360);
+    return Math.IEEEremainder(navX.getAngle(), 180);
   }
 
   /**
@@ -240,53 +240,6 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Sets the velocities of each motors
-   * @author Cat ears and kenneth Wong
-   * @param speeds
-   */
-public void setWheelSpeeds(DifferentialDriveWheelSpeeds speeds) {
-  // Calculates voltage required to attain speeds using voltage balance equation
-  double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
-  double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
-
-  // Error correction for each wheel velocity
-  double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
-  double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
-
-  // Sets speed of each wheel seperately
-  motorLeft.setVoltage(leftVoltage + leftOffset);
-  motorRight.setVoltage(rightVoltage + rightOffset);
-}
-
-// Overloaded version of setWheelSpeeds
-public void setWheelSpeeds(double leftSpeed, double rightSpeed) {
-  setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
-}
-
-/**
- * Set the velocity of the chassis itself
- * @author Cat ears Kenneth Wong
- * @param speeds
- */
-public void setChassisSpeeds(ChassisSpeeds speeds) {
-  // Converts chassis velocity to wheel velocities and sets the speeds
-  setWheelSpeeds(diffDriveKinematics.toWheelSpeeds(speeds));
-}
-// Gets feedforward controller
-public SimpleMotorFeedforward getFeedforward() {
-  return feedforward;
-}
-// Gets left wheel PID controller
-public PIDController getLeftWheelPID() {
-  return leftWheelPID;
-}
-
-// Gets right wheel PID controller
-public PIDController getRightWheelPID() {
-  return rightWheelPID;
-}
-
-  /**
    * converts chassis speeds to wheel speeds
    * @author cat ears and Kenneth Wong
    * @param chassisSpeeds
@@ -304,6 +257,55 @@ public PIDController getRightWheelPID() {
    */
   public ChassisSpeeds wheelToChassisSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds){
     return diffDriveKinematics.toChassisSpeeds(wheelSpeeds);
+  }
+
+  /**
+   * Sets the velocities of each motors
+   * @author Cat ears and kenneth Wong
+   * @param speeds
+   */
+  public void setWheelSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    // Calculates voltage required to attain speeds using voltage balance equation
+    double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
+    double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
+
+    // Error correction for each wheel velocity
+    double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
+    double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
+
+    // Sets speed of each wheel seperately
+    motorLeft.setVoltage(leftVoltage + leftOffset);
+    motorRight.setVoltage(rightVoltage + rightOffset);
+  }
+
+  // Overloaded version of setWheelSpeeds
+  public void setWheelSpeeds(double leftSpeed, double rightSpeed) {
+    setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
+  }
+
+  /**
+   * Set the velocity of the chassis itself
+   * @author Cat ears Kenneth Wong
+   * @param speeds
+   */
+  public void setChassisSpeeds(ChassisSpeeds speeds) {
+    // Converts chassis velocity to wheel velocities and sets the speeds
+    setWheelSpeeds(diffDriveKinematics.toWheelSpeeds(speeds));
+  }
+
+  // Gets feedforward controller
+  public SimpleMotorFeedforward getFeedforward() {
+    return feedforward;
+  }
+
+  // Gets left wheel PID controller
+  public PIDController getLeftWheelPID() {
+    return leftWheelPID;
+  }
+
+  // Gets right wheel PID controller
+  public PIDController getRightWheelPID() {
+    return rightWheelPID;
   }
 
   /**
@@ -340,14 +342,18 @@ public PIDController getRightWheelPID() {
     diffDriveOdometry.resetPosition(position, getAngle());
   }
 
+  public void updateData() {
+    SmartDashboard.putNumber("Drivetrain/LeftPosition", getLeftEncoderDistance());
+    SmartDashboard.putNumber("Drivetrain/RightPosition", getRightEncoderDistance());
+    SmartDashboard.putNumber("Drivetrain/LeftVelocity", getLeftEncoderVelocity());
+    SmartDashboard.putNumber("Drivetrain/RightVelocity", getRightEncoderVelocity());
+    SmartDashboard.putNumber("Drivetrain/Gyro", getAngleInDegrees());
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per sch    eduler run
-    SmartDashboard.putNumber("Left Position", getLeftEncoderDistance());
-    SmartDashboard.putNumber("Right Position", getRightEncoderDistance());
-    SmartDashboard.putNumber("Left Velocity", getLeftEncoderVelocity());
-    SmartDashboard.putNumber("Right Velocity", getRightEncoderVelocity());
-    SmartDashboard.putNumber("Gyro", getAngleInDegrees());
+    // This method will be called once per scheduler run
+    updateData();
     
     // Updates robot's position as it's on the field
     updateOdometry();

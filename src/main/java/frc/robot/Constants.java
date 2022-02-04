@@ -14,11 +14,13 @@ package frc.robot;
  */
 public final class Constants {
     // Port for the turret motor
-    public static final int TURRET_MOTOR_PORT = 45;
+    public static final int TURRET_MOTOR_PORT = 10;
 
     // Speed of the turret motor
     public static final double TURRET_SPEED = 0.75;
     
+    public static final double TURRET_SPEED = 0.30;
+
     // Inversion of the turret motor
     public static final boolean TURRET_INVERSION = false;
    
@@ -27,6 +29,7 @@ public final class Constants {
 
     //Speed of how fast it loads
     public static final double LOADER_SPEED = 0.75;
+  
     //Inversion of the loader motor
     public static final boolean LOADER_INVERSION = false;
    
@@ -65,10 +68,10 @@ public final class Constants {
     public static final int COUNTS_PER_REVOLUTION = 8192;
 
     // Holds the port number for testing motors
-    public static final int TEST_MOTOR_PORT_A = 50;
-    public static final int TEST_MOTOR_PORT_B = 51;
-    public static final int TEST_MOTOR_PORT_C = 52;
-    public static final int TEST_MOTOR_PORT_D = 53;
+    public static final int TEST_MOTOR_PORT_A = 11;
+    public static final int TEST_MOTOR_PORT_B = 50;
+    public static final int TEST_MOTOR_PORT_C = 56;
+    public static final int TEST_MOTOR_PORT_D = 57;
 
     // Holds the inversion of the motor
     public static final boolean TEST_MOTOR_A_INVERSION = false;
@@ -91,5 +94,15 @@ public final class Constants {
     public static final double DRIVE_RIGHT_I_GAIN = 0;
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
+  
+    public static final int CLIMBER_MOTOR_PORT = 69;
+    public static final boolean CLIMBER_MOTOR_INVERSION = false;
+    public static final double CLIMBER_MOTOR_SPEED = 0.75;
+  
+    // Constants for Intake Port and speed
+    public static final int INTAKE_MOTOR_PORT = 7;
+    public static final double INTAKE_SPEED = 0.75;
 
+    // inversion on intake motor
+    public static final boolean INTAKE_INVERSION = true;
 }
