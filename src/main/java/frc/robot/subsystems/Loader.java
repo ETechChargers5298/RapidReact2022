@@ -12,34 +12,41 @@ import frc.robot.Constants;
 
 public class Loader extends SubsystemBase {
   
+  // Creates Motor for loader
   private CANSparkMax motor = new CANSparkMax(Constants.LOADER_MOTOR_PORT, MotorType.kBrushless);
+
    /** Creates a new Loader. */
   public Loader() {
 
     // Controls Inversion
     motor.setInverted(Constants.LOADER_INVERSION);
   }
-
-  //This just makes the ball go down
-  public void moveLoaderDown() {
+  /**
+   * This just makes the ball go down
+   * @author Tahlei
+   */
+  public void unload() {
     motor.set(-Constants.LOADER_SPEED);
   }
-  //This makes the ball do up
-  public void moveLoaderUp() {
+
+  /**
+   * This makes the ball do up
+   * @author Tahlei
+   */
+  public void load() {
     motor.set(Constants.LOADER_SPEED);
   }
 
-  // This stops the loader
+   /**
+    * This stops the loader
+    * @author Tahlei
+    */
   public void stopLoader() {
     motor.set(0);
   }
 
   @Override
   public void periodic() {
-   
-    
-    
-
-
+    // The method will be done once per run
   }
 }
