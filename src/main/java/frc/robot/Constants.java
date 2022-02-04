@@ -84,11 +84,14 @@ public final class Constants {
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
 
+    public static final int CLIMBER_MOTOR_PORT = 69;
+    public static final boolean CLIMBER_MOTOR_INVERSION = false;
+    public static final double CLIMBER_MOTOR_SPEED = 0.75;
+  
     // Constants for Intake Port and speed
     public static final int INTAKE_MOTOR_PORT = 7;
     public static final double INTAKE_SPEED = 0.75;
 
     // inversion on intake motor
     public static final boolean INTAKE_INVERSION = true;
-
 }
