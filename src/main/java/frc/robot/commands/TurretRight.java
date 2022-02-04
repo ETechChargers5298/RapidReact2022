@@ -33,6 +33,7 @@ public class TurretRight extends CommandBase {
   public void execute() {
     // The turret moves right
     turret.moveTurretRight();
+    System.out.println("o wow right works");
   }
 
   // Called once the command ends or is interrupted.
