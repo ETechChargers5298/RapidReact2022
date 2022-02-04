@@ -17,7 +17,6 @@ public final class Constants {
     public static final int TURRET_MOTOR_PORT = 10;
 
     // Speed of the turret motor
-    public static final double TURRET_SPEED = 0.75;
     
     public static final double TURRET_SPEED = 0.30;
 
