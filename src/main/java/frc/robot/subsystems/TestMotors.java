@@ -17,7 +17,7 @@ public class TestMotors extends SubsystemBase {
   private static final CANSparkMax testMotorB = new CANSparkMax(Constants.TEST_MOTOR_PORT_B, MotorType.kBrushless);
   private static final CANSparkMax testMotorC = new CANSparkMax(Constants.TEST_MOTOR_PORT_C, MotorType.kBrushless);
   private static final CANSparkMax testMotorD = new CANSparkMax(Constants.TEST_MOTOR_PORT_D, MotorType.kBrushless);
-
+  
   /** Creates a new TestBed. */
   public TestMotors() {
     // Inverts the motor
