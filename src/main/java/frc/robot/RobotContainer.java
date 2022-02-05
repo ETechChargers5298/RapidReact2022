@@ -4,18 +4,31 @@
 
 package frc.robot;
 
+import java.security.KeyStore.LoadStoreParameter;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.ClimberClimb;
+import frc.robot.commands.ClimberReach;
+import frc.robot.commands.IntakeEat;
+import frc.robot.commands.IntakeSpit;
+import frc.robot.commands.LoaderLoad;
+import frc.robot.commands.LoaderUnload;
 import frc.robot.commands.ShiftSpeed;
 import frc.robot.commands.ShiftTorque;
 import frc.robot.commands.TestMoveMotors;
 import frc.robot.commands.TurretLeft;
 import frc.robot.commands.TurretRight;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
+import frc.robot.utility.TriggerButton;
+import frc.robot.utility.Triggerbutton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -30,6 +43,9 @@ public class RobotContainer {
   private static final Drivetrain drivetrain = new Drivetrain();
   private static final Turret turret = new Turret();
   private static final TestMotors testMotors = new TestMotors();
+  private static final Climber climber = new Climber();
+  private static final Intake intake = new Intake();
+  private static final Loader loader = new Loader();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
@@ -42,6 +58,12 @@ public class RobotContainer {
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
+  private final ClimberClimb climberClimb = new ClimberClimb(climber);
+  private final ClimberReach climberReach = new ClimberReach(climber);
+  private final IntakeEat intakeEat = new IntakeEat(intake);
+  private final IntakeSpit intakeSpit = new IntakeSpit(intake);
+  private final LoaderLoad loaderLoad = new LoaderLoad(loader);
+  private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -64,8 +86,20 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
     // Buttons to control turrets
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(turretLeft, true);
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(turretRight, true);
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
+
+    // Buttons to control climber
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(climberClimb, true);
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(climberReach, true);
+
+    // TriggerButtons to control intake
+    new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
+    new Triggerbutton(operatorController, true).whileHeld(intakeSpit, true);
+
+    // Buttons to control loader
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderUnload, true);
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(loaderLoad, true);
   }
   
   /**

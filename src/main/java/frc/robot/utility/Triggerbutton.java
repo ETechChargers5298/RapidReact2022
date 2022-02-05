@@ -7,7 +7,7 @@ package frc.robot.utility;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
-public class Triggerbutton extends Button{
+public class TriggerButton extends Button{
 
     private XboxController controller;
     private boolean isLeft;
@@ -18,7 +18,7 @@ public class Triggerbutton extends Button{
      * @param controller
      * @param hand
      */
-    public Triggerbutton(XboxController controller, boolean isLeft){
+    public TriggerButton(XboxController controller, boolean isLeft){
 
         this.controller = controller;
         this.isLeft = isLeft;
