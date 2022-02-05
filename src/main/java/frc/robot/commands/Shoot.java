@@ -19,12 +19,20 @@ public class Shoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    // starts flywheel and feeder stopped
+    pew.stopFly();
+    pew.stopFeed();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
+    // speeds up flywheel
+    pew.rampUp();
+    
     // if Velocity is over 1000 it will shoot.
    if (pew.getFlyVelocity() > 1000) {
      pew.feed();
@@ -33,7 +41,12 @@ public class Shoot extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    // stops fly wheel and feeder
+    pew.stopFly();
+    pew.stopFeed();
+  }
 
   // Returns true when the command should end.
   @Override

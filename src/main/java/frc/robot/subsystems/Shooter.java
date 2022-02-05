@@ -44,10 +44,19 @@ public double getFlyVelocity() {
   return flyEncoder.getRate();
 }
 
+public void stopFly(){
 
+  flyWheel.set(0);
+}
+
+public void stopFeed(){
+
+  feeder.set(0);
+}
 
   /** Creates a new Shooter. */
   public Shooter() {
+
   }
 
   @Override
