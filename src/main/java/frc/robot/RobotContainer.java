@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.security.KeyStore.LoadStoreParameter;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -28,7 +26,6 @@ import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
 import frc.robot.utility.TriggerButton;
-import frc.robot.utility.Triggerbutton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -95,7 +92,7 @@ public class RobotContainer {
 
     // TriggerButtons to control intake
     new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
-    new Triggerbutton(operatorController, true).whileHeld(intakeSpit, true);
+    new TriggerButton(operatorController, true).whileHeld(intakeSpit, true);
 
     // Buttons to control loader
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderUnload, true);
