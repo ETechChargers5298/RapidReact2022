@@ -17,11 +17,20 @@ public final class Constants {
     public static final int TURRET_MOTOR_PORT = 45;
 
     // Speed of the turret motor
-    public static final double TURRET_SPEED = 0.75;
-
+    public static final double TURRET_SPEED = 0.30;
+  
     // Inversion of the turret motor
     public static final boolean TURRET_INVERSION = false;
-    
+   
+    // Port for the Loader Motor
+    public static final int LOADER_MOTOR_PORT = 15;
+
+    //Speed of how fast it loads
+    public static final double LOADER_SPEED = 0.75;
+  
+    //Inversion of the loader motor
+    public static final boolean LOADER_INVERSION = false;
+   
     // Motor constants for drive wheels 
     public static final int DRIVE_LEFT_A = 1;
     public static final int DRIVE_LEFT_B = 2;
@@ -86,10 +95,26 @@ public final class Constants {
     public static final double DRIVE_RIGHT_I_GAIN = 0;
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
+
     public static final double[] DRIVE_LEFT_PID = {1.0, 0.0, 0.0};
     public static final double[] DRIVE_RIGHT_PID = {1.0, 0.0, 0.0};
     
     // Constants for Ramsete Controller B and Zeta
     public static final double RAM_B = 2.0;
     public static final double RAM_ZETA = 0.7;
+
+    public static final double ROBOT_HEIGHT_INCH = 60;
+    public static final double GOAL_HEIGHT_INCH = 104;
+    public static final double LIMELIGHT_ANG_DEG = 45;
+  
+    public static final int CLIMBER_MOTOR_PORT = 69;
+    public static final boolean CLIMBER_MOTOR_INVERSION = false;
+    public static final double CLIMBER_MOTOR_SPEED = 0.75;
+  
+    // Constants for Intake Port and speed
+    public static final int INTAKE_MOTOR_PORT = 7;
+    public static final double INTAKE_SPEED = 0.75;
+
+    // inversion on intake motor
+    public static final boolean INTAKE_INVERSION = true;
 }

@@ -13,16 +13,18 @@ import frc.robot.Constants;
 public class TestMotors extends SubsystemBase {
 
   // Motor for testing mechanisms
-  private final CANSparkMax testMotor50 = new CANSparkMax(Constants.TEST_MOTOR_PORT_A, MotorType.kBrushless);
-  private final CANSparkMax testMotor51 = new CANSparkMax(Constants.TEST_MOTOR_PORT_B, MotorType.kBrushless);
-  private final CANSparkMax testMotor52 = new CANSparkMax(Constants.TEST_MOTOR_PORT_C, MotorType.kBrushless);
-
+  private static final CANSparkMax testMotorA = new CANSparkMax(Constants.TEST_MOTOR_PORT_A, MotorType.kBrushless);
+  private static final CANSparkMax testMotorB = new CANSparkMax(Constants.TEST_MOTOR_PORT_B, MotorType.kBrushless);
+  private static final CANSparkMax testMotorC = new CANSparkMax(Constants.TEST_MOTOR_PORT_C, MotorType.kBrushless);
+  private static final CANSparkMax testMotorD = new CANSparkMax(Constants.TEST_MOTOR_PORT_D, MotorType.kBrushless);
+  
   /** Creates a new TestBed. */
   public TestMotors() {
     // Inverts the motor
-    testMotor50.setInverted(Constants.TEST_MOTOR_A_INVERSION);
-    testMotor51.setInverted(Constants.TEST_MOTOR_B_INVERSION);
-    testMotor52.setInverted(Constants.TEST_MOTOR_C_INVERSION);
+    testMotorA.setInverted(Constants.TEST_MOTOR_A_INVERSION);
+    testMotorB.setInverted(Constants.TEST_MOTOR_B_INVERSION);
+    testMotorC.setInverted(Constants.TEST_MOTOR_C_INVERSION);
+    testMotorD.setInverted(Constants.TEST_MOTOR_D_INVERSION);
     
   }
 
@@ -30,19 +32,21 @@ public class TestMotors extends SubsystemBase {
    * Moves the motor using joystick values so we take doubles as parameters
    * @author Kenneth Wong
    */
-  public void moveMotors(double speed50, double speed51, double speed52) {
-    testMotor50.set(speed50);
-    testMotor51.set(speed51);
-    testMotor52.set(speed52);
+  public void moveMotors(double speedA, double speedB, double speedC, double speedD) {
+    testMotorA.set(speedA);
+    testMotorB.set(speedB);
+    testMotorC.set(speedC);
+    testMotorD.set(speedD);
   }
   /**
    * Stops the motor
    * @author Kenneth Wong
    */
   public void stopMotors() {
-    testMotor50.set(0);
-    testMotor51.set(0);
-    testMotor52.set(0);
+    testMotorA.set(0);
+    testMotorB.set(0);
+    testMotorC.set(0);
+    testMotorD.set(0);
   }
   @Override
   public void periodic() {

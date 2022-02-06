@@ -52,6 +52,8 @@ def includeDesktopSupport = true
 dependencies {
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
+    
+    
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
@@ -68,6 +70,20 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'junit:junit:4.12'
+
+repositories {
+    maven {
+    url = uri("https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit")
+    credentials {
+    username = "Mechanical-Advantage-Bot"
+    password = "ghp_ykO20iuCY5H2i" + "LgmNxz8VIKJ2uQa6g1DdV0i"
+    }
+    }
+}
+
+}
+configurations.all {
+    exclude group: "edu.wpi.first.wpilibj"
 }
 
 // Simulation configuration (e.g. environment variables).
