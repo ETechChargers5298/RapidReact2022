@@ -25,6 +25,7 @@ public class TestMotors extends SubsystemBase {
     testMotorB.setInverted(Constants.TEST_MOTOR_B_INVERSION);
     testMotorC.setInverted(Constants.TEST_MOTOR_C_INVERSION);
     testMotorD.setInverted(Constants.TEST_MOTOR_D_INVERSION);
+    
   }
 
   /**
