@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends SubsystemBase {
 
-  //Motors
+//Motors
 private CANSparkMax feeder = new CANSparkMax(75, MotorType.kBrushless);
 private CANSparkMax flyWheel = new CANSparkMax(76, MotorType.kBrushless);
 
@@ -21,18 +21,16 @@ private Encoder flyEncoder = new Encoder(67,76);
 //Feed balls into flywheel
 public void feed() {
 feeder.set(0.75);
-
 }
 
 //Undo the feeding
 public void unfeed() {
-feeder.set(-0.75);
-
+  feeder.set(-0.75);
 }
+
 //Get ready to shoot
 public void rampUp() {
-flyWheel.set(1.0);
-
+  flyWheel.set(1.0);
 }
 
 //Return Encoder velocity
@@ -41,22 +39,19 @@ public double getFlyVelocity() {
 }
 
 public void stopFly(){
-
   flyWheel.set(0);
 }
 
 public void stopFeed(){
-
   feeder.set(0);
 }
 
-  /** Creates a new Shooter. */
-  public Shooter() {
-
+/** Creates a new Shooter. */
+public Shooter() {
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+  // This method will be called once per scheduler run
   }
 }
