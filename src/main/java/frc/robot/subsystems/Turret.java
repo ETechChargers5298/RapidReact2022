@@ -6,19 +6,18 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
 
   // Creates a motor that rotates the turret
-  private CANSparkMax turretMotor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
 
   /** Creates a new Turret. */
   public Turret() {
     // Controls the inversion so that the right is always positive
-    turretMotor.setInverted(Constants.TURRET_INVERSION);
+    motor.setInverted(Constants.TURRET_INVERSION);
   }
 
   /**
@@ -26,7 +25,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretLeft() {
-    turretMotor.set(-Constants.TURRET_SPEED);
+    motor.set(-Constants.TURRET_SPEED);
   }
 
   /**
@@ -34,7 +33,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretRight() {
-    turretMotor.set(Constants.TURRET_SPEED);
+    motor.set(Constants.TURRET_SPEED);
   }
 
   /**
@@ -42,7 +41,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void stopTurret() {
-    turretMotor.set(0);
+    motor.set(0);
   }
 
   @Override
