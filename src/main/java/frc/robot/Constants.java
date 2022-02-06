@@ -93,6 +93,10 @@ public final class Constants {
     public static final double DRIVE_RIGHT_I_GAIN = 0;
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
+
+    public static final double ROBOT_HEIGHT_INCH = 60;
+    public static final double GOAL_HEIGHT_INCH = 104;
+    public static final double LIMELIGHT_ANG_DEG = 45;
   
     public static final int CLIMBER_MOTOR_PORT = 69;
     public static final boolean CLIMBER_MOTOR_INVERSION = false;
