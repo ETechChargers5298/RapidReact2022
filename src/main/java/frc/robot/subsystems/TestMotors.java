@@ -9,22 +9,23 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Testing;
 
 public class TestMotors extends SubsystemBase {
 
   // Motor for testing mechanisms
-  private static final CANSparkMax testMotorA = new CANSparkMax(Constants.TEST_MOTOR_PORT_A, MotorType.kBrushless);
-  private static final CANSparkMax testMotorB = new CANSparkMax(Constants.TEST_MOTOR_PORT_B, MotorType.kBrushless);
-  private static final CANSparkMax testMotorC = new CANSparkMax(Constants.TEST_MOTOR_PORT_C, MotorType.kBrushless);
-  private static final CANSparkMax testMotorD = new CANSparkMax(Constants.TEST_MOTOR_PORT_D, MotorType.kBrushless);
+  private static final CANSparkMax testMotorA = new CANSparkMax(Testing.TEST_MOTOR_PORT_A, MotorType.kBrushless);
+  private static final CANSparkMax testMotorB = new CANSparkMax(Testing.TEST_MOTOR_PORT_B, MotorType.kBrushless);
+  private static final CANSparkMax testMotorC = new CANSparkMax(Testing.TEST_MOTOR_PORT_C, MotorType.kBrushless);
+  private static final CANSparkMax testMotorD = new CANSparkMax(Testing.TEST_MOTOR_PORT_D, MotorType.kBrushless);
   
   /** Creates a new TestBed. */
   public TestMotors() {
     // Inverts the motor
-    testMotorA.setInverted(Constants.TEST_MOTOR_A_INVERSION);
-    testMotorB.setInverted(Constants.TEST_MOTOR_B_INVERSION);
-    testMotorC.setInverted(Constants.TEST_MOTOR_C_INVERSION);
-    testMotorD.setInverted(Constants.TEST_MOTOR_D_INVERSION);
+    testMotorA.setInverted(Testing.TEST_MOTOR_A_INVERSION);
+    testMotorB.setInverted(Testing.TEST_MOTOR_B_INVERSION);
+    testMotorC.setInverted(Testing.TEST_MOTOR_C_INVERSION);
+    testMotorD.setInverted(Testing.TEST_MOTOR_D_INVERSION);
     
   }
 

@@ -27,6 +27,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Controllers;
+import frc.robot.Constants.DriveTrain;
+import frc.robot.Constants.Robot;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -57,38 +60,38 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
 
     // configures all of the left motors
-    leftMotorA = configSpark(Constants.DRIVE_LEFT_A);
-    leftMotorB = configSpark(Constants.DRIVE_LEFT_B);
-    leftMotorC = configSpark(Constants.DRIVE_LEFT_C);
+    leftMotorA = configSpark(DriveTrain.DRIVE_LEFT_A);
+    leftMotorB = configSpark(DriveTrain.DRIVE_LEFT_B);
+    leftMotorC = configSpark(DriveTrain.DRIVE_LEFT_C);
     
     // configures all of the right motors
-    rightMotorA = configSpark(Constants.DRIVE_RIGHT_A);
-    rightMotorB = configSpark(Constants.DRIVE_RIGHT_B);
-    rightMotorC = configSpark(Constants.DRIVE_RIGHT_C);
+    rightMotorA = configSpark(DriveTrain.DRIVE_RIGHT_A);
+    rightMotorB = configSpark(DriveTrain.DRIVE_RIGHT_B);
+    rightMotorC = configSpark(DriveTrain.DRIVE_RIGHT_C);
    
     // motor grouping
     motorLeft = new MotorControllerGroup(leftMotorA, leftMotorB, leftMotorC);
     motorRight = new MotorControllerGroup(rightMotorA, rightMotorB, rightMotorC);
-    motorLeft.setInverted(Constants.LEFT_INVERTED);
-    motorRight.setInverted(Constants.RIGHT_INVERTED);
+    motorLeft.setInverted(DriveTrain.LEFT_INVERTED);
+    motorRight.setInverted(DriveTrain.RIGHT_INVERTED);
     
     // double solenoid (technically singular but shh)
-    gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
+    gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
-    encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
-    encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+    encoderLeft = new Encoder(DriveTrain.LEFT_ENCODER_PORT_A, DriveTrain.LEFT_ENCODER_PORT_B);
+    encoderRight = new Encoder(DriveTrain.RIGHT_ENCODER_PORT_A, DriveTrain.RIGHT_ENCODER_PORT_B);
     navX = new AHRS(SPI.Port.kMXP);
     
     // configure sensors (encoders, gyro)
-    encoderLeft.setReverseDirection(Constants.ENCODER_LEFT_INVERTED);
-    encoderRight.setReverseDirection(Constants.ENCODER_RIGHT_INVERTED);
+    encoderLeft.setReverseDirection(DriveTrain.ENCODER_LEFT_INVERTED);
+    encoderRight.setReverseDirection(DriveTrain.ENCODER_RIGHT_INVERTED);
     resetEncoders();
     resetIMU();
     
     // differential drive (differential drive object, kinematics, odometry)
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
-    diffDriveKinematics = new DifferentialDriveKinematics(Constants.TRACK_WIDTH_INCHES);
+    diffDriveKinematics = new DifferentialDriveKinematics(Robot.TRACK_WIDTH_INCHES);
     diffDriveOdometry = new DifferentialDriveOdometry(new Rotation2d());
     
     // pid controllers (left wheel pid, right wheel pid, feedforward)
@@ -97,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
     feedforward = new SimpleMotorFeedforward(Constants.DRIVE_FEED_KSVA[0], Constants.DRIVE_FEED_KSVA[1], Constants.DRIVE_FEED_KSVA[2]);
     
     // trajectory (ramsete controller, field2d)
-    ramController = new RamseteController(Constants.RAM_B, Constants.RAM_ZETA);
+    ramController = new RamseteController(Controllers.RAM_B, Controllers.RAM_ZETA);
     field = new Field2d();
   }
   

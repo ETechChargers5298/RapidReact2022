@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.Controllers;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ClimberClimb;
 import frc.robot.commands.ClimberReach;
@@ -45,9 +46,9 @@ public class RobotContainer {
   private static final Loader loader = new Loader();
 
   // Controllers are created here
-  private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
-  private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
-  private static final XboxController testController = new XboxController(Constants.TEST_PORT);
+  private static final XboxController driveController = new XboxController(Controllers.DRIVER_PORT);
+  private static final XboxController operatorController = new XboxController(Controllers.OPERATOR_PORT);
+  private static final XboxController testController = new XboxController(Controllers.TEST_PORT);
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
