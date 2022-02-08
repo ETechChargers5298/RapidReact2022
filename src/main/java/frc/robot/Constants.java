@@ -119,4 +119,8 @@ public final class Constants {
 
     // inversion on intake motor
     public static final boolean INTAKE_INVERSION = true;
+
+    // trajectory constants
+    public static final double MAX_VELO_METER_PER_SEC = 2.0;
+    public static final double MAX_ACCEL_METER_PER_SEC = 1.0;
 }

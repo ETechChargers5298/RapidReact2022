@@ -145,6 +145,13 @@ public class Drivetrain extends SubsystemBase {
     setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
   }
 
+  public void setWheelVolts(double leftVolts, double rightVolts) {
+    motorLeft.setVoltage(leftVolts);
+    motorRight.setVoltage(rightVolts);
+
+    diffDrive.feed();
+  }
+
   // shifting gears either hi-speed or hi-torque
   public void shiftSpeed() {
     gearShifter.set(Value.kForward);
@@ -172,10 +179,6 @@ public class Drivetrain extends SubsystemBase {
     diffDriveOdometry.resetPosition(position, getAngle());
   }
 
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
-  }
-
   // getter methods
   public double getLeftDistance() {
     return encoderLeft.getPosition();
@@ -192,7 +195,11 @@ public class Drivetrain extends SubsystemBase {
   public double getLeftVelocity() {
     return encoderLeft.getVelocity();
   }
- 
+  
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+  }
+
   public Rotation2d getAngle() {
     return Rotation2d.fromDegrees(-navX.getAngle());
   }
@@ -224,11 +231,15 @@ public class Drivetrain extends SubsystemBase {
   public DifferentialDriveKinematics getKinematics() {
     return diffDriveKinematics;
   }
+  
+
 
   // odometry 
   public void updateOdometry() {
     diffDriveOdometry.update(getAngle(), getLeftDistance(), getRightDistance());
   }
+
+
 
   // displaying data
   public void updateTelemetry() {
