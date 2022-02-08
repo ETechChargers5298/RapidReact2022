@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-
-
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
@@ -13,7 +11,6 @@ import org.littletonrobotics.junction.io.ByteLogReceiver;
 import org.littletonrobotics.junction.io.ByteLogReplay;
 import org.littletonrobotics.junction.io.LogSocketServer;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -34,11 +31,10 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-   
     // startup for advantage kit
     setUseTiming(isReal()); 
     LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); 
-    Logger.getInstance().recordMetadata("ProjectName", "MyProject");
+    Logger.getInstance().recordMetadata("ProjectName", "FRC5298");
 
     if (isReal()) {
       Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/"));
@@ -48,9 +44,10 @@ public class Robot extends LoggedRobot {
       String path = ByteLogReplay.promptForPath();
       Logger.getInstance().setReplaySource(new ByteLogReplay(path));
       Logger.getInstance().addDataReceiver(new ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")));
-}
+    }
 
-Logger.getInstance().start();
+    Logger.getInstance().start();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();

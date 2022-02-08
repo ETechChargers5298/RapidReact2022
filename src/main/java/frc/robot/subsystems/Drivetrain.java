@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -36,7 +38,7 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax leftMotorA, leftMotorB, leftMotorC;
   private final CANSparkMax rightMotorA, rightMotorB, rightMotorC;
   private final DoubleSolenoid gearShifter; 
-  private final Encoder encoderLeft, encoderRight;
+  private final RelativeEncoder encoderLeft, encoderRight;
   private final AHRS navX;
 
   // drive control (motor controller groups, differential drive, kinematics, odometry)
@@ -76,13 +78,18 @@ public class Drivetrain extends SubsystemBase {
     gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.GEAR_SHIFT_SPEED_PORT, Constants.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
-    encoderLeft = new Encoder(Constants.LEFT_ENCODER_PORT_A, Constants.LEFT_ENCODER_PORT_B);
-    encoderRight = new Encoder(Constants.RIGHT_ENCODER_PORT_A, Constants.RIGHT_ENCODER_PORT_B);
+    encoderLeft = leftMotorA.getAlternateEncoder(Constants.COUNTS_PER_REVOLUTION);
+    encoderRight = rightMotorA.getAlternateEncoder(Constants.COUNTS_PER_REVOLUTION);
     navX = new AHRS(SPI.Port.kMXP);
     
     // configure sensors (encoders, gyro)
-    encoderLeft.setReverseDirection(Constants.ENCODER_LEFT_INVERTED);
-    encoderRight.setReverseDirection(Constants.ENCODER_RIGHT_INVERTED);
+    encoderLeft.setInverted(Constants.ENCODER_LEFT_INVERTED);
+    encoderRight.setInverted(Constants.ENCODER_RIGHT_INVERTED);
+
+    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Constants.WHEEL_DIAMETER_INCH));
+    encoderRight.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Constants.WHEEL_DIAMETER_INCH));
+    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(Math.PI * Constants.WHEEL_DIAMETER_INCH));
+    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(Math.PI * Constants.WHEEL_DIAMETER_INCH));
     resetEncoders();
     resetIMU();
     
@@ -128,8 +135,8 @@ public class Drivetrain extends SubsystemBase {
     double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
     double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
   
-    double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
-    double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
+    double leftOffset = leftWheelPID.calculate(encoderLeft.getVelocity(), speeds.leftMetersPerSecond);
+    double rightOffset = rightWheelPID.calculate(encoderRight.getVelocity(), speeds.rightMetersPerSecond);
   
     motorLeft.setVoltage(leftVoltage + leftOffset);
     motorRight.setVoltage(rightVoltage + rightOffset);
@@ -150,8 +157,8 @@ public class Drivetrain extends SubsystemBase {
   
   // reset methods
   private void resetEncoders() {
-    encoderLeft.reset();
-    encoderRight.reset();
+    encoderLeft.setPosition(0);
+    encoderRight.setPosition(0);
   }
   
   private void resetIMU() {
@@ -166,21 +173,25 @@ public class Drivetrain extends SubsystemBase {
     diffDriveOdometry.resetPosition(position, getAngle());
   }
 
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+  }
+
   // getter methods
   public double getLeftDistance() {
-    return encoderLeft.getDistance();
+    return encoderLeft.getPosition();
   }
  
   public double getRightDistance() {
-    return encoderRight.getDistance();
+    return encoderRight.getPosition();
   }
   
   public double getRightVelocity() {
-    return encoderRight.getRate();
+    return encoderRight.getVelocity();
   }
  
   public double getLeftVelocity() {
-    return encoderLeft.getRate();
+    return encoderLeft.getVelocity();
   }
  
   public Rotation2d getAngle() {

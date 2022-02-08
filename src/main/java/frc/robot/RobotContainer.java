@@ -51,7 +51,6 @@ public class RobotContainer {
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
-  private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
@@ -79,7 +78,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Buttons to control gear shifting
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
     // Buttons to control turrets
