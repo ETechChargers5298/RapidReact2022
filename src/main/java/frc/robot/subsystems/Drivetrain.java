@@ -26,10 +26,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.Controllers;
+import frc.robot.Constants.Control;
+import frc.robot.Constants.Dim;
 import frc.robot.Constants.DriveTrain;
-import frc.robot.Constants.Robot;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -91,16 +90,16 @@ public class Drivetrain extends SubsystemBase {
     
     // differential drive (differential drive object, kinematics, odometry)
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
-    diffDriveKinematics = new DifferentialDriveKinematics(Robot.TRACK_WIDTH_INCHES);
+    diffDriveKinematics = new DifferentialDriveKinematics(Dim.TRACK_WIDTH_INCHES);
     diffDriveOdometry = new DifferentialDriveOdometry(new Rotation2d());
     
     // pid controllers (left wheel pid, right wheel pid, feedforward)
-    leftWheelPID = new PIDController(Constants.DRIVE_LEFT_PID[0], Constants.DRIVE_LEFT_PID[1], Constants.DRIVE_LEFT_PID[2]);
-    rightWheelPID = new PIDController(Constants.DRIVE_RIGHT_PID[0], Constants.DRIVE_RIGHT_PID[1], Constants.DRIVE_RIGHT_PID[2]);
-    feedforward = new SimpleMotorFeedforward(Constants.DRIVE_FEED_KSVA[0], Constants.DRIVE_FEED_KSVA[1], Constants.DRIVE_FEED_KSVA[2]);
+    leftWheelPID = new PIDController(Control.DRIVE_LEFT_PID[0], Control.DRIVE_LEFT_PID[1], Control.DRIVE_LEFT_PID[2]);
+    rightWheelPID = new PIDController(Control.DRIVE_RIGHT_PID[0], Control.DRIVE_RIGHT_PID[1], Control.DRIVE_RIGHT_PID[2]);
+    feedforward = new SimpleMotorFeedforward(Control.DRIVE_FEED_KSVA[0], Control.DRIVE_FEED_KSVA[1], Control.DRIVE_FEED_KSVA[2]);
     
     // trajectory (ramsete controller, field2d)
-    ramController = new RamseteController(Controllers.RAM_B, Controllers.RAM_ZETA);
+    ramController = new RamseteController(Control.RAM_B, Control.RAM_ZETA);
     field = new Field2d();
   }
   

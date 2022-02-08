@@ -7,8 +7,7 @@ package frc.robot.utility;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Constants;
-import frc.robot.Constants.Robot;
+import frc.robot.Constants.Dim;
 import frc.robot.Constants.Shooters;
 
 /** Add your docs here. */
@@ -36,7 +35,7 @@ public class Limelight {
 
     //Gets the estimated distance from the robot to the target
     public double getEstimatedDistance() {
-        return (Shooters.GOAL_HEIGHT_INCH - Robot.ROBOT_HEIGHT_INCH) / Math.tan(Units.degreesToRadians(Shooters.LIMELIGHT_ANG_DEG) + Units.degreesToRadians(getVerticalOffset()));
+        return (Dim.GOAL_HEIGHT_INCH - Dim.ROBOT_HEIGHT_INCH) / Math.tan(Units.degreesToRadians(Shooters.LIMELIGHT_ANG_DEG) + Units.degreesToRadians(getVerticalOffset()));
     }
 
     //Gets the active pipeline (0 to 9)
