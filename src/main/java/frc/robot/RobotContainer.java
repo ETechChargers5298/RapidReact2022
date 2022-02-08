@@ -26,6 +26,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
+import frc.robot.utils.DPad;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -86,8 +87,8 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
 
     // Buttons to control climber
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(climberClimb, true);
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(climberReach, true);
+    new DPad(operatorController, 180).whileHeld(climberClimb, true);
+    new DPad(operatorController, 0).whileHeld(climberReach, true);
 
     // TriggerButtons to control intake
     new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
