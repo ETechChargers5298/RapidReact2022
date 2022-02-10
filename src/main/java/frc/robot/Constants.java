@@ -123,4 +123,8 @@ public final class Constants {
     // trajectory constants
     public static final double MAX_VELO_METER_PER_SEC = 2.0;
     public static final double MAX_ACCEL_METER_PER_SEC = 1.0;
+
+    public static final double TURN_TO_ANGLE_P = 1;
+    public static final double TURN_TO_ANGLE_I = 0;
+    public static final double TURN_TO_ANGLE_D = 0;
 }

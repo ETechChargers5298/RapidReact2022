@@ -205,7 +205,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getDegrees(){
-    return Math.IEEEremainder(navX.getAngle(), 360);
+    return getAngle().getDegrees();
   }
 
   public SimpleMotorFeedforward getFeedforward() {
