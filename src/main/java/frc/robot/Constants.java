@@ -85,14 +85,14 @@ public final class Constants {
     public static final double TRACK_WIDTH_INCHES = 20.0;
 
     // Constants for modeling drivetrain
-    public static final double DRIVE_FEEDFORWARD_KS = 2.0;
-    public static final double DRIVE_FEEDFORWARD_KV = 10.0;
-    public static final double DRIVE_FEEDFORWARD_KA = 3.0;
-    public static final double[] DRIVE_FEED_KSVA = {2.0, 10.0, 3.0};
+    public static final double DRIVE_FEEDFORWARD_KS = 0.093844;
+    public static final double DRIVE_FEEDFORWARD_KV = 3.8374;
+    public static final double DRIVE_FEEDFORWARD_KA = 0.16206;
+    public static final double[] DRIVE_FEED_KSVA = {0.093844, 3.8374, 0.16206};
 
     // Constants for Drivetrain PID wheels
-    public static final double DRIVE_LEFT_P_GAIN = 1;
-    public static final double DRIVE_RIGHT_P_GAIN = 1;
+    public static final double DRIVE_LEFT_P_GAIN = 1.3745;
+    public static final double DRIVE_RIGHT_P_GAIN = 1.3745;
     public static final double DRIVE_LEFT_I_GAIN = 0;
     public static final double DRIVE_RIGHT_I_GAIN = 0;
     public static final double DRIVE_LEFT_D_GAIN = 0;
@@ -105,9 +105,9 @@ public final class Constants {
     public static final double RAM_B = 2.0;
     public static final double RAM_ZETA = 0.7;
 
-    public static final double ROBOT_HEIGHT_INCH = 60;
+    public static final double ROBOT_HEIGHT_INCH = 19;
     public static final double GOAL_HEIGHT_INCH = 104;
-    public static final double LIMELIGHT_ANG_DEG = 45;
+    public static final double LIMELIGHT_ANG_DEG = 36.4459;
   
     public static final int CLIMBER_MOTOR_PORT = 69;
     public static final boolean CLIMBER_MOTOR_INVERSION = false;
@@ -121,6 +121,6 @@ public final class Constants {
     public static final boolean INTAKE_INVERSION = true;
 
     // trajectory constants
-    public static final double MAX_VELO_METER_PER_SEC = 2.0;
-    public static final double MAX_ACCEL_METER_PER_SEC = 1.0;
+    public static final double MAX_VELO_METER_PER_SEC = 0.5;
+    public static final double MAX_ACCEL_METER_PER_SEC = 0.3;
 }

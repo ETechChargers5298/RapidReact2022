@@ -4,6 +4,14 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -29,6 +37,7 @@ import frc.robot.subsystems.Turret;
 import frc.robot.utils.DPad;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -119,6 +128,23 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // No autonomous code exists because we are not team 1678
-    return testTraject;
+    drivetrain.resetOdometry();
+
+    return new RamseteCommand(TrajectoryGenerator.generateTrajectory(
+      drivetrain.getPose(), 
+      List.of(new Translation2d(1, 0)),
+      new Pose2d(3, 0, 
+      new Rotation2d(0)),  
+      new TrajectoryConfig(Constants.MAX_VELO_METER_PER_SEC, 
+      Constants.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics()).addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51))),
+      drivetrain::getPose, 
+      drivetrain.getRamController(), 
+      drivetrain.getFeedforward(), 
+      drivetrain.getKinematics(), 
+      drivetrain::getWheelSpeeds, 
+      drivetrain.getLeftWheelPID(),
+      drivetrain.getRightWheelPID(),
+      drivetrain::setWheelVolts, 
+      drivetrain);
   }
 }
