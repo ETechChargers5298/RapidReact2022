@@ -15,6 +15,8 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.Control;
+import frc.robot.Constants.Gamepad;
 import frc.robot.commands.basic.ArcadeDrive;
 import frc.robot.commands.basic.ClimberClimb;
 import frc.robot.commands.basic.ClimberReach;
@@ -27,7 +29,6 @@ import frc.robot.commands.basic.ShiftTorque;
 import frc.robot.commands.basic.TurretLeft;
 import frc.robot.commands.basic.TurretRight;
 import frc.robot.commands.test.TestMoveMotors;
-import frc.robot.commands.trajectory.TestTraject;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -56,9 +57,9 @@ public class RobotContainer {
   private static final Loader loader = new Loader();
 
   // Controllers are created here
-  private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
-  private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
-  private static final XboxController testController = new XboxController(Constants.TEST_PORT);
+  private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
+  private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
+  private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
@@ -72,7 +73,6 @@ public class RobotContainer {
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
-  private final TestTraject testTraject = new TestTraject(drivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -135,8 +135,8 @@ public class RobotContainer {
       List.of(new Translation2d(1, 0)),
       new Pose2d(3, 0, 
       new Rotation2d(0)),  
-      new TrajectoryConfig(Constants.MAX_VELO_METER_PER_SEC, 
-      Constants.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics()).addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51))),
+      new TrajectoryConfig(Control.MAX_VELO_METER_PER_SEC, 
+      Control.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics()).addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51))),
       drivetrain::getPose, 
       drivetrain.getRamController(), 
       drivetrain.getFeedforward(), 

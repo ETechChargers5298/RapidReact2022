@@ -9,19 +9,20 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Shooters;
 import frc.robot.utils.Limelight;
 
 public class Turret extends SubsystemBase {
 
   // Creates a motor that rotates the turret
-  private CANSparkMax motor = new CANSparkMax(Constants.TURRET_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax motor = new CANSparkMax(Shooters.TURRET_MOTOR_PORT, MotorType.kBrushless);
   //Created a limelight
   private Limelight limelight = new Limelight();
+  
   /** Creates a new Turret. */
   public Turret() {
     // Controls the inversion so that the right is always positive
-    motor.setInverted(Constants.TURRET_INVERSION);
+    motor.setInverted(Shooters.TURRET_INVERSION);
   }
 
   /**
@@ -29,7 +30,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretLeft() {
-    motor.set(-Constants.TURRET_SPEED);
+    motor.set(-Shooters.TURRET_SPEED);
   }
 
   /**
@@ -37,7 +38,7 @@ public class Turret extends SubsystemBase {
    * @author Niko
    */
   public void moveTurretRight() {
-    motor.set(Constants.TURRET_SPEED);
+    motor.set(Shooters.TURRET_SPEED);
   }
 
   /**
