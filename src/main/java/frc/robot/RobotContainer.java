@@ -4,30 +4,41 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.ClimberClimb;
-import frc.robot.commands.ClimberReach;
-import frc.robot.commands.IntakeEat;
-import frc.robot.commands.IntakeSpit;
-import frc.robot.commands.LoaderLoad;
-import frc.robot.commands.LoaderUnload;
-import frc.robot.commands.ShiftSpeed;
-import frc.robot.commands.ShiftTorque;
-import frc.robot.commands.TestMoveMotors;
-import frc.robot.commands.TurretLeft;
-import frc.robot.commands.TurretRight;
+import frc.robot.commands.basic.ArcadeDrive;
+import frc.robot.commands.basic.ClimberClimb;
+import frc.robot.commands.basic.ClimberReach;
+import frc.robot.commands.basic.IntakeEat;
+import frc.robot.commands.basic.IntakeSpit;
+import frc.robot.commands.basic.LoaderLoad;
+import frc.robot.commands.basic.LoaderUnload;
+import frc.robot.commands.basic.ShiftSpeed;
+import frc.robot.commands.basic.ShiftTorque;
+import frc.robot.commands.basic.TurretLeft;
+import frc.robot.commands.basic.TurretRight;
+import frc.robot.commands.test.TestMoveMotors;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
-import frc.robot.utility.TriggerButton;
+import frc.robot.utils.DPad;
+import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -52,7 +63,6 @@ public class RobotContainer {
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
-  private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
@@ -80,7 +90,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Buttons to control gear shifting
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
     // Buttons to control turrets
@@ -88,8 +98,8 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
 
     // Buttons to control climber
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(climberClimb, true);
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(climberReach, true);
+    new DPad(operatorController, 180).whileHeld(climberClimb, true);
+    new DPad(operatorController, 0).whileHeld(climberReach, true);
 
     // TriggerButtons to control intake
     new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
@@ -118,6 +128,23 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // No autonomous code exists because we are not team 1678
-    return null;
+    drivetrain.resetOdometry();
+
+    return new RamseteCommand(TrajectoryGenerator.generateTrajectory(
+      drivetrain.getPose(), 
+      List.of(new Translation2d(1, 0)),
+      new Pose2d(3, 0, 
+      new Rotation2d(0)),  
+      new TrajectoryConfig(Control.MAX_VELO_METER_PER_SEC, 
+      Control.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics()).addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51))),
+      drivetrain::getPose, 
+      drivetrain.getRamController(), 
+      drivetrain.getFeedforward(), 
+      drivetrain.getKinematics(), 
+      drivetrain::getWheelSpeeds, 
+      drivetrain.getLeftWheelPID(),
+      drivetrain.getRightWheelPID(),
+      drivetrain::setWheelVolts, 
+      drivetrain);
   }
 }

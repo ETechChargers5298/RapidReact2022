@@ -2,22 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.basic;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class ClimberClimb extends CommandBase {
+public class ClimberReach extends CommandBase {
 
-  // obtains the climber
+  // declares the climber
   private Climber climber;
 
-  /** Creates a new ClimberClimb. */
-  public ClimberClimb(Climber climber) {
-
-    // Declares the climber
-    this.climber = climber;
-    
+  /** Creates a new ClimberReach. */
+  public ClimberReach(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
   }
@@ -26,7 +22,7 @@ public class ClimberClimb extends CommandBase {
   @Override
   public void initialize() {
 
-    // makes sure climber is stopped in start
+    // makes sure climber is stopped in the start
     climber.climberStop();
   }
 
@@ -34,8 +30,8 @@ public class ClimberClimb extends CommandBase {
   @Override
   public void execute() {
 
-    // moves climber motor up
-    climber.climberClimb();
+    // reaches out climber motor
+    climber.climberReach();
   }
 
   // Called once the command ends or is interrupted.

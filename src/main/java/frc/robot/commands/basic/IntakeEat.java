@@ -2,50 +2,51 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.basic;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Loader;
+import frc.robot.subsystems.Intake;
 
-public class LoaderUnload extends CommandBase {
-  
-  //Declares the loader
-  private Loader loader;
+public class IntakeEat extends CommandBase {
 
-  /** Creates a new LoaderUnload. */
-  public LoaderUnload(Loader loader) {
+  // obtains the intake
+  private Intake intake;
 
-    this.loader = loader;
+  /** Creates a new IntakeEat. */
+  public IntakeEat(Intake intake) {
 
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(loader);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // The Loader doesn't move at start
-    loader.stopLoader();
+  
+    // makes sure turret is stopped at start
+    intake.stopIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // The loader unloads the ball
-    loader.unload();
+
+  // moves intake forward
+  intake.intakeEat();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // The loader stops in the end
-    loader.stopLoader();
+
+    // stops the intake in the end
+    intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // It never stops
     return false;
   }
 }

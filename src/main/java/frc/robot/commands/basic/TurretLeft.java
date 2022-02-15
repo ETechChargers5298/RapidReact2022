@@ -2,51 +2,51 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.basic;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Turret;
 
-public class IntakeEat extends CommandBase {
+public class TurretLeft extends CommandBase {
+  
+  // Declares the turret
+  private Turret turret;
 
-  // obtains the intake
-  private Intake intake;
+  /** Creates a new TurretLeft. */
+  public TurretLeft(Turret turret) {
+    // Obtaining the turret
+    this.turret = turret;
 
-  /** Creates a new IntakeEat. */
-  public IntakeEat(Intake intake) {
-
-    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
+    addRequirements(turret);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
-    // makes sure turret is stopped at start
-    intake.stopIntake();
+    // The turret doesn't move at the start
+    turret.stopTurret();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  // moves intake forward
-  intake.intakeEat();
+    // The turret moves left
+    turret.moveTurretLeft();
+    System.out.println("o wow left works");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    // stops the intake in the end
-    intake.stopIntake();
+    // The turret stops in the end
+    turret.stopTurret();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // It never stops
     return false;
   }
 }
