@@ -24,7 +24,7 @@ public class TurnToAnglePID extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         () -> angle,
         // This uses the output
-        output -> drivetrain.arcadeDrive(0, output),
+        output -> drivetrain.arcadeDrive(output, 0),
         
         drivetrain
         );

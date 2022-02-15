@@ -18,6 +18,7 @@ import frc.robot.commands.basic.ShiftSpeed;
 import frc.robot.commands.basic.ShiftTorque;
 import frc.robot.commands.basic.TurretLeft;
 import frc.robot.commands.basic.TurretRight;
+import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.test.TestMoveMotors;
 import frc.robot.commands.trajectory.TestTraject;
 import frc.robot.subsystems.Climber;
@@ -119,6 +120,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // No autonomous code exists because we are not team 1678
-    return testTraject;
+    return new TurnToAnglePID(drivetrain, 90);
   }
 }

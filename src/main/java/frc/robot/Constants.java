@@ -88,7 +88,7 @@ public final class Constants {
     public static final double DRIVE_FEEDFORWARD_KS = 2.0;
     public static final double DRIVE_FEEDFORWARD_KV = 10.0;
     public static final double DRIVE_FEEDFORWARD_KA = 3.0;
-    public static final double[] DRIVE_FEED_KSVA = {2.0, 10.0, 3.0};
+    public static final double[] DRIVE_FEED_KSVA = {DRIVE_FEEDFORWARD_KS, DRIVE_FEEDFORWARD_KV, DRIVE_FEEDFORWARD_KA};
 
     // Constants for Drivetrain PID wheels
     public static final double DRIVE_LEFT_P_GAIN = 1;
@@ -98,8 +98,8 @@ public final class Constants {
     public static final double DRIVE_LEFT_D_GAIN = 0;
     public static final double DRIVE_RIGHT_D_GAIN = 0;
 
-    public static final double[] DRIVE_LEFT_PID = {1.0, 0.0, 0.0};
-    public static final double[] DRIVE_RIGHT_PID = {1.0, 0.0, 0.0};
+    public static final double[] DRIVE_LEFT_PID = {DRIVE_LEFT_P_GAIN, DRIVE_LEFT_I_GAIN, DRIVE_LEFT_D_GAIN};
+    public static final double[] DRIVE_RIGHT_PID = {DRIVE_RIGHT_P_GAIN, DRIVE_RIGHT_I_GAIN, DRIVE_RIGHT_D_GAIN};
     
     // Constants for Ramsete Controller B and Zeta
     public static final double RAM_B = 2.0;
