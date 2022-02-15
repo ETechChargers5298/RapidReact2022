@@ -239,6 +239,7 @@ public class Drivetrain extends SubsystemBase {
   // odometry 
   public void updateOdometry() {
     diffDriveOdometry.update(getAngle(), getLeftDistance(), getRightDistance());
+    field.setRobotPose(diffDriveOdometry.getPoseMeters());
   }
 
 
@@ -250,6 +251,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Left Velocity", getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightVelocity());
     SmartDashboard.putNumber("Gyro", getAngle().getDegrees());
+    SmartDashboard.putData("Odometry", field);
   } 
 
   @Override

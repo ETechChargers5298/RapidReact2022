@@ -9,6 +9,7 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
@@ -130,18 +131,26 @@ public class RobotContainer {
     // No autonomous code exists because we are not team 1678
     drivetrain.resetOdometry();
 
-    return new RamseteCommand(TrajectoryGenerator.generateTrajectory(
-      drivetrain.getPose(), 
+    TrajectoryConfig config = new TrajectoryConfig(
+      Control.MAX_VELO_METER_PER_SEC, Control.MAX_ACCEL_METER_PER_SEC)
+      .setKinematics(drivetrain.getKinematics())
+      .addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51));
+
+    Trajectory traj = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(),
       List.of(new Translation2d(1, 0)),
-      new Pose2d(3, 0, 
-      new Rotation2d(0)),  
-      new TrajectoryConfig(Control.MAX_VELO_METER_PER_SEC, 
-      Control.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics()).addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51))),
+      new Pose2d(3, 0, new Rotation2d(0)), 
+      config);
+    
+    drivetrain.getField().getObject("Traj").setTrajectory(traj);
+
+    return new RamseteCommand(
+      traj,
       drivetrain::getPose, 
       drivetrain.getRamController(), 
       drivetrain.getFeedforward(), 
       drivetrain.getKinematics(), 
-      drivetrain::getWheelSpeeds, 
+      drivetrain::getWheelSpeeds,
       drivetrain.getLeftWheelPID(),
       drivetrain.getRightWheelPID(),
       drivetrain::setWheelVolts, 

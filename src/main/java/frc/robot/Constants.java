@@ -106,7 +106,7 @@ public final class Constants {
         public static final double RAM_B = 2.0;
         public static final double RAM_ZETA = 0.7;
 
-        public static final double MAX_VELO_METER_PER_SEC = 0;
-        public static final double MAX_ACCEL_METER_PER_SEC = 0;
+        public static final double MAX_VELO_METER_PER_SEC = 1;
+        public static final double MAX_ACCEL_METER_PER_SEC = 0.5;
     }
 }
