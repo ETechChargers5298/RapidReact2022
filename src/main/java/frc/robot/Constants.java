@@ -14,7 +14,7 @@ package frc.robot;
  */
 public final class Constants {
     public static final class Robot {
-        public static final double WHEEL_DIAMETER_INCH = 4.0;
+        public static final double WHEEL_DIAMETER_INCH = 6.0;
         public static final double TRACK_WIDTH_INCHES = 20.0;
         public static final double ROBOT_HEIGHT_INCH = 60;
     }
@@ -108,5 +108,10 @@ public final class Constants {
 
         public static final double MAX_VELO_METER_PER_SEC = 1;
         public static final double MAX_ACCEL_METER_PER_SEC = 0.5;
+
+        public static final double TURN_TO_ANGLE_P = 1;
+        public static final double TURN_TO_ANGLE_I = 0;
+        public static final double TURN_TO_ANGLE_D = 0;
+        public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
     }
 }
