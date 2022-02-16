@@ -1,6 +1,7 @@
 {
   "SysId": {
     "Analysis Type": "Drivetrain",
+    "AnalyzerJSONLocation": "C:\\Users\\pande\\Desktop\\Characterization\\sysid_data20220212-134502.json",
     "NetworkTables Settings": {
       "serverTeam": "5298"
     },

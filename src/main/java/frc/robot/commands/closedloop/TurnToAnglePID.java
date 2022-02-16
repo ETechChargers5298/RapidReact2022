@@ -7,6 +7,7 @@ package frc.robot.commands.closedloop;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
+import frc.robot.Constants.Control;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,9 +19,9 @@ public class TurnToAnglePID extends PIDCommand {
   public TurnToAnglePID(Drivetrain drivetrain, double angle) {
     super(
         // The controller that the command will use
-        new PIDController(Constants.TURN_TO_ANGLE_P, Constants.TURN_TO_ANGLE_I, Constants.TURN_TO_ANGLE_D),
+        new PIDController(Control.TURN_TO_ANGLE_PID[0], Control.TURN_TO_ANGLE_PID[1], Control.TURN_TO_ANGLE_PID[2]),
         // This should return the measurement
-        drivetrain::getDegrees ,
+        drivetrain::getDegrees,
         // This should return the setpoint (can also be a constant)
         () -> angle,
         // This uses the output

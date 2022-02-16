@@ -37,7 +37,7 @@ public class Robot extends LoggedRobot {
     Logger.getInstance().recordMetadata("ProjectName", "FRC5298");
 
     if (isReal()) {
-      Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/"));
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver("src/main/java/frc/robot/logs/"));
       Logger.getInstance().addDataReceiver(new LogSocketServer(5800));
     }  
     else {
