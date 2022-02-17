@@ -4,6 +4,8 @@
 
 package frc.robot.utils;
 
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 /** Add your docs here. */
@@ -17,61 +19,37 @@ public class LEDStrip {
 
     }
 
-    public void solidRed() {
-        controller.set(0.61);
-    
+
+    public void startcolor() {
+        controller.set(LEDColors.RAINBOW_RAINBOW);
     }
 
-    public void solidBlue() {
-        controller.set(0.87);
+
+
+    public void setPattern(int pattern) {
+        controller.set(pattern);
     }
 
-    public void confetti() {
-        controller.set(-0.87);
+    public void statusDead() {
+        controller.set(LEDColors.RED);
     }
 
-    public void rainbow() {
-        controller.set(-0.99);
+    public void moving() {
+        controller.set(LEDColors.GREEN);
+
     }
 
-    //This color is for when the robot ISN'T level on the generator switch.
-    public void twinklesLava() {
-        controller.set(-0.49);
+    public void still() {
+        controller.set(LEDColors.YELLOW);
+        
     }
 
-    //This color is for when the robot IS level on the generator switch.
-    public void twinklesOcean() {
-        controller.set(-0.51);
+    public void shooting() {
+        controller.set(LEDColors.BLUE);
     }
 
-    //This color is for when the robot is MOVING.
-    public void solidGreen() {
-        controller.set(-0.77);
-    }
-
-    //This color is for when the robot is STILL.
-    public void solidYellow() {
-        controller.set(0.69);
-    }
-
-    //This color is for when the robot is UNDER the optimal shooting level.
-    public void sinelonOcean() {
-        controller.set(-0.75);
-    }
-
-    //This color is for when the robot is OVER the optimal shooting level.
-    public void sinelonLava() {
-        controller.set(-0.73);
-    }
-
-    //This color is for when the robot is AT the optimal shooting level.
-    public void sinelonForest() {
-        controller.set(-0.71);
-    }
-
-    //This color is for when the intake is UP.
-    public void solidWhite() {
-        controller.set(0.93);
+    public void load() {
+        controller.set(LEDColors.VIOLET);
     }
 
 }

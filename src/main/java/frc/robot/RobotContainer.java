@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.basic.ArcadeDrive;
 import frc.robot.commands.basic.ClimberClimb;
@@ -27,6 +28,8 @@ import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.DPad;
+import frc.robot.utils.LEDStrip;
+import frc.robot.utils.LEDColors;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -50,7 +53,7 @@ public class RobotContainer {
   private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
   private static final XboxController testController = new XboxController(Constants.TEST_PORT);
-
+  private static final LEDStrip lightcontroller = new LEDStrip(Constants.BLINKIN_PORT);
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
@@ -71,6 +74,9 @@ public class RobotContainer {
     configureButtonBindings();
     // Configures the axes bindings D
     configureAxes();
+
+    lightcontroller.startcolor();
+
   }
 
   /**
