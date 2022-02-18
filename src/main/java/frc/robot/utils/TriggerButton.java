@@ -32,7 +32,7 @@ public class TriggerButton extends Button {
         return controller.getLeftTriggerAxis() >= 0.5;
        }
        else{
-        return controller.getRightTriggerAxis() <= 0.5;
+        return controller.getRightTriggerAxis() >= 0.5;
        }
     }
 }

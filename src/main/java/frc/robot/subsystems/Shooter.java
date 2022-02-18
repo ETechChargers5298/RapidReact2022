@@ -10,9 +10,9 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxRelativeEncoder.Type;
+//import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends SubsystemBase {
 

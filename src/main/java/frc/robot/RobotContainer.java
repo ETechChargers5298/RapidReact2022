@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
 import frc.robot.commands.basic.ArcadeDrive;
@@ -29,6 +30,8 @@ import frc.robot.commands.basic.ShiftSpeed;
 import frc.robot.commands.basic.ShiftTorque;
 import frc.robot.commands.basic.TurretLeft;
 import frc.robot.commands.basic.TurretRight;
+import frc.robot.commands.basic.*;
+
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.test.TestMoveMotors;
 import frc.robot.subsystems.Climber;
@@ -37,6 +40,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Shooter;
+
 import frc.robot.utils.DPad;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +62,7 @@ public class RobotContainer {
   private static final Climber climber = new Climber();
   private static final Intake intake = new Intake();
   private static final Loader loader = new Loader();
+  private static final Shooter shooter = new Shooter();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
@@ -75,6 +81,10 @@ public class RobotContainer {
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
+  private final Shoot shoot = new Shoot(shooter);
+  private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
+  private final Feed feed = new Feed(shooter);
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -95,6 +105,21 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
+    // A & Y to control intake
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeEat, true);
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeSpit, true);
+
+    // Buttons to control loader
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
+
+// Shooting button
+    new TriggerButton(operatorController, false).whileHeld(shoot, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
+
+    
+    
+/*
     // Buttons to control turrets
     new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
@@ -103,13 +128,12 @@ public class RobotContainer {
     new DPad(operatorController, 180).whileHeld(climberClimb, true);
     new DPad(operatorController, 0).whileHeld(climberReach, true);
 
-    // TriggerButtons to control intake
+
+    
+    
     new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
     new TriggerButton(operatorController, true).whileHeld(intakeSpit, true);
-
-    // Buttons to control loader
-    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderUnload, true);
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(loaderLoad, true);
+*/
   }
   
   /**
@@ -118,6 +142,9 @@ public class RobotContainer {
   private void configureAxes() {
     // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
+
+    // Sets the test bed to always move the test motor
+    turret.setDefaultCommand(turretMove);
 
     // Sets the test bed to always move the test motor
     testMotors.setDefaultCommand(testMoveMotors);
