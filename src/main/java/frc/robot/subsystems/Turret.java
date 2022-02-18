@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
@@ -19,11 +18,6 @@ public class Turret extends SubsystemBase {
   private CANSparkMax motor = new CANSparkMax(Shooters.TURRET_MOTOR_PORT, MotorType.kBrushless);
   //Created a limelight
   private Limelight limelight = new Limelight();
-
-  //Creating Limit Switches
-  DigitalInput leftTurretLimit = new DigitalInput(Shooters.LIMIT_PORT_LEFT);
-  DigitalInput rightTurretLimit = new DigitalInput(Shooters.LIMIT_PORT_RIGHT);
-  
   /** Creates a new Turret. */
   public Turret() {
     // Controls the inversion so that the right is always positive
@@ -38,6 +32,9 @@ public class Turret extends SubsystemBase {
     motor.set(-Shooters.TURRET_SPEED);
   }
 
+  public void moveTurretLeft(double speed) {
+    motor.set(-Shooters.TURRET_SPEED * speed);
+  }
   /**
    * Moves the motor that rotates the turret right
    * @author Niko
@@ -46,16 +43,66 @@ public class Turret extends SubsystemBase {
     motor.set(Shooters.TURRET_SPEED);
   }
 
+  public void moveTurretRight(double speed) {
+    motor.set(Shooters.TURRET_SPEED * speed);
+  }
+
+  /**
+   * Aims the turret
+   * @author Niko
+   */
+  public void turretAim() {
+    double h = limelight.getHorizontalOffset();
+    double target = 0.0;
+    double gap = 0.1;
+
+    if(h > target + gap){
+      moveTurretRight();
+    }
+
+    else if(h < target - gap){
+      moveTurretLeft();
+    }
+
+    else{
+      stopTurret();
+    }
+  }
+
+  /**
+   * Aims the turret proportionally to the horizontal offset
+   * @author Niko
+   */
+  public void turretAimP() {
+    double h = limelight.getHorizontalOffset(); //Naming the horizontal offset
+    double target = 0.0; //The target, which we want to be at 0 offset
+    double gap = 1.0; //A margin of wiggle room around the target
+    double error = 0.0; //The area between the gap and the edge of the limelight (25 in this case)
+    double kP = 0.04; //Slope of the line we want the turret to aim by
+
+
+    if(h > target + gap){
+      error = h - target - gap;
+      moveTurretRight(Math.abs(error * kP));
+    }
+
+    else if(h < target - gap){
+      error = h - target + gap;
+      moveTurretLeft(Math.abs(error * kP));
+    }
+
+    else{
+      stopTurret();
+    }
+  }
+
+
   /**
    * Stops the turret motor
    * @author Niko
    */
   public void stopTurret() {
     motor.set(0);
-  }
-
-  public void aimTurret(){
-
   }
 
   @Override
