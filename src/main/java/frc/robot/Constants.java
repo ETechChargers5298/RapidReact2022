@@ -51,6 +51,14 @@ public final class Constants {
 
         public static final double LIMELIGHT_ANG_DEG = 45;
         public static final double GOAL_HEIGHT_INCH = 104;
+        public static final int FEEDER_PORT = 75;
+        public static final int FLYWHEEL_PORT = 76;
+        public static final int COUNTS_PER_REV = 8192;
+        public static final double FEEDER_SPEED = 0.75;
+        public static final double RAMP_SPEED = 1.0;
+
+        public static final int LIMIT_PORT_LEFT = 0;
+        public static final int LIMIT_PORT_RIGHT = 1;
     }
     
     public static final class Loading{

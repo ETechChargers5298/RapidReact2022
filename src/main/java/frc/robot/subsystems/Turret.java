@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
@@ -18,6 +19,10 @@ public class Turret extends SubsystemBase {
   private CANSparkMax motor = new CANSparkMax(Shooters.TURRET_MOTOR_PORT, MotorType.kBrushless);
   //Created a limelight
   private Limelight limelight = new Limelight();
+
+  //Creating Limit Switches
+  DigitalInput leftTurretLimit = new DigitalInput(Shooters.LIMIT_PORT_LEFT);
+  DigitalInput rightTurretLimit = new DigitalInput(Shooters.LIMIT_PORT_RIGHT);
   
   /** Creates a new Turret. */
   public Turret() {
@@ -47,6 +52,10 @@ public class Turret extends SubsystemBase {
    */
   public void stopTurret() {
     motor.set(0);
+  }
+
+  public void aimTurret(){
+
   }
 
   @Override
