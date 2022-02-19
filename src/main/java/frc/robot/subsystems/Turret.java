@@ -24,6 +24,15 @@ public class Turret extends SubsystemBase {
     motor.setInverted(Shooters.TURRET_INVERSION);
   }
 
+
+  public void moveTurret(double speed){
+    if (Math.abs(speed) < 0.3 ) { 
+      motor.set(0);
+    }
+    motor.set(speed);
+  }
+
+
   /**
    * Moves the motor that rotates the turret left
    * @author Niko

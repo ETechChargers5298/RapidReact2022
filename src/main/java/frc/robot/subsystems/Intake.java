@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
   public Intake() { 
  
     // Inversion of Intake motor
-    motor.setInverted(Loading.INTAKE_INVERSION);
+    // motor.setInverted(Loading.INTAKE_INVERSION);
   
 }
 
@@ -46,6 +46,17 @@ public class Intake extends SubsystemBase {
   public void stopIntake(){
     motor.set(0);
   }
+
+  public void intakeChomp(){
+    //add DoubleSolenoid code here
+
+  }
+
+  public void intakeAhhh(){
+    //add DoubleSolenoid code here
+
+  }
+
 
   @Override
   public void periodic() {

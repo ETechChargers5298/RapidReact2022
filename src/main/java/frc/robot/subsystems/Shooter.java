@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants.Shooters;
+
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -15,43 +17,47 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends SubsystemBase {
 
-//Motors
-private CANSparkMax feeder = new CANSparkMax(Shooters.FEEDER_PORT, MotorType.kBrushless);
-private CANSparkMax flyWheel = new CANSparkMax(Shooters.FLYWHEEL_PORT, MotorType.kBrushless);
+  // Motors
+  private CANSparkMax feeder = new CANSparkMax(Constants.Shooters.FEEDER_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax flyWheel = new CANSparkMax(Constants.Shooters.FLYWHEEL_MOTOR_PORT, MotorType.kBrushless);
 
-//Encoders
-private RelativeEncoder flyEncoder = flyWheel.getAlternateEncoder(Shooters.COUNTS_PER_REV);
+  //Encoders
+  private RelativeEncoder flyEncoder = flyWheel.getAlternateEncoder(Shooters.COUNTS_PER_REV);
+  private RelativeEncoder flyEncoder;
 
-//Feed balls into flywheel
-public void feed() {
-feeder.set(Shooters.FEEDER_SPEED);
-}
+  /** Creates a new Shooter. */
+  public Shooter() {
+    flyWheel.setInverted(Constants.Shooters.FLYWHEEL_INVERSION);
+  }
 
-//Undo the feeding
-public void unfeed() {
-  feeder.set(-Shooters.FEEDER_SPEED);
-}
+  // Feed balls into flywheel
+  public void feed() {
+    feeder.set(Shooters.FEEDER_SPEED);
+  }
 
-//Get ready to shoot
-public void rampUp() {
-  flyWheel.set(Shooters.RAMP_SPEED);
-}
+  //Undo the feeding
+  public void unfeed() {
+    feeder.set(-Shooters.FEEDER_SPEED);
+  }
 
-//Return Encoder velocity
-public double getFlyVelocity() {
-  return flyEncoder.getVelocity();
-}
+  //Get ready to shoot
+  public void rampUp() {
+    flyWheel.set(Shooters.RAMP_SPEED);
+  }
 
-public void stopFly(){
-  flyWheel.set(0);
-}
+  //Return Encoder velocity
+  public double getFlyVelocity() {
+    // return flyEncoder.getRate();
+    // return 0.0;
+    return flyEncoder.getVelocity();
+  }
 
-public void stopFeed(){
-  feeder.set(0);
-}
+  public void stopFly(){
+    flyWheel.set(0);
+  }
 
-/** Creates a new Shooter. */
-public Shooter() {
+  public void stopFeed(){
+    feeder.set(0);
   }
 
   @Override
