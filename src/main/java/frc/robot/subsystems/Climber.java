@@ -8,18 +8,18 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Climbers;
 
 
 public class Climber extends SubsystemBase {
 
   //creates Climber motor
-  private CANSparkMax motor = new CANSparkMax(Constants.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
+  private CANSparkMax motor = new CANSparkMax(Climbers.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
   /** Creates a new Climber. */
   public Climber() {
    
    // inversion on climber motor
-    motor.setInverted(Constants.CLIMBER_MOTOR_INVERSION);
+    motor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
   }
 
   /**
@@ -27,7 +27,7 @@ public class Climber extends SubsystemBase {
    * @author catears
    */
   public void climberReach(){
-    motor.set(Constants.CLIMBER_MOTOR_SPEED);
+    motor.set(Climbers.CLIMBER_MOTOR_SPEED);
   }
 
   /**
@@ -35,7 +35,7 @@ public class Climber extends SubsystemBase {
    * @author catears
    */
   public void climberClimb(){
-    motor.set(-Constants.CLIMBER_MOTOR_SPEED);
+    motor.set(-Climbers.CLIMBER_MOTOR_SPEED);
   }
 
   /**

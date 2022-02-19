@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 public class TriggerButton extends Button {
 
     private XboxController controller;
-    private boolean isLeft;
+    private String side;
+    //private boolean isLeft;
     
     /**
      * Turns trigger into button
@@ -19,20 +20,22 @@ public class TriggerButton extends Button {
      * @param controller
      * @param hand
      */
-    public TriggerButton(XboxController controller, boolean isLeft){
+    public TriggerButton(XboxController controller, String side){
 
         this.controller = controller;
-        this.isLeft = isLeft;
+        this.side = side;
+        //this.isLeft = isLeft;
     }
 
     @Override
     public boolean get(){
         // After press 0.5 on trigger value is true
-       if(isLeft){
+       if(side.equals("LEFT")){
         return controller.getLeftTriggerAxis() >= 0.5;
        }
-       else{
-        return controller.getRightTriggerAxis() <= 0.5;
+       else if (side.equals("RIGHT")){
+        return controller.getRightTriggerAxis() >= 0.5;
        }
+       return false;
     }
 }

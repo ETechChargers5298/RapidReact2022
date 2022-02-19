@@ -7,19 +7,26 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Loading;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Intake extends SubsystemBase {
   
   // created intake motor
-  private CANSparkMax motor = new CANSparkMax(Constants.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-  
+  private CANSparkMax motor = new CANSparkMax(Loading.INTAKE_MOTOR_PORT, MotorType.kBrushless);
+
+
+  private DoubleSolenoid chomp = new DoubleSolenoid(Constants.DriveTrain.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Constants.Loading.INTAKE_CHOMP_PORT, Constants.Loading.INTAKE_AHHH_PORT);
+
   /** Creates a new Intake. */
   public Intake() { 
  
     // Inversion of Intake motor
-    motor.setInverted(Constants.INTAKE_INVERSION);
+    // motor.setInverted(Loading.INTAKE_INVERSION);
   
 }
 
@@ -28,7 +35,7 @@ public class Intake extends SubsystemBase {
  * @author catears
  */
    public void intakeEat() {
-    motor.set(Constants.INTAKE_SPEED);
+    motor.set(Loading.INTAKE_SPEED);
  }
 
  /**
@@ -36,7 +43,7 @@ public class Intake extends SubsystemBase {
   @author catears
   */
   public void intakeSpit() {
-    motor.set(-Constants.INTAKE_SPEED);
+    motor.set(-Loading.INTAKE_SPEED);
   }
 
   /**
@@ -46,6 +53,18 @@ public class Intake extends SubsystemBase {
   public void stopIntake(){
     motor.set(0);
   }
+
+  public void intakeChomp(){
+    //add DoubleSolenoid code here
+    chomp.set(Value.kForward);
+
+  }
+
+  public void intakeAhhh(){
+    //add DoubleSolenoid code here
+    chomp.set(Value.kReverse);
+  }
+
 
   @Override
   public void periodic() {

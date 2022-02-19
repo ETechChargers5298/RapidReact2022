@@ -4,10 +4,23 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import frc.robot.Constants.Control;
+import frc.robot.Constants.Gamepad;
+import frc.robot.Constants;
 import frc.robot.commands.basic.ArcadeDrive;
 import frc.robot.commands.basic.ClimberClimb;
 import frc.robot.commands.basic.ClimberReach;
@@ -19,19 +32,25 @@ import frc.robot.commands.basic.ShiftSpeed;
 import frc.robot.commands.basic.ShiftTorque;
 import frc.robot.commands.basic.TurretLeft;
 import frc.robot.commands.basic.TurretRight;
+import frc.robot.commands.basic.*;
+
+import frc.robot.commands.closedloop.TurnToAnglePID;
+import frc.robot.commands.closedloop.TurretAim;
 import frc.robot.commands.test.TestMoveMotors;
-import frc.robot.commands.trajectory.TestTraject;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Shooter;
+
 import frc.robot.utils.DPad;
 import frc.robot.utils.LEDStrip;
 import frc.robot.utils.LEDColors;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -48,14 +67,17 @@ public class RobotContainer {
   private static final Climber climber = new Climber();
   private static final Intake intake = new Intake();
   private static final Loader loader = new Loader();
+  private static final Shooter shooter = new Shooter();
 
   // Controllers are created here
-  private static final XboxController driveController = new XboxController(Constants.DRIVER_PORT);
-  private static final XboxController operatorController = new XboxController(Constants.OPERATOR_PORT);
-  private static final XboxController testController = new XboxController(Constants.TEST_PORT);
+  private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
+  private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
+  private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
   private static final LEDStrip lightcontroller = new LEDStrip(Constants.BLINKIN_PORT);
+
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
+  private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
@@ -63,16 +85,22 @@ public class RobotContainer {
   private final ClimberReach climberReach = new ClimberReach(climber);
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
+  private final IntakeChomp intakeChomp = new IntakeChomp(intake);
+  private final IntakeAhhh intakeAhhh = new IntakeAhhh(intake);
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
-  private final TestTraject testTraject = new TestTraject(drivetrain);
+  private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
+  private final Feed feed = new Feed(shooter);
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
+  private final Shoot shoot = new Shoot(shooter);  
+  private final TurretAim turretAim = new TurretAim(turret);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configures the button bindings
     configureButtonBindings();
-    // Configures the axes bindings D
+    // Configures the axes bindings 
     configureAxes();
 
     lightcontroller.startcolor();
@@ -86,25 +114,36 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Buttons to control gear shifting
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
+
+    // Gear shifting Buttons
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
-    // Buttons to control turrets
+    // Intake eat & spit buttons
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeSpit, true);
+    
+    // Loader Buttons
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
+
+    // Shooting Trigger and Button
+    //new TriggerButton(operatorController, "RIGHT").whileHeld(shoot, true);  //not working well yet
+    new TriggerButton(operatorController, "RIGHT").whileHeld(feed, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(flywheelSpin, true);
+
+    //Intake Chomp POV buttons
+    new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
+    new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeAhhh);  
+
+    //Aim button
+    new TriggerButton(operatorController, "LEFT").whileHeld(turretAim, true);
+
+/*
+    // Buttons to control turrets (Axis being used for now)
     new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
-
-    // Buttons to control climber
-    new DPad(operatorController, 180).whileHeld(climberClimb, true);
-    new DPad(operatorController, 0).whileHeld(climberReach, true);
-
-    // TriggerButtons to control intake
-    new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
-    new TriggerButton(operatorController, true).whileHeld(intakeSpit, true);
-
-    // Buttons to control loader
-    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderUnload, true);
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(loaderLoad, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true); 
+*/
   }
   
   /**
@@ -113,6 +152,9 @@ public class RobotContainer {
   private void configureAxes() {
     // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
+
+    // Sets the test bed to always move the test motor
+    turret.setDefaultCommand(turretMove);
 
     // Sets the test bed to always move the test motor
     testMotors.setDefaultCommand(testMoveMotors);
@@ -125,6 +167,31 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // No autonomous code exists because we are not team 1678
-    return testTraject;
+    drivetrain.resetOdometry();
+
+    TrajectoryConfig config = new TrajectoryConfig(
+      Control.MAX_VELO_METER_PER_SEC, Control.MAX_ACCEL_METER_PER_SEC)
+      .setKinematics(drivetrain.getKinematics())
+      .addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51));
+
+    Trajectory traj = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(),
+      List.of(new Translation2d(1, 0)),
+      new Pose2d(3, 0, new Rotation2d(0)), 
+      config);
+    
+    drivetrain.getField().getObject("Traj").setTrajectory(traj);
+
+    return new RamseteCommand(
+      traj,
+      drivetrain::getPose, 
+      drivetrain.getRamController(), 
+      drivetrain.getFeedforward(), 
+      drivetrain.getKinematics(), 
+      drivetrain::getWheelSpeeds,
+      drivetrain.getLeftWheelPID(),
+      drivetrain.getRightWheelPID(),
+      drivetrain::setWheelVolts, 
+      drivetrain);
   }
 }
