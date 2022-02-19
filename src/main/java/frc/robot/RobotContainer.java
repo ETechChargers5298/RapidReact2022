@@ -71,6 +71,7 @@ public class RobotContainer {
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
+  private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
@@ -78,13 +79,15 @@ public class RobotContainer {
   private final ClimberReach climberReach = new ClimberReach(climber);
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
+  private final IntakeChomp intakeChomp = new IntakeChomp(intake);
+  private final IntakeAhhh intakeAhhh = new IntakeAhhh(intake);
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
-  private final Shoot shoot = new Shoot(shooter);
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
   private final Feed feed = new Feed(shooter);
-  
+  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
+  private final Shoot shoot = new Shoot(shooter);  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,32 +104,32 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Buttons to control gear shifting
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ShiftSpeed(drivetrain));
+
+    // Gear shifting Buttons
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
-    // A & Y to control intake
+    // Intake eat & spit buttons
     new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeEat, true);
     new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeSpit, true);
 
-    // Buttons to control loader
+    // Loader Buttons
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
-    // Shooting button
-    new TriggerButton(operatorController, false).whileHeld(shoot, true);
-    new TriggerButton(operatorController, true).whileHeld(feed, true);
-    
-    // Buttons to control turrets
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
+    // Shooting Trigger and Button
+    //new TriggerButton(operatorController, "RIGHT").whileHeld(shoot, true);  //not working well yet
+    new TriggerButton(operatorController, "RIGHT").whileHeld(feed, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(flywheelSpin, true);
+
+    //Intake Chomp POV buttons
+    new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
+    new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeAhhh);  
+
 /*
-    // Buttons to control climber
-    new DPad(operatorController, 180).whileHeld(climberClimb, true);
-    new DPad(operatorController, 0).whileHeld(climberReach, true);  
-    
-    new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
-    new TriggerButton(operatorController, true).whileHeld(intakeSpit, true);
+    // Buttons to control turrets (Axis being used for now)
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true); 
 */
   }
   

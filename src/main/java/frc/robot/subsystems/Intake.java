@@ -47,6 +47,17 @@ public class Intake extends SubsystemBase {
     motor.set(0);
   }
 
+  public void intakeChomp(){
+    //add DoubleSolenoid code here
+
+  }
+
+  public void intakeAhhh(){
+    //add DoubleSolenoid code here
+
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
