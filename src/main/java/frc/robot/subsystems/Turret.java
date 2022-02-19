@@ -139,5 +139,6 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("offsetVertical", limelight.getVerticalOffset());
     SmartDashboard.putNumber("distanceEstimant", limelight.getEstimatedDistance());
     SmartDashboard.putNumber("TurretEncoder", getTurretAngle());
+    SmartDashboard.putNumber("offsetHorizontal", limelight.getHorizontalOffset());
   }
 }

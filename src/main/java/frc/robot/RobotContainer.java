@@ -33,6 +33,7 @@ import frc.robot.commands.basic.TurretRight;
 import frc.robot.commands.basic.*;
 
 import frc.robot.commands.closedloop.TurnToAnglePID;
+import frc.robot.commands.closedloop.TurretAim;
 import frc.robot.commands.test.TestMoveMotors;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -88,6 +89,7 @@ public class RobotContainer {
   private final Feed feed = new Feed(shooter);
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
   private final Shoot shoot = new Shoot(shooter);  
+  private final TurretAim turretAim = new TurretAim(turret);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -125,6 +127,9 @@ public class RobotContainer {
     //Intake Chomp POV buttons
     new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeAhhh);  
+
+    //Aim button
+    new TriggerButton(operatorController, "LEFT").whileHeld(turretAim, true);
 
 /*
     // Buttons to control turrets (Axis being used for now)

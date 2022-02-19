@@ -14,7 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants.Control;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class TestTraject extends CommandBase {
@@ -26,7 +26,7 @@ public class TestTraject extends CommandBase {
   
   public TestTraject(Drivetrain drivetrain) {
 
-    this.config = new TrajectoryConfig(Control.MAX_VELO_METER_PER_SEC, Control.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics());
+    this.config = new TrajectoryConfig(Constants.MAX_VELO_METER_PER_SEC, Constants.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics());
 
     drivetrain.resetOdometry();
 
