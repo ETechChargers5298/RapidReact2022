@@ -127,5 +127,26 @@ public final class Constants {
         public static final double TURN_TO_ANGLE_I = 0;
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
+
+        public static final double TURRET_P = 1;
+        public static final double TURRET_I = 0;
+        public static final double TURRET_D = 0;
+        public static final double[] TURRET_PID = {TURRET_P, TURRET_I, TURRET_D};
+
+        public static final double CLIMB_P = 1;
+        public static final double CLIMB_I = 0;
+        public static final double CLIMB_D = 0;
+        public static final double[] CLIMB_PID = {CLIMB_P, CLIMB_I, CLIMB_D};
+
+        
     }
+
+    public static final class Buttons{
+        public static final int POV_UP = 0;
+        public static final int POV_RIGHT = 90;
+        public static final int POV_DOWN = 180;
+        public static final int POV_LEFT = 270;
+        
+    }
+
 }
