@@ -57,6 +57,7 @@ public void stopFeed(){
 /** Creates a new Shooter. */
 public Shooter() {
   flyEncoder = getFlyWheelEncoder();
+  flyWheel.setInverted(Constants.Shooters.FLYWHEEL_INVERSION);
   }
 
 public RelativeEncoder getFlyWheelEncoder() {

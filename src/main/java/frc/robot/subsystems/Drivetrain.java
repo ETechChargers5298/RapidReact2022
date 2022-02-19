@@ -76,14 +76,14 @@ public class Drivetrain extends SubsystemBase {
     motorRight.setInverted(DriveTrain.RIGHT_INVERTED);
     
     // double solenoid (technically singular but shh)
-    gearShifter = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
+    gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
     encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
     encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
     navX = new AHRS(SPI.Port.kMXP);
     
-    // configure sensors (encoders, gyro)
+    // configure sensors (encoders, gyro)0
     encoderLeft.setInverted(DriveTrain.ENCODER_LEFT_INVERTED);
     encoderRight.setInverted(DriveTrain.ENCODER_RIGHT_INVERTED);
 

@@ -52,6 +52,7 @@ public final class Constants {
         public static final int TURRET_MOTOR_PORT = 10;
         public static final double TURRET_SPEED = 0.30;
         public static final boolean TURRET_INVERSION = false;
+        public static final boolean FLYWHEEL_INVERSION = true;
         public static final int TURRET_LEFT_LIMIT = 6;
         public static final int TURRET_RIGHT_LIMIT = 7;
         

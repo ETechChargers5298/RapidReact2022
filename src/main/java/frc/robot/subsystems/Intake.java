@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
   public Intake() { 
  
     // Inversion of Intake motor
-    motor.setInverted(Loading.INTAKE_INVERSION);
+    // motor.setInverted(Loading.INTAKE_INVERSION);
   
 }
 

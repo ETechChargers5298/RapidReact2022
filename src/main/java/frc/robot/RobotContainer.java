@@ -90,7 +90,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configures the button bindings
     configureButtonBindings();
-    // Configures the axes bindings D
+    // Configures the axes bindings 
     configureAxes();
   }
 
@@ -113,23 +113,17 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
-// Shooting button
+    // Shooting button
     new TriggerButton(operatorController, false).whileHeld(shoot, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
-
+    new TriggerButton(operatorController, true).whileHeld(feed, true);
     
-    
-/*
     // Buttons to control turrets
     new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true);
-
+/*
     // Buttons to control climber
     new DPad(operatorController, 180).whileHeld(climberClimb, true);
-    new DPad(operatorController, 0).whileHeld(climberReach, true);
-
-
-    
+    new DPad(operatorController, 0).whileHeld(climberReach, true);  
     
     new TriggerButton(operatorController, false).whileHeld(intakeEat, true);
     new TriggerButton(operatorController, true).whileHeld(intakeSpit, true);

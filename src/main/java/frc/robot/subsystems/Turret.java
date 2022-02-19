@@ -27,6 +27,9 @@ public class Turret extends SubsystemBase {
 
 
   public void moveTurret(double speed){
+    if (Math.abs(speed) < 0.3 ) { 
+      motor.set(0);
+    }
     motor.set(speed);
   }
 
