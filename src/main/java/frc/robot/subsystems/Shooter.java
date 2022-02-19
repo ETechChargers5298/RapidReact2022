@@ -5,15 +5,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Constants.Shooters;
-
-
+import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends SubsystemBase {
 
@@ -22,8 +18,7 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax flyWheel = new CANSparkMax(Constants.Shooters.FLYWHEEL_MOTOR_PORT, MotorType.kBrushless);
 
   //Encoders
-  private RelativeEncoder flyEncoder = flyWheel.getAlternateEncoder(Shooters.COUNTS_PER_REV);
-  private RelativeEncoder flyEncoder;
+  private RelativeEncoder flyEncoder = flyWheel.getAlternateEncoder(Constants.Shooters.COUNTS_PER_REV);
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -32,17 +27,17 @@ public class Shooter extends SubsystemBase {
 
   // Feed balls into flywheel
   public void feed() {
-    feeder.set(Shooters.FEEDER_SPEED);
+    feeder.set(Constants.Shooters.FEEDER_SPEED);
   }
 
   //Undo the feeding
   public void unfeed() {
-    feeder.set(-Shooters.FEEDER_SPEED);
+    feeder.set(-Constants.Shooters.FEEDER_SPEED);
   }
 
   //Get ready to shoot
   public void rampUp() {
-    flyWheel.set(Shooters.RAMP_SPEED);
+    flyWheel.set(Constants.Shooters.RAMP_SPEED);
   }
 
   //Return Encoder velocity

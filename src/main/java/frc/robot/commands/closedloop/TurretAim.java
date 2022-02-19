@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.basic;
+package frc.robot.commands.closedloop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
@@ -33,7 +33,6 @@ public class TurretAim extends CommandBase {
   public void execute() {
     // The turret moves to the target
     turret.turretAim();
-    //System.out.println("o wow right works");
   }
 
   // Called once the command ends or is interrupted.
