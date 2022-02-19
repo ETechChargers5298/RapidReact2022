@@ -15,10 +15,12 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
+import frc.robot.Constants;
 import frc.robot.commands.basic.ArcadeDrive;
 import frc.robot.commands.basic.ClimberClimb;
 import frc.robot.commands.basic.ClimberReach;
@@ -44,6 +46,8 @@ import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
+import frc.robot.utils.LEDStrip;
+import frc.robot.utils.LEDColors;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -69,6 +73,7 @@ public class RobotContainer {
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
   private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
+  private static final LEDStrip lightcontroller = new LEDStrip(Constants.BLINKIN_PORT);
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
@@ -97,6 +102,9 @@ public class RobotContainer {
     configureButtonBindings();
     // Configures the axes bindings 
     configureAxes();
+
+    lightcontroller.startcolor();
+
   }
 
   /**
