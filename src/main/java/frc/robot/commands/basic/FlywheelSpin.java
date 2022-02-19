@@ -4,6 +4,7 @@
 
 package frc.robot.commands.basic;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -23,12 +24,15 @@ public class FlywheelSpin extends CommandBase {
 
     // starts flywheel and feeder stopped
     pew.stopFly();
+    SmartDashboard.putNumber("IsOVer", 0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     pew.rampUp();
+    SmartDashboard.putNumber("ShooterSpeed", pew.getFlyVelocity());
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +40,7 @@ public class FlywheelSpin extends CommandBase {
   public void end(boolean interrupted) {
     // stops fly wheel
     pew.stopFly();
+    SmartDashboard.putNumber("IsOVer", 1);
   }
 
   // Returns true when the command should end.

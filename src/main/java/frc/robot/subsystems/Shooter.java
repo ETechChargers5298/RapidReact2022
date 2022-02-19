@@ -23,6 +23,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
     flyWheel.setInverted(Constants.Shooters.FLYWHEEL_INVERSION);
+    feeder.setInverted(Constants.Shooters.FEEDER_INVERSION);
   }
 
   // Feed balls into flywheel

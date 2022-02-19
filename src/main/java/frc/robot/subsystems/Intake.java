@@ -7,14 +7,21 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Intake extends SubsystemBase {
   
   // created intake motor
   private CANSparkMax motor = new CANSparkMax(Loading.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-  
+
+
+  private DoubleSolenoid chomp = new DoubleSolenoid(Constants.DriveTrain.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Constants.Loading.INTAKE_CHOMP_PORT, Constants.Loading.INTAKE_AHHH_PORT);
+
   /** Creates a new Intake. */
   public Intake() { 
  
@@ -49,12 +56,13 @@ public class Intake extends SubsystemBase {
 
   public void intakeChomp(){
     //add DoubleSolenoid code here
+    chomp.set(Value.kForward);
 
   }
 
   public void intakeAhhh(){
     //add DoubleSolenoid code here
-
+    chomp.set(Value.kReverse);
   }
 
 

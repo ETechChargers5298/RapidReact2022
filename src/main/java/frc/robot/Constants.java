@@ -55,6 +55,7 @@ public final class Constants {
         public static final double TURRET_SPEED = 0.30;
         public static final boolean TURRET_INVERSION = false;
         public static final boolean FLYWHEEL_INVERSION = true;
+        public static final boolean FEEDER_INVERSION = true;
         public static final int TURRET_LEFT_LIMIT = 6;
         public static final int TURRET_RIGHT_LIMIT = 7;
         public static final int TURRET_ENCODER = 0;
@@ -81,7 +82,7 @@ public final class Constants {
         public static final double INTAKE_SPEED = 0.75;
 
         public static final int INTAKE_CHOMP_PORT = 2;
-        public static final int INTAKE_UNCHOMP_PORT = 3;
+        public static final int INTAKE_AHHH_PORT = 3;
 
         public static final int TOP_CARGO_LIMIT = 4;
         public static final int BOTTOM_CARGO_LIMIT = 5;

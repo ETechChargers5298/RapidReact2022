@@ -3,6 +3,8 @@
 package frc.robot.commands.basic;
 
 import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
@@ -37,7 +39,9 @@ public class TurretMove extends CommandBase {
   @Override
   public void execute() {
     // Robot will move depending on left joystick 
-    turret.moveTurret(speed.getAsDouble());
+    double val = speed.getAsDouble();
+    turret.moveTurret(val);
+    SmartDashboard.putNumber("TURRET", val);
   }
 
   // Called once the command ends or is interrupted.

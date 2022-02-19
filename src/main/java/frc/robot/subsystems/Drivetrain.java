@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Robot;
 import frc.robot.Constants.DriveTrain;
@@ -75,8 +76,8 @@ public class Drivetrain extends SubsystemBase {
     motorLeft.setInverted(DriveTrain.LEFT_INVERTED);
     motorRight.setInverted(DriveTrain.RIGHT_INVERTED);
     
-    // double solenoid (technically singular but shh)
-    gearShifter = new DoubleSolenoid(PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
+    // double solenoid (technically singular but shh) no
+    gearShifter = new DoubleSolenoid(Constants.DriveTrain.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
     encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);

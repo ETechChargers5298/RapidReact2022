@@ -26,7 +26,7 @@ public class TestTraject extends CommandBase {
   
   public TestTraject(Drivetrain drivetrain) {
 
-    this.config = new TrajectoryConfig(Constants.MAX_VELO_METER_PER_SEC, Constants.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics());
+    this.config = new TrajectoryConfig(Constants.Control.MAX_VELO_METER_PER_SEC, Constants.Control.MAX_ACCEL_METER_PER_SEC).setKinematics(drivetrain.getKinematics());
 
     drivetrain.resetOdometry();
 
