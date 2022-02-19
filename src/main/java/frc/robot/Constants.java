@@ -55,6 +55,7 @@ public final class Constants {
         public static final boolean FLYWHEEL_INVERSION = true;
         public static final int TURRET_LEFT_LIMIT = 6;
         public static final int TURRET_RIGHT_LIMIT = 7;
+        public static final int TURRET_ENCODER = 0;
         
         public static final double LIMELIGHT_ANG_DEG = 45;
         public static final double GOAL_HEIGHT_INCH = 104;

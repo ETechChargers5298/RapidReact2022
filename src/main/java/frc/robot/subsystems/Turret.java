@@ -7,21 +7,29 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
 import frc.robot.utils.Limelight;
+
 
 public class Turret extends SubsystemBase {
 
   // Creates a motor that rotates the turret
   private CANSparkMax motor = new CANSparkMax(Shooters.TURRET_MOTOR_PORT, MotorType.kBrushless);
+  //Creates Encoder
+  private AnalogEncoder encode = new AnalogEncoder(Constants.Shooters.TURRET_ENCODER);
+  
   //Created a limelight
   private Limelight limelight = new Limelight();
   /** Creates a new Turret. */
   public Turret() {
     // Controls the inversion so that the right is always positive
     motor.setInverted(Shooters.TURRET_INVERSION);
+
+    encode.setDistancePerRotation(1);
   }
 
 
@@ -118,10 +126,18 @@ public class Turret extends SubsystemBase {
     motor.set(0);
   }
 
+
+  //
+  public double getTurretAngle() {
+    return encode.get();
+  }
+
+  //
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("offsetVertical", limelight.getVerticalOffset());
     SmartDashboard.putNumber("distanceEstimant", limelight.getEstimatedDistance());
+    SmartDashboard.putNumber("TurretEncoder", getTurretAngle());
   }
 }
