@@ -42,6 +42,8 @@ public final class Constants {
         
         public static final int GEAR_SHIFT_TORQUE_PORT = 0;
         public static final int GEAR_SHIFT_SPEED_PORT = 1;
+
+        public static final int PNEUMATICS_PORT = 21;
         
     }
     
