@@ -22,6 +22,16 @@ public class Climber extends SubsystemBase {
     motor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
   }
 
+
+   /**
+   * Movers climber up
+   * @author catears
+   */
+  public void climberMove(double speed){
+    motor.set(speed);
+  }
+
+
   /**
    * Movers climber up
    * @author catears

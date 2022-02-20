@@ -73,7 +73,6 @@ public class RobotContainer {
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
   private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
-  private static final LEDStrip lightcontroller = new LEDStrip(Constants.BLINKIN_PORT);
 
   // Commands are created here
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
@@ -81,8 +80,6 @@ public class RobotContainer {
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
   private final TurretLeft turretLeft = new TurretLeft(turret);
   private final TurretRight turretRight = new TurretRight(turret);
-  private final ClimberClimb climberClimb = new ClimberClimb(climber);
-  private final ClimberReach climberReach = new ClimberReach(climber);
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
   private final IntakeChomp intakeChomp = new IntakeChomp(intake);
@@ -95,6 +92,9 @@ public class RobotContainer {
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
   private final Shoot shoot = new Shoot(shooter);  
   private final TurretAim turretAim = new TurretAim(turret);
+  private final ClimberClimb climberClimb = new ClimberClimb(climber);
+  private final ClimberReach climberReach = new ClimberReach(climber);
+  private final ClimbReach climbReach = new ClimbReach(climber, () -> operatorController.getRightY());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -103,7 +103,7 @@ public class RobotContainer {
     // Configures the axes bindings 
     configureAxes();
 
-    lightcontroller.startcolor();
+    LEDStrip.startcolor();
 
   }
 
@@ -129,8 +129,8 @@ public class RobotContainer {
 
     // Shooting Trigger and Button
     //new TriggerButton(operatorController, "RIGHT").whileHeld(shoot, true);  //not working well yet
-    new TriggerButton(operatorController, "RIGHT").whileHeld(feed, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(flywheelSpin, true);
+    new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelSpin, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
 
     //Intake Chomp POV buttons
     new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
@@ -156,8 +156,12 @@ public class RobotContainer {
     // Sets the test bed to always move the test motor
     turret.setDefaultCommand(turretMove);
 
+    
     // Sets the test bed to always move the test motor
-    testMotors.setDefaultCommand(testMoveMotors);
+    climber.setDefaultCommand(climbReach);
+
+    // Sets the test bed to always move the test motor
+    //testMotors.setDefaultCommand(testMoveMotors);
   }
 
   /**

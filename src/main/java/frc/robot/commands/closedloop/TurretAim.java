@@ -40,6 +40,7 @@ public class TurretAim extends CommandBase {
   public void end(boolean interrupted) {
     // The turret stops in the end
     turret.stopTurret();
+    
   }
 
   // Returns true when the command should end.

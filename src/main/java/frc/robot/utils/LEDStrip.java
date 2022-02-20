@@ -4,52 +4,57 @@
 
 package frc.robot.utils;
 
-import javax.swing.text.AbstractDocument.LeafElement;
-
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.Constants.Robot;
 
 /** Add your docs here. */
 public class LEDStrip {
 
-    private Spark controller;
+    private static Spark controller= new Spark(Robot.BLINKIN_PORT);
 
-    public LEDStrip(int port) {
 
-        controller = new Spark(port);
-
+    public static void startcolor() {
+        controller.set(LEDColors.WHITE_HEARTBEAT);
     }
 
-
-    public void startcolor() {
-        controller.set(LEDColors.RAINBOW_RAINBOW);
-    }
-
-
-
-    public void setPattern(int pattern) {
+    public static void setPattern(int pattern) {
         controller.set(pattern);
     }
 
-    public void statusDead() {
+    public static void statusDead() {
         controller.set(LEDColors.RED);
     }
 
-    public void moving() {
+    public static void moving() {
         controller.set(LEDColors.GREEN);
 
     }
 
-    public void still() {
+    public static void still() {
         controller.set(LEDColors.YELLOW);
         
     }
 
-    public void shooting() {
+    public static void shooting() {
         controller.set(LEDColors.BLUE);
     }
 
-    public void load() {
+    public static void load() {
         controller.set(LEDColors.VIOLET);
     }
+
+    public static void findingTarget() {
+        controller.set(LEDColors.ORANGE);
+    }
+    public static void foundTarget() {
+        controller.set(LEDColors.BLUE_GREEN);
+    }
+    public static void onTarget(){
+        controller.set(LEDColors.BLUE_STROBE);
+    }
+    public static void climbing(){
+        controller.set(LEDColors.RAINBOW_GLITTER);
+    }
+
 
 }

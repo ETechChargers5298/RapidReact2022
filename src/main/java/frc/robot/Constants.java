@@ -17,6 +17,7 @@ public final class Constants {
         public static final double WHEEL_DIAMETER_INCH = 6.0;
         public static final double TRACK_WIDTH_INCHES = 25.0;
         public static final double ROBOT_HEIGHT_INCH = 40;
+        public static final int BLINKIN_PORT = 9;
     }
 
     public static final class DriveTrain {
@@ -66,7 +67,7 @@ public final class Constants {
         public static final int FLYWHEEL_PORT = 76;
         public static final int COUNTS_PER_REV = 8192;
         public static final double FEEDER_SPEED = 0.75;
-        public static final double RAMP_SPEED = 1.0;
+        public static final double RAMP_SPEED = -1.0;
 
         public static final int LIMIT_PORT_LEFT = 0;
         public static final int LIMIT_PORT_RIGHT = 1;
@@ -165,5 +166,5 @@ public final class Constants {
     public static final double MAX_VELO_METER_PER_SEC = 2.0;
     public static final double MAX_ACCEL_METER_PER_SEC = 1.0;
 
-    public static final int BLINKIN_PORT = 9;
+
 }
