@@ -15,39 +15,33 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
-import frc.robot.Constants;
-import frc.robot.commands.basic.ArcadeDrive;
-import frc.robot.commands.basic.ClimberClimb;
-import frc.robot.commands.basic.ClimberReach;
-import frc.robot.commands.basic.IntakeEat;
-import frc.robot.commands.basic.IntakeSpit;
-import frc.robot.commands.basic.LoaderLoad;
-import frc.robot.commands.basic.LoaderUnload;
-import frc.robot.commands.basic.ShiftSpeed;
-import frc.robot.commands.basic.ShiftTorque;
-import frc.robot.commands.basic.TurretLeft;
-import frc.robot.commands.basic.TurretRight;
-import frc.robot.commands.basic.*;
-
-import frc.robot.commands.closedloop.TurnToAnglePID;
+import frc.robot.commands.basic.cargo.IntakeChomp;
+import frc.robot.commands.basic.cargo.IntakeEat;
+import frc.robot.commands.basic.cargo.IntakeRetract;
+import frc.robot.commands.basic.cargo.IntakeSpit;
+import frc.robot.commands.basic.cargo.LoaderLoad;
+import frc.robot.commands.basic.cargo.LoaderUnload;
+import frc.robot.commands.basic.climb.ClimberMove;
+import frc.robot.commands.basic.drive.ArcadeDrive;
+import frc.robot.commands.basic.drive.ShiftSpeed;
+import frc.robot.commands.basic.drive.ShiftTorque;
+import frc.robot.commands.basic.shoot.Feed;
+import frc.robot.commands.basic.shoot.FlywheelSpin;
+import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.TurretAim;
-import frc.robot.commands.test.TestMoveMotors;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
-import frc.robot.subsystems.TestMotors;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
 import frc.robot.utils.LEDStrip;
-import frc.robot.utils.LEDColors;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -63,38 +57,34 @@ public class RobotContainer {
   // Subsystems are created here
   private static final Drivetrain drivetrain = new Drivetrain();
   private static final Turret turret = new Turret();
-  private static final TestMotors testMotors = new TestMotors();
   private static final Climber climber = new Climber();
   private static final Intake intake = new Intake();
   private static final Loader loader = new Loader();
   private static final Shooter shooter = new Shooter();
+  private static final Feeder feeder = new Feeder();
+  //private static final TestMotors testMotors = new TestMotors();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
-  private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
+  //private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
 
   // Commands are created here
+  //private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
   private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
-  private final TurretLeft turretLeft = new TurretLeft(turret);
-  private final TurretRight turretRight = new TurretRight(turret);
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
   private final IntakeChomp intakeChomp = new IntakeChomp(intake);
-  private final IntakeAhhh intakeAhhh = new IntakeAhhh(intake);
+  private final IntakeRetract intakeRetract = new IntakeRetract(intake);
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
-  private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
-  private final Feed feed = new Feed(shooter);
+  private final Feed feed = new Feed(feeder);
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
-  private final Shoot shoot = new Shoot(shooter);  
   private final TurretAim turretAim = new TurretAim(turret);
-  private final ClimberClimb climberClimb = new ClimberClimb(climber);
-  private final ClimberReach climberReach = new ClimberReach(climber);
-  private final ClimbReach climbReach = new ClimbReach(climber, () -> operatorController.getRightY());
+  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -134,7 +124,7 @@ public class RobotContainer {
 
     //Intake Chomp POV buttons
     new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
-    new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeAhhh);  
+    new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeRetract);  
 
     //Aim button
     new TriggerButton(operatorController, "LEFT").whileHeld(turretAim, true);
@@ -158,7 +148,7 @@ public class RobotContainer {
 
     
     // Sets the test bed to always move the test motor
-    climber.setDefaultCommand(climbReach);
+    climber.setDefaultCommand(climbMove);
 
     // Sets the test bed to always move the test motor
     //testMotors.setDefaultCommand(testMoveMotors);

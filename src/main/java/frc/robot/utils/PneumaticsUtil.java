@@ -6,12 +6,12 @@ package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.Constants;
+import frc.robot.Constants.Robot;
 
 /** Add your docs here. */
 public class PneumaticsUtil {
     
-    private static final Compressor compressor = new Compressor(Constants.DriveTrain.PNEUMATICS_PORT, PneumaticsModuleType.REVPH);
+    private static final Compressor compressor = new Compressor(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH);
 
     public static boolean isItOn() {
         return compressor.enabled();

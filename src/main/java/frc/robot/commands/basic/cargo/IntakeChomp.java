@@ -1,13 +1,14 @@
-package frc.robot.commands.basic;
+package frc.robot.commands.basic.cargo;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
 public class IntakeChomp extends CommandBase {
-  //Intake subsystem needed for this command
+
+  // Intake subsystem needed for this command
   private Intake intake; 
   
-  /** Creates a new ShiftTorque. */
+  /** Creates a new IntakeChomp. */
   public IntakeChomp(Intake intake) {
     // Assigns intake parameter to intake field 
     this.intake = intake;

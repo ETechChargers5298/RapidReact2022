@@ -13,31 +13,32 @@ import frc.robot.Constants.Climbers;
 
 public class Climber extends SubsystemBase {
 
-  //creates Climber motor
-  private CANSparkMax motor = new CANSparkMax(Climbers.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
+  // creates climber motor
+  private CANSparkMax climbMotor;
+
   /** Creates a new Climber. */
   public Climber() {
-   
-   // inversion on climber motor
-    motor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
+    // creates motor
+    climbMotor = new CANSparkMax(Climbers.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
+
+    // inverts motor
+    climbMotor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
   }
 
-
-   /**
+  /**
    * Movers climber up
    * @author catears
    */
   public void climberMove(double speed){
-    motor.set(speed);
+    climbMotor.set(speed);
   }
-
 
   /**
    * Movers climber up
    * @author catears
    */
   public void climberReach(){
-    motor.set(Climbers.CLIMBER_MOTOR_SPEED);
+    climbMotor.set(Climbers.CLIMBER_MOTOR_SPEED);
   }
 
   /**
@@ -45,7 +46,7 @@ public class Climber extends SubsystemBase {
    * @author catears
    */
   public void climberClimb(){
-    motor.set(-Climbers.CLIMBER_MOTOR_SPEED);
+    climbMotor.set(-Climbers.CLIMBER_MOTOR_SPEED);
   }
 
   /**
@@ -53,7 +54,7 @@ public class Climber extends SubsystemBase {
    * @author catears
    */
   public void climberStop(){
-    motor.set(0);
+    climbMotor.set(0);
   }
 
   @Override

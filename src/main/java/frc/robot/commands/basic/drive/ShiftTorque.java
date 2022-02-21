@@ -2,19 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.basic;
+package frc.robot.commands.basic.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class ShiftSpeed extends CommandBase {
-
+public class ShiftTorque extends CommandBase {
   // Drivetrain subsystem needed for this command
-  private Drivetrain drivetrain;
-
-  /** Creates a new ShiftSpeed. */
-  public ShiftSpeed(Drivetrain drivetrain) {
-    // Stores drivetrain which is provided by RobotContainer
+  private Drivetrain drivetrain; 
+  
+  /** Creates a new ShiftTorque. */
+  public ShiftTorque(Drivetrain drivetrain) {
+    // Assigns drivetrain parameter to drivetrain field 
     this.drivetrain = drivetrain;
   }
 
@@ -25,8 +24,8 @@ public class ShiftSpeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Shifts to speed mode
-    drivetrain.shiftSpeed();
+    // Changes the gear to torque mode
+    drivetrain.shiftTorque();
   }
 
   // Called once the command ends or is interrupted.
@@ -36,7 +35,7 @@ public class ShiftSpeed extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // It is true because this command only runs once
+    // Only runs this command once
     return true;
   }
 }

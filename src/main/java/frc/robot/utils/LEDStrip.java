@@ -10,8 +10,7 @@ import frc.robot.Constants.Robot;
 /** Add your docs here. */
 public class LEDStrip {
 
-    private static Spark controller= new Spark(Robot.BLINKIN_PORT);
-
+    private static Spark controller = new Spark(Robot.BLINKIN_PORT);
 
     public static void startcolor() {
         controller.set(LEDColors.WHITE_HEARTBEAT);
@@ -27,12 +26,10 @@ public class LEDStrip {
 
     public static void moving() {
         controller.set(LEDColors.GREEN);
-
     }
 
     public static void still() {
-        controller.set(LEDColors.YELLOW);
-        
+        controller.set(LEDColors.YELLOW);  
     }
 
     public static void shooting() {
@@ -46,12 +43,15 @@ public class LEDStrip {
     public static void findingTarget() {
         controller.set(LEDColors.ORANGE);
     }
+
     public static void foundTarget() {
         controller.set(LEDColors.BLUE_GREEN);
     }
+
     public static void onTarget(){
         controller.set(LEDColors.BLUE_STROBE);
     }
+    
     public static void climbing(){
         controller.set(LEDColors.RAINBOW_GLITTER);
     }
