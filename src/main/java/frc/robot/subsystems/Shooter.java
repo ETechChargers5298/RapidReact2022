@@ -51,6 +51,14 @@ public class Shooter extends SubsystemBase {
     return flyEncoder.getVelocity();
   }
 
+   /**
+   * controls flywheel using volts
+   * @author catears
+   */
+  public void flyVolt(double voltage){
+    flyWheel.setVoltage(voltage);
+  }
+  
   /**
    * stops the flywheel
    * @author raymond
