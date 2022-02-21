@@ -51,6 +51,9 @@ public final class Constants {
     public static final class Shooters {
         public static final int FEEDER_MOTOR_PORT = 9;
         public static final int FLYWHEEL_MOTOR_PORT = 11; 
+        public static final int DESIRED_RPM = 1000;
+        public static final double FLYWHEEL_KV = 0.02;
+        public static final double FLYWHEEL_KA = 0.001;
        
         public static final int TURRET_MOTOR_PORT = 10;
         public static final double TURRET_SPEED = 0.30;

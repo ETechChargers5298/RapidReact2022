@@ -24,6 +24,8 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     flyWheel.setInverted(Constants.Shooters.FLYWHEEL_INVERSION);
     feeder.setInverted(Constants.Shooters.FEEDER_INVERSION);
+    flyEncoder.setVelocityConversionFactor(2*Math.PI);
+    flyEncoder.setPositionConversionFactor(2*Math.PI);
   }
 
   // Feed balls into flywheel
@@ -46,6 +48,10 @@ public class Shooter extends SubsystemBase {
     // return flyEncoder.getRate();
     // return 0.0;
     return flyEncoder.getVelocity();
+  }
+
+  public void flyVolt(double voltage){
+    flyWheel.setVoltage(voltage);
   }
 
   public void stopFly(){
