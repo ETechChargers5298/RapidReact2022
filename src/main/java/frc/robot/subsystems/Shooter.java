@@ -56,7 +56,7 @@ public class Shooter extends SubsystemBase {
    * @author catears
    */
   public void flyVolt(double voltage){
-    flyWheel.setVoltage(voltage);
+    flywheel.setVoltage(voltage);
   }
   
   /**

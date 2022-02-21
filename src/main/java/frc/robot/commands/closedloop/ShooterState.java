@@ -4,8 +4,6 @@
 
 package frc.robot.commands.closedloop;
 
-import com.google.flatbuffers.FlexBuffers.Vector;
-
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -17,7 +15,6 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooters;
-import frc.robot.commands.basic.FlywheelSpin;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterState extends CommandBase {
@@ -41,7 +38,7 @@ public class ShooterState extends CommandBase {
   @Override
   public void initialize() {
 
-    loop.reset(VecBuilder.fill(shooter.getFlyVelocity()));
+    loop.reset(VecBuilder.fill(shooter.getVelocity()));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,7 +47,7 @@ public class ShooterState extends CommandBase {
 
     loop.setNextR(VecBuilder.fill(Units.rotationsPerMinuteToRadiansPerSecond(Shooters.DESIRED_RPM)));
 
-    loop.correct(VecBuilder.fill(shooter.getFlyVelocity()));
+    loop.correct(VecBuilder.fill(shooter.getVelocity()));
 
     loop.predict(0.02);
 
