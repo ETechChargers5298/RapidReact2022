@@ -45,7 +45,7 @@ public class ShooterState extends CommandBase {
   @Override
   public void execute() {
 
-    loop.setNextR(VecBuilder.fill(Units.rotationsPerMinuteToRadiansPerSecond(Shooters.DESIRED_RPM)));
+    loop.setNextR(VecBuilder.fill(Units.rotationsPerMinuteToRadiansPerSecond(Shooters.RADIAN_PER_SECOND)));
 
     loop.correct(VecBuilder.fill(shooter.getVelocity()));
 

@@ -60,10 +60,11 @@ public final class Constants {
         public static final int TURRET_RIGHT_LIMIT_PORT = 7;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
-        public static final boolean FLYWHEEL_INVERSION = false;
+        public static final boolean FLYWHEEL_INVERSION = true;
         public static final double REV_SPEED = 1.0;
       
         public static final int DESIRED_RPM = 1000;
+        public static final double RADIAN_PER_SECOND = 1500;
         public static final double FLYWHEEL_KV = 0.02;
         public static final double FLYWHEEL_KA = 0.001;
 
@@ -80,7 +81,7 @@ public final class Constants {
         public static final double LOADER_SPEED = 0.75;
 
         public static final int INTAKE_MOTOR_PORT = 7;
-        public static final boolean INTAKE_INVERSION = true;
+        public static final boolean INTAKE_INVERSION = false;
         public static final double INTAKE_SPEED = 0.75;
 
         public static final int INTAKE_CHOMP_PORT = 2;

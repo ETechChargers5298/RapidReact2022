@@ -155,6 +155,11 @@ public class Turret extends SubsystemBase {
   //
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("llhoroffset", Limelight.getHorizontalOffset());
+    SmartDashboard.putBoolean("llfound", Limelight.isValidTarget());
+    SmartDashboard.putNumber("lldistance", Limelight.getEstimatedDistance());
+    SmartDashboard.putNumber("llveroffset", Limelight.getVerticalOffset());
     // This method will be called once per scheduler run
   }
 }

@@ -16,7 +16,7 @@ public class Limelight {
 
     // Gets the number of valid targets (0 or 1)
     public static boolean isValidTarget() {
-        return table.getEntry("tv").getBoolean(false);
+        return table.getEntry("tv").getNumber(0.0).intValue() == 1;
     }
 
     // Gets the horizontal offset of the center crosshair from the target
