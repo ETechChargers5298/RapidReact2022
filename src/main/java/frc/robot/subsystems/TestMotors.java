@@ -12,13 +12,13 @@ import frc.robot.Constants.Testing;
 
 public class TestMotors extends SubsystemBase {
 
-  // Motor for testing mechanisms
+  // declares motors for testing mechanisms
   private static final CANSparkMax testMotorA = new CANSparkMax(Testing.TEST_MOTOR_PORT_A, MotorType.kBrushless);
   private static final CANSparkMax testMotorB = new CANSparkMax(Testing.TEST_MOTOR_PORT_B, MotorType.kBrushless);
   private static final CANSparkMax testMotorC = new CANSparkMax(Testing.TEST_MOTOR_PORT_C, MotorType.kBrushless);
   private static final CANSparkMax testMotorD = new CANSparkMax(Testing.TEST_MOTOR_PORT_D, MotorType.kBrushless);
   
-  /** Creates a new TestBed. */
+  /** Creates a new TestMotors. */
   public TestMotors() {
     // Inverts the motor
     testMotorA.setInverted(Testing.TEST_MOTOR_A_INVERSION);
@@ -38,6 +38,7 @@ public class TestMotors extends SubsystemBase {
     testMotorC.set(speedC);
     testMotorD.set(speedD);
   }
+
   /**
    * Stops the motor
    * @author Kenneth Wong
@@ -48,6 +49,7 @@ public class TestMotors extends SubsystemBase {
     testMotorC.set(0);
     testMotorD.set(0);
   }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

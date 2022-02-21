@@ -12,44 +12,40 @@ import frc.robot.Constants.Shooters;
 
 /** Add your docs here. */
 public class Limelight {
-    private NetworkTable table;
+    private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-    public Limelight() {
-        table = NetworkTableInstance.getDefault().getTable("limelight");
-    }
-
-    //Gets the number of valid targets (0 or 1)
-    public boolean isValidTarget() {
+    // Gets the number of valid targets (0 or 1)
+    public static boolean isValidTarget() {
         return table.getEntry("tv").getBoolean(false);
     }
 
-    //Gets the horizontal offset of the center crosshair from the target
-    public double getHorizontalOffset() {
+    // Gets the horizontal offset of the center crosshair from the target
+    public static double getHorizontalOffset() {
         return table.getEntry("tx").getDouble(Integer.MAX_VALUE);
     }
 
-    //Gets the vertical offset of the center crosshair from the target
-    public double getVerticalOffset() {
+    // Gets the vertical offset of the center crosshair from the target
+    public static double getVerticalOffset() {
         return table.getEntry("ty").getDouble(Integer.MAX_VALUE);
     }
 
-    //Gets the estimated distance from the robot to the target
-    public double getEstimatedDistance() {
+    // Gets the estimated distance from the robot to the target
+    public static double getEstimatedDistance() {
         return (Shooters.GOAL_HEIGHT_INCH - Robot.ROBOT_HEIGHT_INCH) / Math.tan(Units.degreesToRadians(Shooters.LIMELIGHT_ANG_DEG) + Units.degreesToRadians(getVerticalOffset()));
     }
 
-    //Gets the active pipeline (0 to 9)
-    public int getPipe() {
+    // Gets the active pipeline (0 to 9)
+    public static int getPipe() {
         return table.getEntry("getpipe").getNumber(-1).intValue();
     }
 
-    //Sets the active pipeline (0 to 9)
-    public void setPipe(int pipeNum) {
+    // Sets the active pipeline (0 to 9)
+    public static void setPipe(int pipeNum) {
         table.getEntry("pipeline").setNumber(pipeNum);
     }
 
-    //Sets the LED state. LEDs on = 3, LEDs off = 1
-    public void led(boolean on) {
+    // Sets the LED state. LEDs on = 3, LEDs off = 1
+    public static void led(boolean on) {
         if(on) {
             table.getEntry("ledMode").setNumber(3);
         }
@@ -59,8 +55,8 @@ public class Limelight {
         }
     }
 
-    //Set's the limelight's state of operation. Visiom Processing = 0, Driver Camera = 1
-    public void setCamera(boolean vision) {
+    // Set's the limelight's state of operation. Visiom Processing = 0, Driver Camera = 1
+    public static void setCamera(boolean vision) {
         if(vision) {
             table.getEntry("camMode").setNumber(0);
         }

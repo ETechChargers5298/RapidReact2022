@@ -1,51 +1,46 @@
 
 
-package frc.robot.commands.basic;
+package frc.robot.commands.basic.shoot;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Feeder;
 
 public class Feed extends CommandBase {
   
   // Drivetrain subsystem needed for this command
-  private Shooter shooter;
-  
+  private Feeder feeder;
 
-  /** Creates a new ArcadeDrive. */
-  public Feed(Shooter shooter) {
+  /** Creates a new Feed. */
+  public Feed(Feeder feeder) {
     // Obtains drivetrain from RobotContainer
-    this.shooter = shooter;
+    this.feeder = feeder;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
+    addRequirements(feeder);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Robot starts out not moving
-    shooter.stopFeed();
+    feeder.stopFeed();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.feed();
-
+    feeder.feed();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopFeed();
-
+    feeder.stopFeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Driving shall never stop
     return false;
   }
 }

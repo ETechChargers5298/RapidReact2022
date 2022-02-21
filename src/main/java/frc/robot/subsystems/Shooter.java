@@ -4,60 +4,64 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Shooters;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-//import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends SubsystemBase {
 
-  // Motors
-  private CANSparkMax feeder = new CANSparkMax(Constants.Shooters.FEEDER_MOTOR_PORT, MotorType.kBrushless);
-  private CANSparkMax flyWheel = new CANSparkMax(Constants.Shooters.FLYWHEEL_MOTOR_PORT, MotorType.kBrushless);
+  // declares flywheel motor
+  private CANSparkMax flywheel;
 
-  //Encoders
-  private RelativeEncoder flyEncoder = flyWheel.getAlternateEncoder(Constants.Shooters.COUNTS_PER_REV);
+  // declares encoder for flywheel
+  private RelativeEncoder flyEncoder;
 
   /** Creates a new Shooter. */
   public Shooter() {
-    flyWheel.setInverted(Constants.Shooters.FLYWHEEL_INVERSION);
-    feeder.setInverted(Constants.Shooters.FEEDER_INVERSION);
+    // creates motor
+    flywheel = new CANSparkMax(Shooters.FLYWHEEL_MOTOR_PORT, MotorType.kBrushless);
+
+    // inverts motor
+    flywheel.setInverted(Shooters.FLYWHEEL_INVERSION);
+
+    // obtains encoder
+    flyEncoder = flywheel.getAlternateEncoder(Shooters.FLYWHEEL_COUNTS_PER_REV);
+
+    // inverts encoder
+    flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
   }
 
-  // Feed balls into flywheel
-  public void feed() {
-    feeder.set(Constants.Shooters.FEEDER_SPEED);
+  /**
+   * shooter revs up to make a shot
+   * @author raymond
+   */
+  public void revUp() {
+    flywheel.set(Shooters.REV_SPEED);
   }
 
-  //Undo the feeding
-  public void unfeed() {
-    feeder.set(-Constants.Shooters.FEEDER_SPEED);
-  }
-
-  //Get ready to shoot
-  public void rampUp() {
-    flyWheel.set(Constants.Shooters.RAMP_SPEED);
-  }
-
-  //Return Encoder velocity
-  public double getFlyVelocity() {
-    // return flyEncoder.getRate();
-    // return 0.0;
+  /**
+   * returns the velocity of the shooter
+   * @author raymond
+   */
+  public double getVelocity() {
     return flyEncoder.getVelocity();
   }
 
+  /**
+   * stops the flywheel
+   * @author raymond
+   */
   public void stopFly(){
-    flyWheel.set(0);
-  }
-
-  public void stopFeed(){
-    feeder.set(0);
+    flywheel.set(0);
   }
 
   @Override
   public void periodic() {
-  // This method will be called once per scheduler run
+    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter Encoder", getVelocity());
   }
 }

@@ -1,14 +1,15 @@
-package frc.robot.commands.basic;
+package frc.robot.commands.basic.cargo;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeAhhh extends CommandBase {
-  //Intake subsystem needed for this command
-  private Intake intake; 
+public class IntakeRetract extends CommandBase {
+
+  // Intake subsystem needed for this command
+  private Intake intake;
   
-  /** Creates a new ShiftTorque. */
-  public IntakeAhhh(Intake intake) {
+  /** Creates a new IntakeRetract. */
+  public IntakeRetract(Intake intake) {
     // Assigns intake parameter to intake field 
     this.intake = intake;
   }
@@ -20,7 +21,7 @@ public class IntakeAhhh extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeAhhh();
+    intake.intakeRetract();
   }
 
   // Called once the command ends or is interrupted.
