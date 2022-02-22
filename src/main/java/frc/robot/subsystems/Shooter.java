@@ -32,11 +32,11 @@ public class Shooter extends SubsystemBase {
     //flyEncoder = flywheel.getAlternateEncoder(Shooters.FLYWHEEL_COUNTS_PER_REV);
     flyEncoder = flywheel.getEncoder();
 
-    flyEncoder.setVelocityConversionFactor(2 * Math.PI);
-    flyEncoder.setPositionConversionFactor(2 * Math.PI);
+    //flyEncoder.setVelocityConversionFactor(2 * Math.PI);
+    //flyEncoder.setPositionConversionFactor(2 * Math.PI);
 
     // inverts encoder
-    flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
+    //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
 
     
   }
@@ -58,6 +58,13 @@ public class Shooter extends SubsystemBase {
     return flyEncoder.getVelocity();
   }
 
+
+  public double getPosition() {
+    return flyEncoder.getPosition();
+  }
+
+  
+
    /**
    * controls flywheel using volts
    * @author catears
@@ -77,6 +84,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Encoder", getVelocity());
+    SmartDashboard.putNumber("Shooter Encoder V", getVelocity());
+    SmartDashboard.putNumber("Shooter Position", getPosition());
   }
 }
