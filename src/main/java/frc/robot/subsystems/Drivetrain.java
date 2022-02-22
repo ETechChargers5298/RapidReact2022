@@ -273,7 +273,7 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     updateTelemetry();
     updateOdometry();
-    SmartDashboard.putNumber("ML Dist to Cargo", LookCargo.distanceToCargo(LookCargo.getAllianceColor()));
+    SmartDashboard.putNumber("ML Dist to Cargo", LookCargo.distanceToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
     SmartDashboard.putNumber("ML Angle To Cargo", LookCargo.angleToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
     
   }
