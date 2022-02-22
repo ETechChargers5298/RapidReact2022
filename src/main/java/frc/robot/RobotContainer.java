@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.List;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -88,6 +89,10 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    // Starts Camera
+    CameraServer.startAutomaticCapture();
+    
     // Configures the button bindings
     configureButtonBindings();
     // Configures the axes bindings 
@@ -110,6 +115,7 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
 
     // Intake eat & spit buttons
+    //new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
     new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
     new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeSpit, true);
     

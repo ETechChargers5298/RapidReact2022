@@ -32,7 +32,7 @@ public class TurretAim extends CommandBase {
   @Override
   public void execute() {
     // The turret moves to the target
-    turret.turretAim();
+    turret.turretAimP();
   }
 
   // Called once the command ends or is interrupted.

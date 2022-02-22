@@ -123,14 +123,16 @@ public class Turret extends SubsystemBase {
       stopTurret();
     }
 
+    //move to the right
     else if(h > target + gap){
       error = h - target - gap;
       moveTurretRight(Math.abs(error * kP));
     }
 
+    //move to left
     else if(h < target - gap){
       error = h - target + gap;
-      moveTurretLeft(Math.abs(error * kP));
+      moveTurretLeft(-Math.abs(error * kP));
     }
 
     else{

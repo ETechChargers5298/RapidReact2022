@@ -61,7 +61,7 @@ public final class Constants {
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
-        public static final double REV_SPEED = 1.0;
+        public static final double REV_SPEED = .75;
       
         public static final int DESIRED_RPM = 1000;
         public static final double RADIAN_PER_SECOND = 5000;
