@@ -23,11 +23,17 @@ public class ShooterState extends CommandBase {
 
   private LinearSystem<N1,N1,N1> flyWheelPlant = LinearSystemId.identifyVelocitySystem(Shooters.FLYWHEEL_KV, Shooters.FLYWHEEL_KA);
 
-  private KalmanFilter<N1,N1,N1> observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(3.0), VecBuilder.fill(0.01), 0.02);
+  private double deltaTime = 0.02;
+  private double modelTrust = 3.0;
+  private double encoderTrust = 0.01;
 
-  private LinearQuadraticRegulator<N1,N1,N1> controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(8), VecBuilder.fill(12), 0.02);
+  private KalmanFilter<N1,N1,N1> observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(modelTrust), VecBuilder.fill(encoderTrust), deltaTime);
 
-  private LinearSystemLoop<N1,N1,N1> loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, 12, 0.02);
+  private double velocityTolerance = 8;
+  private double maxVolts = 12;
+  private LinearQuadraticRegulator<N1,N1,N1> controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(velocityTolerance), VecBuilder.fill(maxVolts), deltaTime);
+
+  private LinearSystemLoop<N1,N1,N1> loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, maxVolts, deltaTime);
   /** Creates a new ShooterState. */
   public ShooterState(Shooter shooter) {
     this.shooter = shooter;
@@ -49,7 +55,7 @@ public class ShooterState extends CommandBase {
 
     loop.correct(VecBuilder.fill(shooter.getVelocity()));
 
-    loop.predict(0.02);
+    loop.predict(deltaTime);
 
     shooter.flyVolt(loop.getU(0));
   }

@@ -64,7 +64,7 @@ public final class Constants {
         public static final double REV_SPEED = 1.0;
       
         public static final int DESIRED_RPM = 1000;
-        public static final double RADIAN_PER_SECOND = 1500;
+        public static final double RADIAN_PER_SECOND = 5000;
         public static final double FLYWHEEL_KV = 0.02;
         public static final double FLYWHEEL_KA = 0.001;
 
