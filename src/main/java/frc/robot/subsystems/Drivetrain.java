@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Robot;
+import frc.robot.utils.LookCargo;
 import frc.robot.Constants.DriveTrain;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -238,6 +239,17 @@ public class Drivetrain extends SubsystemBase {
     return diffDriveKinematics;
   }
   
+  //method to turn robot to align to desired Cargo seen by ML
+  public void turnToMLAngle(){
+
+  }
+  
+  //method to turn robot to drive forward to desired Cargo seen by ML
+  public void driveToMLCargo(){
+
+  }
+
+
 
 
   // odometry 
@@ -245,8 +257,6 @@ public class Drivetrain extends SubsystemBase {
     diffDriveOdometry.update(getAngle(), getLeftDistance(), getRightDistance());
     field.setRobotPose(diffDriveOdometry.getPoseMeters());
   }
-
-
 
   // displaying data
   public void updateTelemetry() {
@@ -263,5 +273,8 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     updateTelemetry();
     updateOdometry();
+    SmartDashboard.putNumber("ML Angle to Cargo", LookCargo.distanceToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
+    SmartDashboard.putNumber("ML Dist To Cargo", LookCargo.angleToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
+    
   }
 }

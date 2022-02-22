@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.io.LogSocketServer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.LookCargo;
 import frc.robot.utils.PneumaticsUtil;
 
 /**
@@ -48,6 +49,8 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.getInstance().start();
+
+    LookCargo.setAllianceColor();
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
