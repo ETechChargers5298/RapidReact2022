@@ -152,6 +152,18 @@ public final class Constants {
         public static final double CLIMB_I = 0;
         public static final double CLIMB_D = 0;
         public static final double[] CLIMB_PID = {CLIMB_P, CLIMB_I, CLIMB_D};
+
+        public static final double GYRO_DRIVE_DISTANCE_P = 1;
+        public static final double GYRO_DRIVE_DISTANCE_I = 0;
+        public static final double GYRO_DRIVE_DISTANCE_D = 0;
+        public static final double[] GYRO_DRIVE_DISTANCE_PID = {GYRO_DRIVE_DISTANCE_P, GYRO_DRIVE_DISTANCE_I, GYRO_DRIVE_DISTANCE_D};
+        public static final double GYRO_DRIVE_DISTANCE_TOLERANCE = 0.5;
+
+        public static final double GYRO_DRIVE_ANGLE_P = 1;
+        public static final double GYRO_DRIVE_ANGLE_I = 0;
+        public static final double GYRO_DRIVE_ANGLE_D = 0;
+        public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
+        public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
     }
 
     public static final class Buttons {
