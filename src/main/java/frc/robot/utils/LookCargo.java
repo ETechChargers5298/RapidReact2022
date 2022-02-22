@@ -42,33 +42,43 @@ public class LookCargo {
 		return cargoList;
 	}
 
-    //Used to identify the closest Cargo of a specific color in the ArrayList
-    public static Cargo findClosestCargo(String Color){
+    //Used to identify the closest Cargo of a specific color in the ArrayList -Omar lloyd
+    public static Cargo findClosestCargo(String color){
         //write full method here
+        int big = -1;
+        Cargo bigC = null;
+        //go through the arryList
+        for(Cargo c : cargoList ){
 
-
-
-        return new Cargo(allianceColor, 0,0,0,0, 100.0);
+            int dis = c.gety();
+            if(dis > big  && c.getColor().equals(color)){
+                big = dis;
+                bigC = c;
+            } 
+        }
+        return bigC;
+        //return new Cargo(allianceColor, 0,0,0,0, 100.0);
     }
 
 
-    //Method to find the "error" difference (in pixels) between a desired Cargo and facing the front of the robot
+    //Method to find the "error" difference (in pixels) between a desired Cargo and facing the front of the robot -Omar lloyd
     public static int angleToCargo(Cargo c){
         //write full method here
-
+        int mid = mlImageWidth / 2;
+        int tar = c.getx();
+        int dist = tar - mid;
     
 
-        return 0;
+        return dist;
     }
 
 
-    //Method to find the "error" difference (in pixels) between a desired Cargo and the front intake rollers
+    //Method to find the "error" difference (in pixels) between a desired Cargo and the front intake rollers -omar lloyd
     public static int distanceToCargo(Cargo c){
-        //write full method here
 
-    
-
-        return 0;
+        int robodist = mlImageHeight - c.gety();
+        
+        return robodist;
     }
     
 
