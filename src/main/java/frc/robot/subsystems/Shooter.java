@@ -32,8 +32,8 @@ public class Shooter extends SubsystemBase {
     //flyEncoder = flywheel.getAlternateEncoder(Shooters.FLYWHEEL_COUNTS_PER_REV);
     flyEncoder = flywheel.getEncoder();
 
-    //flyEncoder.setVelocityConversionFactor(2 * Math.PI);
-    //flyEncoder.setPositionConversionFactor(2 * Math.PI);
+    flyEncoder.setVelocityConversionFactor((2 * Math.PI) / 60);
+    flyEncoder.setPositionConversionFactor((2 * Math.PI) / 60);
 
     // inverts encoder
     //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
