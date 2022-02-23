@@ -30,8 +30,10 @@ import frc.robot.commands.basic.drive.ArcadeDrive;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.shoot.Feed;
+import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.FlywheelSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
+import frc.robot.commands.closedloop.FlywheelRPM;
 import frc.robot.commands.closedloop.TurretAim;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -83,9 +85,12 @@ public class RobotContainer {
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
   private final Feed feed = new Feed(feeder);
+  private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
   private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
+  private final FlywheelRPM flywheelRPM = new FlywheelRPM(shooter,4000);
   private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -125,8 +130,10 @@ public class RobotContainer {
 
     // Shooting Trigger and Button
     //new TriggerButton(operatorController, "RIGHT").whileHeld(shoot, true);  //not working well yet
-    new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelSpin, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
+    //new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelSpin, true);  //works but fluctuates with battery
+    new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelRPM, true);
+    //new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
+    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     //Intake Chomp POV buttons
     new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
@@ -135,11 +142,6 @@ public class RobotContainer {
     //Aim button
     new TriggerButton(operatorController, "LEFT").whileHeld(turretAim, true);
 
-/*
-    // Buttons to control turrets (Axis being used for now)
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(turretLeft, true);
-    new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(turretRight, true); 
-*/
   }
   
   /**
@@ -165,7 +167,12 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+
   public Command getAutonomousCommand() {
+
+/*
+   
     // No autonomous code exists because we are not team 1678
     drivetrain.resetOdometry();
 
@@ -193,5 +200,11 @@ public class RobotContainer {
       drivetrain.getRightWheelPID(),
       drivetrain::setWheelVolts, 
       drivetrain);
+
+      */
+
+      return intakeEat;
   }
+
+
 }

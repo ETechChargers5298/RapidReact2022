@@ -117,7 +117,7 @@ public class Turret extends SubsystemBase {
     double target = 0.0; //The target, which we want to be at 0 offset
     double gap = 1.0; //A margin of wiggle room around the target
     double error = 0.0; //The area between the gap and the edge of the limelight (25 in this case)
-    double kP = 0.04; //Slope of the line we want the turret to aim by
+    double kP = 0.06; //Slope of the line we want the turret to aim by
 
     if(!Limelight.isValidTarget()){
       stopTurret();
@@ -126,13 +126,13 @@ public class Turret extends SubsystemBase {
     //move to the right
     else if(h > target + gap){
       error = h - target - gap;
-      moveTurretRight(Math.abs(error * kP));
+      moveTurret(Math.abs(error * kP));
     }
 
     //move to left
     else if(h < target - gap){
       error = h - target + gap;
-      moveTurretLeft(-Math.abs(error * kP));
+      moveTurret(-Math.abs(error * kP));
     }
 
     else{

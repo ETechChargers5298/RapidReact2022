@@ -6,6 +6,7 @@ package frc.robot.commands.basic.shoot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Shooter;
 
 public class FlywheelSpin extends CommandBase {
@@ -40,7 +41,8 @@ public class FlywheelSpin extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pew.revUp();
+    //pew.revUp();
+    pew.flyVolt(Shooters.REV_VOLTAGE);
     executeC++;
     SmartDashboard.putNumber("ExecuteC", executeC);
   }

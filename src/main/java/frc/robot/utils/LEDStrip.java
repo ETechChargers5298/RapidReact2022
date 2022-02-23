@@ -52,8 +52,20 @@ public class LEDStrip {
         controller.set(LEDColors.BLUE_STROBE);
     }
     
+    public static void reaching(){
+        controller.set(LEDColors.BLUE_HEARTBEAT);
+    }
+
+    public static void isGoodClimb(){
+        controller.set(LEDColors.RED_HEARTBEAT);
+    }
+
     public static void climbing(){
-        controller.set(LEDColors.RAINBOW_GLITTER);
+        controller.set(LEDColors.MEDIUM_HEARTBEAT);
+    }
+
+    public static void celebrateClimb(){
+        controller.set(LEDColors.RAINBOW_PARTY);
     }
 
 

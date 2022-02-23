@@ -20,6 +20,7 @@ public class Shooter extends SubsystemBase {
   // declares encoder for flywheel
   private RelativeEncoder flyEncoder;
 
+
   /** Creates a new Shooter. */
   public Shooter() {
     // creates motor
@@ -34,10 +35,6 @@ public class Shooter extends SubsystemBase {
 
     //flyEncoder.setVelocityConversionFactor(2 * Math.PI);
     //flyEncoder.setPositionConversionFactor(2 * Math.PI);
-
-    // inverts encoder
-    //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
-
     
   }
 
@@ -47,7 +44,8 @@ public class Shooter extends SubsystemBase {
    * @author raymond
    */
   public void revUp() {
-    flywheel.set(Shooters.REV_SPEED);
+  flywheel.set(Shooters.REV_SPEED);
+  
   }
 
   /**
@@ -64,7 +62,12 @@ public class Shooter extends SubsystemBase {
   }
 
   
-
+   /**
+   * controls flywheel basic
+   */
+  public void fly(double speed){
+    flywheel.set(speed);
+  }
    /**
    * controls flywheel using volts
    * @author catears
@@ -72,7 +75,14 @@ public class Shooter extends SubsystemBase {
   public void flyVolt(double voltage){
     flywheel.setVoltage(voltage);
   }
+
+  //method that needs help!
+  public void flyRPM(double desiredRPM){
+    double voltage = desiredRPM;
+    flywheel.setVoltage(voltage);
+  }
   
+
   /**
    * stops the flywheel
    * @author raymond
@@ -86,5 +96,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Encoder V", getVelocity());
     SmartDashboard.putNumber("Shooter Position", getPosition());
+    
+    
   }
 }
