@@ -67,9 +67,7 @@ public final class Constants {
         
       
         public static final int DESIRED_RPM = 1000;
-        public static final double RADIAN_PER_SECOND = 1500;
-        public static final double FLYWHEEL_KV = 0.02;
-        public static final double FLYWHEEL_KA = 0.001;
+        public static final double RADIAN_PER_SECOND = 5000;
 
         //public static final boolean FLYWHEEL_ENCODER_INVERSION = false;  //can't invert built-in encoder
         //public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
@@ -151,10 +149,10 @@ public final class Constants {
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
 
-        public static final double TURRET_P = 1;
+        public static final double TURRET_P = 0.10;
         public static final double TURRET_I = 0;
         public static final double TURRET_D = 0;
-        public static final double[] TURRET_PID = {TURRET_P, TURRET_I, TURRET_D};
+        public static final double TURRET_MARGIN = 0.5;
 
         public static final double CLIMB_P = 1;
         public static final double CLIMB_I = 0;
@@ -165,6 +163,27 @@ public final class Constants {
         public static final double FLYWHEEL_KI = 0;
         public static final double FLYWHEEL_KD = 0;
         public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
+        
+        public static final double GYRO_DRIVE_DISTANCE_P = 1;
+        public static final double GYRO_DRIVE_DISTANCE_I = 0;
+        public static final double GYRO_DRIVE_DISTANCE_D = 0;
+        public static final double[] GYRO_DRIVE_DISTANCE_PID = {GYRO_DRIVE_DISTANCE_P, GYRO_DRIVE_DISTANCE_I, GYRO_DRIVE_DISTANCE_D};
+        public static final double GYRO_DRIVE_DISTANCE_TOLERANCE = 0.5;
+
+        public static final double GYRO_DRIVE_ANGLE_P = 1;
+        public static final double GYRO_DRIVE_ANGLE_I = 0;
+        public static final double GYRO_DRIVE_ANGLE_D = 0;
+        public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
+        public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
+
+        public static final double FLYWHEEL_KV = 0.02;
+        public static final double FLYWHEEL_KA = 0.001;
+
+        public static final double DELTA_TIME = 0.02;
+        public static final double MODEL_TRUST = 3.0;
+        public static final double ENCODER_TRUST = 0.01;
+        public static final double VELOCITY_TOLERANCE = 8;
+        public static final double MAX_VOLTS = 12;
     }
 
     public static final class Buttons {

@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
 import frc.robot.utils.LEDStrip;
 import frc.robot.utils.Limelight;
@@ -45,7 +46,7 @@ public class Turret extends SubsystemBase {
 
 
   public void moveTurret(double speed){
-    if (Math.abs(speed) < 0.01) { 
+    if (Math.abs(speed) < 0.1) { 
       speed = 0;
     }
 
@@ -115,9 +116,9 @@ public class Turret extends SubsystemBase {
   public void turretAimP() {
     double h = Limelight.getHorizontalOffset(); //Naming the horizontal offset
     double target = 0.0; //The target, which we want to be at 0 offset
-    double gap = 1.0; //A margin of wiggle room around the target
+    double gap = Constants.Control.TURRET_MARGIN; //A margin of wiggle room around the target
     double error = 0.0; //The area between the gap and the edge of the limelight (25 in this case)
-    double kP = 0.06; //Slope of the line we want the turret to aim by
+    double kP = Constants.Control.TURRET_P; //Slope of the line we want the turret to aim by
 
     if(!Limelight.isValidTarget()){
       stopTurret();

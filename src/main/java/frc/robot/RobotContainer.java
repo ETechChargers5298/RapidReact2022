@@ -35,6 +35,7 @@ import frc.robot.commands.basic.shoot.FlywheelSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.FlywheelRPM;
 import frc.robot.commands.closedloop.TurretAim;
+import frc.robot.commands.prototype.RumbleTest;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -45,8 +46,10 @@ import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
 import frc.robot.utils.LEDStrip;
+import frc.robot.utils.Rumble;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -116,8 +119,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Gear shifting Buttons
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(shiftSpeed);
-    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(shiftTorque);
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ParallelCommandGroup(shiftSpeed, new RumbleTest(driveController, true)));
+    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque, new RumbleTest(driveController, false)));
 
     // Intake eat & spit buttons
     //new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
@@ -129,9 +132,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
     // Shooting Trigger and Button
-    //new TriggerButton(operatorController, "RIGHT").whileHeld(shoot, true);  //not working well yet
-    //new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelSpin, true);  //works but fluctuates with battery
-    new TriggerButton(operatorController, "RIGHT").whileHeld(flywheelRPM, true);
+    //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(shoot, true);  //not working well yet
+    //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelSpin, true);  //works but fluctuates with battery
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelRPM, true);
     //new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
@@ -140,7 +143,7 @@ public class RobotContainer {
     new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeRetract);  
 
     //Aim button
-    new TriggerButton(operatorController, "LEFT").whileHeld(turretAim, true);
+    new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
 
   }
   

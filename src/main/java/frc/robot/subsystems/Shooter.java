@@ -33,9 +33,12 @@ public class Shooter extends SubsystemBase {
     //flyEncoder = flywheel.getAlternateEncoder(Shooters.FLYWHEEL_COUNTS_PER_REV);
     flyEncoder = flywheel.getEncoder();
 
-    //flyEncoder.setVelocityConversionFactor(2 * Math.PI);
-    //flyEncoder.setPositionConversionFactor(2 * Math.PI);
-    
+    //flyEncoder.setVelocityConversionFactor((2 * Math.PI) / 60);
+    //flyEncoder.setPositionConversionFactor((2 * Math.PI) / 60);
+
+    // inverts encoder
+    //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
+
   }
 
 
@@ -44,8 +47,7 @@ public class Shooter extends SubsystemBase {
    * @author raymond
    */
   public void revUp() {
-  flywheel.set(Shooters.REV_SPEED);
-  
+    flywheel.set(Shooters.REV_SPEED);
   }
 
   /**
@@ -56,11 +58,9 @@ public class Shooter extends SubsystemBase {
     return flyEncoder.getVelocity();
   }
 
-
   public double getPosition() {
     return flyEncoder.getPosition();
   }
-
   
    /**
    * controls flywheel basic
@@ -82,7 +82,6 @@ public class Shooter extends SubsystemBase {
     flywheel.setVoltage(voltage);
   }
   
-
   /**
    * stops the flywheel
    * @author raymond
@@ -95,8 +94,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Encoder V", getVelocity());
-    SmartDashboard.putNumber("Shooter Position", getPosition());
-    
-    
+    SmartDashboard.putNumber("Shooter Position", getPosition());    
   }
+
 }
