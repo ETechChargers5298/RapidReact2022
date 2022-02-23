@@ -5,16 +5,22 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
+import frc.robot.utils.LEDStrip;
 
 
 public class Climber extends SubsystemBase {
 
   // creates climber motor
   private CANSparkMax climbMotor;
+
+  // declares encoder for flywheel
+  private RelativeEncoder climbEncoder;
 
   /** Creates a new Climber. */
   public Climber() {
@@ -23,6 +29,9 @@ public class Climber extends SubsystemBase {
 
     // inverts motor
     climbMotor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
+
+    // obtains encoder
+    climbEncoder = climbMotor.getEncoder();
   }
 
   /**
@@ -31,6 +40,21 @@ public class Climber extends SubsystemBase {
    */
   public void climberMove(double speed){
     climbMotor.set(speed);
+
+    double e = getEncoderValue();
+    
+    if(e<100){
+      //don't do anything
+    } else if(e < Climbers.CLIMBER_ENC_START){
+      LEDStrip.reaching();
+    } else if(e < Climbers.CLIMBER_ENC_TOP){
+      LEDStrip.isGoodClimb();
+    } else if( e < Climbers.CLIMBER_ENC_DONE) {
+      LEDStrip.climbing();
+    } else {
+      LEDStrip.celebrateClimb();
+    }
+
   }
 
   /**
@@ -57,8 +81,20 @@ public class Climber extends SubsystemBase {
     climbMotor.set(0);
   }
 
+  //Gets the encoder value
+  public double getEncoderValue() {
+    return climbEncoder.getPosition();
+  }
+
+  //Sets the Encoder value back to Zero
+  public void zeroEncoder() {
+    climbEncoder.setPosition(0.0);
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ClimbEncoder", getEncoderValue());
   }
 }

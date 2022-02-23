@@ -44,6 +44,7 @@ public final class Constants {
     }
     
     public static final class Shooters {
+
         public static final int FEEDER_MOTOR_PORT = 9;
         public static final boolean FEEDER_INVERSION = true;
         public static final double FEEDER_SPEED = 0.75;
@@ -56,24 +57,31 @@ public final class Constants {
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
         public static final boolean TURRET_ENCODER_INVERSION = false;
 
-        public static final int TURRET_LEFT_LIMIT_PORT = 6;
-        public static final int TURRET_RIGHT_LIMIT_PORT = 7;
+        public static final int TURRET_LEFT_LIMIT_PORT = 3;
+        public static final int TURRET_RIGHT_LIMIT_PORT = 4;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
         public static final double REV_SPEED = .75;
+        public static final double REV_VOLTAGE = 8.8;
+        
       
         public static final int DESIRED_RPM = 1000;
         public static final double RADIAN_PER_SECOND = 5000;
 
-        public static final boolean FLYWHEEL_ENCODER_INVERSION = false;
-        public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
+        //public static final boolean FLYWHEEL_ENCODER_INVERSION = false;  //can't invert built-in encoder
+        //public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
         
         public static final double LIMELIGHT_ANG_DEG = 45;
         public static final double GOAL_HEIGHT_INCH = 104;
     }
     
     public static final class Loading{
+
+        
+        public static final int CARGO_LIMIT_SWITCH_PORT = 1;
+        public static final int CARGO2_LIMIT_SWITCH_PORT = 2;
+        
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;
         public static final double LOADER_SPEED = 0.75;
@@ -84,9 +92,6 @@ public final class Constants {
 
         public static final int INTAKE_CHOMP_PORT = 2;
         public static final int INTAKE_RETRACT_PORT = 3;
-
-        public static final int TOP_CARGO_LIMIT_PORT = 4;
-        public static final int BOTTOM_CARGO_LIMIT_PORT = 5;
     }
   
     public static final class Gamepad {
@@ -109,9 +114,12 @@ public final class Constants {
 
     public static final class Climbers {
         public static final int CLIMBER_MOTOR_PORT = 12;
-        public static final int CLIMBER_LIMIT_PORT = 8;
+        public static final int CLIMBER_LIMIT_PORT = 5;
         public static final boolean CLIMBER_MOTOR_INVERSION = false;
         public static final double CLIMBER_MOTOR_SPEED = 0.75;
+        public static final int CLIMBER_ENC_START = 100;
+        public static final int CLIMBER_ENC_TOP = 1200;
+        public static final int CLIMBER_ENC_DONE = 1800;
     }
 
     public static final class Control {
@@ -141,16 +149,21 @@ public final class Constants {
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
 
-        public static final double TURRET_P = 1;
+        public static final double TURRET_P = 0.10;
         public static final double TURRET_I = 0;
         public static final double TURRET_D = 0;
-        public static final double[] TURRET_PID = {TURRET_P, TURRET_I, TURRET_D};
+        public static final double TURRET_MARGIN = 0.5;
 
         public static final double CLIMB_P = 1;
         public static final double CLIMB_I = 0;
         public static final double CLIMB_D = 0;
         public static final double[] CLIMB_PID = {CLIMB_P, CLIMB_I, CLIMB_D};
 
+        public static final double FLYWHEEL_KP = 1;
+        public static final double FLYWHEEL_KI = 0;
+        public static final double FLYWHEEL_KD = 0;
+        public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
+        
         public static final double GYRO_DRIVE_DISTANCE_P = 1;
         public static final double GYRO_DRIVE_DISTANCE_I = 0;
         public static final double GYRO_DRIVE_DISTANCE_D = 0;
