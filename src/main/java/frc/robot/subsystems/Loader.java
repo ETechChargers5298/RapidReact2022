@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
+import frc.robot.utils.LEDStrip;
 
 public class Loader extends SubsystemBase {
   
@@ -18,6 +19,10 @@ public class Loader extends SubsystemBase {
   private CANSparkMax motor;
   private DigitalInput ls1;
   private DigitalInput ls2;
+  private enum Status {
+    LOADING, UNLOADING
+  }
+  private Status status;
 
 
   /** Creates a new Loader. */
@@ -47,6 +52,16 @@ public class Loader extends SubsystemBase {
    */
   public void load() {
     motor.set(Loading.LOADER_SPEED);
+
+    LEDStrip.makeRequest(LEDStrip.LightFlag.LOADING_LIGHT_FLAG);
+
+    if(getCargoLimit() && getCargoLimit2()){
+      LEDStrip.prefLoaderLights = "twoCargo";
+    } else if (getCargoLimit()){
+      LEDStrip.prefLoaderLights = "oneCargo";
+    } else{
+      LEDStrip.prefLoaderLights = "noCargo";
+    }
   }
 
   /**

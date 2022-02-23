@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.List;
 
 import edu.wpi.first.cameraserver.CameraServer;
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,6 +31,7 @@ import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.drive.ArcadeDrive;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
+import frc.robot.commands.basic.lights.KillLights;
 import frc.robot.commands.basic.shoot.Feed;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.FlywheelSpin;
@@ -93,10 +96,15 @@ public class RobotContainer {
   private final FlywheelRPM flywheelRPM = new FlywheelRPM(shooter,4000);
   private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  private final KillLights killLights = new KillLights();
   
+  //public static Alliance allianceColor;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //Gets alliance color from the 
+    //allianceColor = DriverStation.getAlliance();
 
     // Starts Camera
     CameraServer.startAutomaticCapture();
@@ -107,7 +115,7 @@ public class RobotContainer {
     configureAxes();
 
     LEDStrip.startcolor();
-
+    
   }
 
   /**
@@ -144,6 +152,10 @@ public class RobotContainer {
 
     //Aim button
     new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
+
+    // LED Strip Buttons
+    new JoystickButton(driveController, Button.kX.value).whenPressed(killLights);
+
 
   }
   

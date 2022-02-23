@@ -51,10 +51,9 @@ public class Turret extends SubsystemBase {
     }
 
     if(Limelight.isValidTarget()){
-      LEDStrip.foundTarget();
-    }
-    else{
-      LEDStrip.findingTarget();
+      LEDStrip.prefShootingLights = "foundTarget";
+    } else{
+      LEDStrip.prefShootingLights = "findingTarget";
     }
 
     SmartDashboard.putNumber("TURRET SPEED", speed);
@@ -104,7 +103,7 @@ public class Turret extends SubsystemBase {
     }
 
     else{
-      LEDStrip.onTarget();
+      LEDStrip.prefShootingLights = "onTarget";
       stopTurret();
     }
   }
@@ -137,7 +136,7 @@ public class Turret extends SubsystemBase {
     }
 
     else{
-      LEDStrip.onTarget();
+      LEDStrip.prefShootingLights = "onTarget";
       stopTurret();
     }
   }

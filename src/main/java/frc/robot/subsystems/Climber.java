@@ -44,15 +44,17 @@ public class Climber extends SubsystemBase {
     double e = getEncoderValue();
     
     if(e<100){
+
+    
       //don't do anything
     } else if(e < Climbers.CLIMBER_ENC_START){
-      LEDStrip.reaching();
+      LEDStrip.prefClimbingLights = "reaching";
     } else if(e < Climbers.CLIMBER_ENC_TOP){
-      LEDStrip.isGoodClimb();
+      LEDStrip.prefClimbingLights = "isGoodClimb";
     } else if( e < Climbers.CLIMBER_ENC_DONE) {
-      LEDStrip.climbing();
+      LEDStrip.prefClimbingLights = "climbing";
     } else {
-      LEDStrip.celebrateClimb();
+      LEDStrip.prefClimbingLights = "celebrateClimb";
     }
 
   }
