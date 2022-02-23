@@ -65,8 +65,6 @@ public final class Constants {
       
         public static final int DESIRED_RPM = 1000;
         public static final double RADIAN_PER_SECOND = 5000;
-        public static final double FLYWHEEL_KV = 0.02;
-        public static final double FLYWHEEL_KA = 0.001;
 
         public static final boolean FLYWHEEL_ENCODER_INVERSION = false;
         public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
@@ -164,6 +162,15 @@ public final class Constants {
         public static final double GYRO_DRIVE_ANGLE_D = 0;
         public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
         public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
+
+        public static final double FLYWHEEL_KV = 0.02;
+        public static final double FLYWHEEL_KA = 0.001;
+
+        public static final double DELTA_TIME = 0.02;
+        public static final double MODEL_TRUST = 3.0;
+        public static final double ENCODER_TRUST = 0.01;
+        public static final double VELOCITY_TOLERANCE = 8;
+        public static final double MAX_VOLTS = 12;
     }
 
     public static final class Buttons {

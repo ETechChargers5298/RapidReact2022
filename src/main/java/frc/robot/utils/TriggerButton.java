@@ -12,7 +12,8 @@ public class TriggerButton extends Button {
 
     private XboxController controller;
     private String side;
-    //private boolean isLeft;
+    public static final String left = "LEFT";
+    public static final String right = "RIGHT";
     
     /**
      * Turns trigger into button
@@ -30,10 +31,10 @@ public class TriggerButton extends Button {
     @Override
     public boolean get(){
         // After press 0.5 on trigger value is true
-       if(side.equals("LEFT")){
+       if(side.equals(left)){
         return controller.getLeftTriggerAxis() >= 0.5;
        }
-       else if (side.equals("RIGHT")){
+       else if (side.equals(right)){
         return controller.getRightTriggerAxis() >= 0.5;
        }
        return false;

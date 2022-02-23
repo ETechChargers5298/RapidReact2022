@@ -14,6 +14,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Control;
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Shooter;
 
@@ -21,23 +22,28 @@ public class ShooterState extends CommandBase {
 
   private Shooter shooter;
 
-  private LinearSystem<N1,N1,N1> flyWheelPlant = LinearSystemId.identifyVelocitySystem(Shooters.FLYWHEEL_KV, Shooters.FLYWHEEL_KA);
+  private LinearSystem<N1,N1,N1> flyWheelPlant;
 
-  private double deltaTime = 0.02;
-  private double modelTrust = 3.0;
-  private double encoderTrust = 0.01;
+  private KalmanFilter<N1,N1,N1> observer;
 
-  private KalmanFilter<N1,N1,N1> observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(modelTrust), VecBuilder.fill(encoderTrust), deltaTime);
+  private LinearQuadraticRegulator<N1,N1,N1> controller;
 
-  private double velocityTolerance = 8;
-  private double maxVolts = 12;
-  private LinearQuadraticRegulator<N1,N1,N1> controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(velocityTolerance), VecBuilder.fill(maxVolts), deltaTime);
-
-  private LinearSystemLoop<N1,N1,N1> loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, maxVolts, deltaTime);
+  private LinearSystemLoop<N1,N1,N1> loop;
+  
   /** Creates a new ShooterState. */
   public ShooterState(Shooter shooter) {
     this.shooter = shooter;
+
+    this.flyWheelPlant = LinearSystemId.identifyVelocitySystem(Control.FLYWHEEL_KV, Control.FLYWHEEL_KA);
+
+    this.observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(Control.MODEL_TRUST), VecBuilder.fill(Control.ENCODER_TRUST), Control.DELTA_TIME);
+
+    this.controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(Control.VELOCITY_TOLERANCE), VecBuilder.fill(Control.MAX_VOLTS), Control.DELTA_TIME);
+
+    this.loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, Control.MAX_VOLTS, Control.DELTA_TIME);
+
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -55,7 +61,7 @@ public class ShooterState extends CommandBase {
 
     loop.correct(VecBuilder.fill(shooter.getVelocity()));
 
-    loop.predict(deltaTime);
+    loop.predict(Control.DELTA_TIME);
 
     shooter.flyVolt(loop.getU(0));
   }
