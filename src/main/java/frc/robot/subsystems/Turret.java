@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
-import frc.robot.utils.LEDStrip;
 import frc.robot.utils.Limelight;
 
 
@@ -139,6 +138,9 @@ public class Turret extends SubsystemBase {
       LEDStrip.prefShootingLights = "onTarget";
       stopTurret();
     }
+    LEDStrip.makeRequest(LEDStrip.LightFlag.SHOOTING_LIGHT_FLAG);
+
+
   }
 
 
