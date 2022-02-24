@@ -11,8 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
-import frc.robot.utils.LEDStrip;
-
+import frc.robot.subsystems.LEDStrip;
 
 public class Climber extends SubsystemBase {
 
@@ -41,18 +40,20 @@ public class Climber extends SubsystemBase {
   public void climberMove(double speed){
     climbMotor.set(speed);
 
-    double e = getEncoderValue();
+    double e = Math.abs(getEncoderValue());
     
-    if(e<100){
-      //don't do anything
-    } else if(e < Climbers.CLIMBER_ENC_START){
-      LEDStrip.reaching();
-    } else if(e < Climbers.CLIMBER_ENC_TOP){
-      LEDStrip.isGoodClimb();
+    if (e > Climbers.CLIMBER_ENC_START){
+    LEDStrip.makeRequest(LEDStrip.LightFlag.CLIMBING_LIGHT_FLAG);
+    }
+
+    if(e < Climbers.CLIMBER_ENC_TOP1){
+      LEDStrip.prefClimbingLights = "reaching";
+    } else if(e < Climbers.CLIMBER_ENC_TOP2){
+      LEDStrip.prefClimbingLights = "isGoodClimb";
     } else if( e < Climbers.CLIMBER_ENC_DONE) {
-      LEDStrip.climbing();
+      LEDStrip.prefClimbingLights = "climbing";
     } else {
-      LEDStrip.celebrateClimb();
+      LEDStrip.prefClimbingLights = "celebrateClimb";
     }
 
   }
@@ -96,5 +97,6 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ClimbEncoder", getEncoderValue());
+    SmartDashboard.putString("ClimbPhase", LEDStrip.prefClimbingLights);
   }
 }

@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.io.LogSocketServer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LEDStrip;
 import frc.robot.utils.PneumaticsUtil;
 
 /**
@@ -69,16 +70,20 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+    //LEDStrip.runLights();
     PneumaticsUtil.reload();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    //LEDStrip.disabledLights();
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+     
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override

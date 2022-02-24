@@ -117,9 +117,10 @@ public final class Constants {
         public static final int CLIMBER_LIMIT_PORT = 5;
         public static final boolean CLIMBER_MOTOR_INVERSION = false;
         public static final double CLIMBER_MOTOR_SPEED = 0.75;
-        public static final int CLIMBER_ENC_START = 100;
-        public static final int CLIMBER_ENC_TOP = 1200;
-        public static final int CLIMBER_ENC_DONE = 1800;
+        public static final int CLIMBER_ENC_START = 10;
+        public static final int CLIMBER_ENC_TOP1 = 87;
+        public static final int CLIMBER_ENC_TOP2 = 200;
+        public static final int CLIMBER_ENC_DONE = 285;
     }
 
     public static final class Control {

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
-import frc.robot.utils.LEDStrip;
 import frc.robot.utils.Limelight;
 
 
@@ -51,10 +50,9 @@ public class Turret extends SubsystemBase {
     }
 
     if(Limelight.isValidTarget()){
-      LEDStrip.foundTarget();
-    }
-    else{
-      LEDStrip.findingTarget();
+      LEDStrip.prefShootingLights = "foundTarget";
+    } else{
+      LEDStrip.prefShootingLights = "findingTarget";
     }
 
     SmartDashboard.putNumber("TURRET SPEED", speed);
@@ -104,7 +102,7 @@ public class Turret extends SubsystemBase {
     }
 
     else{
-      LEDStrip.onTarget();
+      LEDStrip.prefShootingLights = "onTarget";
       stopTurret();
     }
   }
@@ -137,9 +135,12 @@ public class Turret extends SubsystemBase {
     }
 
     else{
-      LEDStrip.onTarget();
+      LEDStrip.prefShootingLights = "onTarget";
       stopTurret();
     }
+    LEDStrip.makeRequest(LEDStrip.LightFlag.SHOOTING_LIGHT_FLAG);
+
+
   }
 
 

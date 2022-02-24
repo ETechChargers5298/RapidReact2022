@@ -79,13 +79,15 @@ public class Drivetrain extends SubsystemBase {
     gearShifter = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
-    encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
-    encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
+    //encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
+    //encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
+    encoderLeft = leftMotorA.getEncoder();
+    encoderRight = rightMotorA.getEncoder();
     navX = new AHRS(SPI.Port.kMXP);
     
     // configure sensors (encoders, gyro)0
-    encoderLeft.setInverted(DriveTrain.ENCODER_LEFT_INVERTED);
-    encoderRight.setInverted(DriveTrain.ENCODER_RIGHT_INVERTED);
+    //encoderLeft.setInverted(DriveTrain.ENCODER_LEFT_INVERTED);
+    //encoderRight.setInverted(DriveTrain.ENCODER_RIGHT_INVERTED);
 
     encoderLeft.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));
     encoderRight.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));

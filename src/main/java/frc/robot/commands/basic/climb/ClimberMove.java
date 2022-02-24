@@ -6,7 +6,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
-import frc.robot.utils.LEDStrip;
+import frc.robot.subsystems.LEDStrip;
 
 public class ClimberMove extends CommandBase {
   
@@ -32,7 +32,8 @@ public class ClimberMove extends CommandBase {
   @Override
   public void initialize() {
     climber.climberStop();
-    LEDStrip.climbing();
+    climber.zeroEncoder();
+    LEDStrip.prefClimbingLights = "climbing";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
