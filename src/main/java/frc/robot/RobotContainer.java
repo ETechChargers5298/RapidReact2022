@@ -128,8 +128,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Gear shifting Buttons
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ParallelCommandGroup(shiftSpeed, new RumbleTest(driveController, true)));
-    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque, new RumbleTest(driveController, false)));
+    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ParallelCommandGroup(shiftSpeed));
+    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque));
 
     // Intake eat & spit buttons
     //new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
