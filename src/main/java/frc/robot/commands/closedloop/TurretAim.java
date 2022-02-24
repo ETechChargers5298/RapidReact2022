@@ -6,6 +6,8 @@ package frc.robot.commands.closedloop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
+import frc.robot.utils.LEDStrip;
+import frc.robot.utils.Limelight;
 
 public class TurretAim extends CommandBase {
 
@@ -33,6 +35,14 @@ public class TurretAim extends CommandBase {
   public void execute() {
     // The turret moves to the target
     turret.turretAimP();
+
+    // if (Limelight.isValidTarget()) {
+
+    //   LEDStrip.onTarget();
+    // }
+    // else {
+    //   LEDStrip.findingTarget();
+    // }
   }
 
   // Called once the command ends or is interrupted.
@@ -40,7 +50,7 @@ public class TurretAim extends CommandBase {
   public void end(boolean interrupted) {
     // The turret stops in the end
     turret.stopTurret();
-    
+   // LEDStrip.startcolor();
   }
 
   // Returns true when the command should end.

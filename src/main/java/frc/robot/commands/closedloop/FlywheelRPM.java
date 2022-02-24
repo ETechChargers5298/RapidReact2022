@@ -5,9 +5,11 @@
 package frc.robot.commands.closedloop;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.Control;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utils.LEDStrip;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,7 +26,7 @@ public class FlywheelRPM extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         () -> desiredRPM,
         // This uses the output
-        output -> shooter.fly(output),
+        output -> shooter.fly(output / 12),
         
         shooter
         );

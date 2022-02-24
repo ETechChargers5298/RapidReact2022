@@ -67,7 +67,7 @@ public final class Constants {
         
       
         public static final int DESIRED_RPM = 1000;
-        public static final double RADIAN_PER_SECOND = 5000;
+        public static final double RADIAN_PER_SECOND = 300;
 
         //public static final boolean FLYWHEEL_ENCODER_INVERSION = false;  //can't invert built-in encoder
         //public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
@@ -133,9 +133,9 @@ public final class Constants {
         public static final double DRIVE_RIGHT_D = 0;
         public static final double[] DRIVE_RIGHT_PID = {DRIVE_RIGHT_P, DRIVE_RIGHT_I, DRIVE_RIGHT_D};
 
-        public static final double DRIVE_FEED_STATIC = 2.0;
-        public static final double DRIVE_FEED_VELOCITY = 10.0;
-        public static final double DRIVE_FEED_ACCELERATION = 3.0;
+        public static final double DRIVE_FEED_STATIC = 0.11808;
+        public static final double DRIVE_FEED_VELOCITY = 2.5926;
+        public static final double DRIVE_FEED_ACCELERATION = .295;
         public static final double[] DRIVE_FEED_KSVA = {DRIVE_FEED_STATIC, DRIVE_FEED_VELOCITY, DRIVE_FEED_ACCELERATION};
 
         public static final double RAM_B = 2.0;
@@ -159,7 +159,7 @@ public final class Constants {
         public static final double CLIMB_D = 0;
         public static final double[] CLIMB_PID = {CLIMB_P, CLIMB_I, CLIMB_D};
 
-        public static final double FLYWHEEL_KP = 1;
+        public static final double FLYWHEEL_KP = 0.019914;
         public static final double FLYWHEEL_KI = 0;
         public static final double FLYWHEEL_KD = 0;
         public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
@@ -176,13 +176,13 @@ public final class Constants {
         public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
         public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
 
-        public static final double FLYWHEEL_KV = 0.02;
-        public static final double FLYWHEEL_KA = 0.001;
+        public static final double FLYWHEEL_KV = 0.020257;
+        public static final double FLYWHEEL_KA = 0.006987;
 
         public static final double DELTA_TIME = 0.02;
         public static final double MODEL_TRUST = 3.0;
-        public static final double ENCODER_TRUST = 0.01;
-        public static final double VELOCITY_TOLERANCE = 8;
+        public static final double ENCODER_TRUST = 0.15;
+        public static final double VELOCITY_TOLERANCE = 25;
         public static final double MAX_VOLTS = 12;
     }
 

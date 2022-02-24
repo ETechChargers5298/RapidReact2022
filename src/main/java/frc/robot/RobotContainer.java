@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
 import frc.robot.commands.basic.cargo.IntakeChomp;
@@ -34,6 +35,7 @@ import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.FlywheelSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.FlywheelRPM;
+import frc.robot.commands.closedloop.ShooterState;
 import frc.robot.commands.closedloop.TurretAim;
 import frc.robot.commands.prototype.RumbleTest;
 import frc.robot.subsystems.Climber;
@@ -173,8 +175,8 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand() {
-
-/*
+    
+/* 
    
     // No autonomous code exists because we are not team 1678
     drivetrain.resetOdometry();

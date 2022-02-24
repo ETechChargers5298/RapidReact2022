@@ -13,6 +13,7 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Shooters;
@@ -63,7 +64,11 @@ public class ShooterState extends CommandBase {
 
     loop.predict(Control.DELTA_TIME);
 
-    shooter.flyVolt(loop.getU(0));
+    double volts = loop.getU(0);
+
+    shooter.flyVolt(volts);
+
+    SmartDashboard.putNumber("VOLTAGE", volts);
   }
 
   // Called once the command ends or is interrupted.
