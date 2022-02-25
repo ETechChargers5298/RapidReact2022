@@ -7,20 +7,17 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
-import frc.robot.subsystems.LEDStrip;
+import frc.robot.utils.State.ClimberState;
 
 public class Climber extends SubsystemBase {
 
-  // creates climber motor
   private CANSparkMax climbMotor;
-
-  // declares encoder for flywheel
   private RelativeEncoder climbEncoder;
-
+  private ClimberState currentStatus; 
+  
   /** Creates a new Climber. */
   public Climber() {
     // creates motor
@@ -31,16 +28,21 @@ public class Climber extends SubsystemBase {
 
     // obtains encoder
     climbEncoder = climbMotor.getEncoder();
-  }
 
+    currentStatus = ClimberState.OFF;
+  }
+  
   /**
    * Movers climber up
    * @author catears
    */
   public void climberMove(double speed){
     climbMotor.set(speed);
+    setStatus();
+  }
 
-    double e = Math.abs(getEncoderValue());
+  public void setStatus() {
+    double e = Math.abs(getPosition());
     
     if (e > Climbers.CLIMBER_ENC_START){
     LEDStrip.makeRequest(LEDStrip.LightFlag.CLIMBING_LIGHT_FLAG);
@@ -55,8 +57,10 @@ public class Climber extends SubsystemBase {
     } else {
       LEDStrip.prefClimbingLights = "celebrateClimb";
     }
+   
 
   }
+  
 
   /**
    * Movers climber up
@@ -83,12 +87,12 @@ public class Climber extends SubsystemBase {
   }
 
   //Gets the encoder value
-  public double getEncoderValue() {
+  public double getPosition() {
     return climbEncoder.getPosition();
   }
 
   //Sets the Encoder value back to Zero
-  public void zeroEncoder() {
+  public void resetEncoder() {
     climbEncoder.setPosition(0.0);
   }
 
@@ -96,7 +100,7 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ClimbEncoder", getEncoderValue());
+    SmartDashboard.putNumber("ClimbEncoder", getPosition());
     SmartDashboard.putString("ClimbPhase", LEDStrip.prefClimbingLights);
   }
 }

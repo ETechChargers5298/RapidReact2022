@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.utils.State;
+import frc.robot.utils.State.ShooterState;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -20,7 +22,8 @@ public class Shooter extends SubsystemBase {
   // declares encoder for flywheel
   private RelativeEncoder flyEncoder;
 
-
+  private ShooterState currentStatus;
+  
   /** Creates a new Shooter. */
   public Shooter() {
     // creates motor
@@ -39,6 +42,7 @@ public class Shooter extends SubsystemBase {
     // inverts encoder
     //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
 
+    currentStatus = ShooterState.OFF;
   }
 
 

@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Robot;
+import frc.robot.utils.State.DriveState;
 import frc.robot.Constants.DriveTrain;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -56,6 +57,9 @@ public class Drivetrain extends SubsystemBase {
   private final RamseteController ramController;
   private final Field2d field; 
 
+  // states of drive 
+  private DriveState currentStatus;
+ 
   /** Creates a new NewDrivetrain. */
   public Drivetrain() {
 
@@ -79,13 +83,13 @@ public class Drivetrain extends SubsystemBase {
     gearShifter = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
-    //encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
-    //encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
+    // encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
+    // encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
     encoderLeft = leftMotorA.getEncoder();
     encoderRight = rightMotorA.getEncoder();
     navX = new AHRS(SPI.Port.kMXP);
     
-    // configure sensors (encoders, gyro)0
+    // configure sensors (encoders, gyro)
     //encoderLeft.setInverted(DriveTrain.ENCODER_LEFT_INVERTED);
     //encoderRight.setInverted(DriveTrain.ENCODER_RIGHT_INVERTED);
 
@@ -109,6 +113,9 @@ public class Drivetrain extends SubsystemBase {
     // trajectory (ramsete controller, field2d)
     ramController = new RamseteController(Control.RAM_B, Control.RAM_ZETA);
     field = new Field2d();
+
+    // current status
+    currentStatus = DriveState.OFF;
   }
   
   // configuration of sparks
@@ -240,15 +247,11 @@ public class Drivetrain extends SubsystemBase {
     return diffDriveKinematics;
   }
   
-
-
   // odometry 
   public void updateOdometry() {
     diffDriveOdometry.update(getAngle(), getLeftDistance(), getRightDistance());
     field.setRobotPose(diffDriveOdometry.getPoseMeters());
   }
-
-
 
   // displaying data
   public void updateTelemetry() {

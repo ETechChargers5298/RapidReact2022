@@ -9,11 +9,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.utils.State.FeederState;;
 
 public class Feeder extends SubsystemBase {
 
   // declares feeder motor
   private CANSparkMax feedMotor;
+  private FeederState currentStatus;
 
   /** Creates a new Feeder. */
   public Feeder() {
@@ -22,6 +24,8 @@ public class Feeder extends SubsystemBase {
 
     // inverts motor
     feedMotor.setInverted(Shooters.FEEDER_INVERSION);
+
+    currentStatus = FeederState.OFF;
   }
 
   /**

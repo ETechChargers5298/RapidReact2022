@@ -4,23 +4,11 @@
 
 package frc.robot;
 
-import java.util.List;
 
 import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.wpilibj.DriverStation;
-// import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.Control;
 import frc.robot.Constants.Gamepad;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
@@ -33,29 +21,22 @@ import frc.robot.commands.basic.drive.ArcadeDrive;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.lights.KillLights;
-import frc.robot.commands.basic.shoot.Feed;
 import frc.robot.commands.basic.shoot.FeedLoad;
-import frc.robot.commands.basic.shoot.FlywheelSpin;
+import frc.robot.commands.basic.shoot.ShooterSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
-import frc.robot.commands.closedloop.FlywheelRPM;
-import frc.robot.commands.closedloop.ShooterState;
 import frc.robot.commands.closedloop.TurretAim;
-import frc.robot.commands.prototype.RumbleTest;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LEDStrip;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
-import frc.robot.utils.Rumble;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -73,7 +54,6 @@ public class RobotContainer {
   private static final Loader loader = new Loader();
   private static final Shooter shooter = new Shooter();
   private static final Feeder feeder = new Feeder();
-  private static final LEDStrip ledStrip = new LEDStrip();
   //private static final TestMotors testMotors = new TestMotors();
 
   // Controllers are created here
@@ -93,10 +73,8 @@ public class RobotContainer {
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
-  private final Feed feed = new Feed(feeder);
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
-  private final FlywheelSpin flywheelSpin = new FlywheelSpin(shooter);
-  private final FlywheelRPM flywheelRPM = new FlywheelRPM(shooter,4000);
+  private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
   private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
   private final KillLights killLights = new KillLights();

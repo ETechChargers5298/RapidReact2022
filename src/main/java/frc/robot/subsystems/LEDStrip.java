@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.robot.RobotContainer;
 import frc.robot.Constants.Robot;
 import frc.robot.utils.LEDColors;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,15 +21,16 @@ public class LEDStrip extends SubsystemBase {
     private static Alliance allianceColor = DriverStation.getAlliance();
     private static LightFlag winnerFlag = null;
     private static ArrayList<LightFlag> requests = new ArrayList<LightFlag>();
+    
     public static String prefLoaderLights = "";
     public static String prefClimbingLights = "";
     public static String prefOtherLights = "";
     public static String prefShootingLights = "";
 
     public enum LightFlag{
-        LOADING_LIGHT_FLAG(3),
         CLIMBING_LIGHT_FLAG(1),
         SHOOTING_LIGHT_FLAG(2),
+        LOADING_LIGHT_FLAG(3),
         OTHER_LIGHT_FLAG(4);
 
         private LightFlag(int priority){
@@ -91,7 +90,6 @@ public class LEDStrip extends SubsystemBase {
             lights.set(LEDColors.STROBE);
         else if (prefLoaderLights.equals("noCargo"))
             lights.set(LEDColors.WHITE_STROBE);
-        else{}
         SmartDashboard.putString("Lights", prefLoaderLights);
     }
 
@@ -104,7 +102,6 @@ public class LEDStrip extends SubsystemBase {
             lights.set(LEDColors.MEDIUM_HEARTBEAT);
         else if (prefClimbingLights.equals("celebrateClimb"))
             lights.set(LEDColors.RAINBOW_PARTY);
-        else{}
             SmartDashboard.putString("Lights", prefClimbingLights);
 
     }

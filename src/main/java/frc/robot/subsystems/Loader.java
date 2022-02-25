@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
+import frc.robot.utils.State.CargoState;
+import frc.robot.utils.State.LoaderState;
 
 public class Loader extends SubsystemBase {
   
@@ -18,12 +20,10 @@ public class Loader extends SubsystemBase {
   private CANSparkMax motor;
   private DigitalInput ls1;
   private DigitalInput ls2;
-  private enum Status {
-    LOADING, UNLOADING
-  }
-  private Status status;
 
-
+  private LoaderState currentStatus;
+  private CargoState balls;
+  
   /** Creates a new Loader. */
   public Loader() {
     // creates motor
@@ -35,6 +35,9 @@ public class Loader extends SubsystemBase {
 
     // inverts motor
     motor.setInverted(Loading.LOADER_INVERSION);
+
+    currentStatus = LoaderState.OFF;
+    balls = CargoState.NADA;
   }
 
   /**

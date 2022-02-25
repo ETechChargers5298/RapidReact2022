@@ -9,14 +9,14 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class FlywheelRAD extends CommandBase {
+public class ShooterDesiredRPM extends CommandBase {
 
   private SimpleMotorFeedforward feedforward;
   private PIDController controller;
   private Shooter shooter;
 
-  /** Creates a new FlywheelRAD. */
-  public FlywheelRAD(Shooter shooter) {
+  /** Creates a new ShooterDesiredRPM. */
+  public ShooterDesiredRPM(Shooter shooter) {
 
     // Use addRequirements() here to declare subsystem dependencies.
   }

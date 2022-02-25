@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
 import frc.robot.utils.Limelight;
+import frc.robot.utils.State;
+import frc.robot.utils.State.TurretState;
 
 
 public class Turret extends SubsystemBase {
@@ -22,6 +24,8 @@ public class Turret extends SubsystemBase {
 
   // declares encoder
   private AnalogEncoder encoder;
+
+  private TurretState currentStatus;
   
   /** Creates a new Turret. */
   public Turret() {
@@ -41,6 +45,8 @@ public class Turret extends SubsystemBase {
     else {
       encoder.setDistancePerRotation(Shooters.TURRET_ENCODER_MULTIPLIER);
     }
+
+    currentStatus = TurretState.OFF;
   }
 
 

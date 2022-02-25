@@ -32,7 +32,7 @@ public class ClimberMove extends CommandBase {
   @Override
   public void initialize() {
     climber.climberStop();
-    climber.zeroEncoder();
+    climber.resetEncoder();
     LEDStrip.prefClimbingLights = "climbing";
   }
 

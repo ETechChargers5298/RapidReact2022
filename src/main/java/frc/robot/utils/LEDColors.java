@@ -20,7 +20,7 @@ public class LEDColors {
     public static final double RAINBOW_SINEION = -0.79;
     public static final double PARTY_SINEION = -0.77;
     public static final double OCEAN_SINEION = -0.75;
-    public static final double LAVA_SINEION= -0.73;
+    public static final double LAVA_SINEION = -0.73;
     public static final double FOREST_SINEION = -0.71;
     public static final double RAINBOW_BPM = -0.69;
     public static final double PARTY_BPM = -0.67;

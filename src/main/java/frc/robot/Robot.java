@@ -13,7 +13,7 @@ import org.littletonrobotics.junction.io.LogSocketServer;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.LEDStrip;
+
 import frc.robot.utils.PneumaticsUtil;
 
 /**
