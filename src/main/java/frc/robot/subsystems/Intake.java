@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.lang.Thread.State;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
