@@ -47,14 +47,22 @@ wpi.java.debugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
+configurations {
+    externalLibs
+}
+
+repositories {
+
+
+}
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+    implementation group: 'org.json', name: 'json', version: '20211205'
+
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
     
-    
-
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
 
@@ -71,17 +79,23 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
+    implementation 'com.google.code.gson:gson:2.9.0'
+    
+    externalLibs files('libs/gson-2.9.0.jar')
+}
+
+
 repositories {
     maven {
-    url = uri("https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit")
-    credentials {
-    username = "Mechanical-Advantage-Bot"
-    password = "ghp_ykO20iuCY5H2i" + "LgmNxz8VIKJ2uQa6g1DdV0i"
-    }
+        url = uri("https://maven.pkg.github.com/Mechanical-Advantage/AdvantageKit")
+        credentials {
+            username = "Mechanical-Advantage-Bot"
+            password = "ghp_ykO20iuCY5H2i" + "LgmNxz8VIKJ2uQa6g1DdV0i"
+        }
     }
 }
 
-}
+
 configurations.all {
     exclude group: "edu.wpi.first.wpilibj"
 }
