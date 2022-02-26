@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
+import frc.robot.subsystems.LEDStrip.LightFlag;
 import frc.robot.utils.State.CargoState;
 import frc.robot.utils.State.LoaderState;
 
@@ -30,8 +31,8 @@ public class Loader extends SubsystemBase {
     motor = new CANSparkMax(Loading.LOADER_MOTOR_PORT, MotorType.kBrushless);
 
     //creates 2 limit switches
-    cargoUno = new DigitalInput(Loading.CARGO_LIMIT_SWITCH_PORT);
-    cargoDose = new DigitalInput(Loading.CARGO2_LIMIT_SWITCH_PORT);
+    cargoUno = new DigitalInput(Loading.CARGO_UNO_LIMIT_PORT);
+    cargoDose = new DigitalInput(Loading.CARGO_DOS_LIMIT_PORT);
 
     // inverts motor
     motor.setInverted(Loading.LOADER_INVERSION);
@@ -46,6 +47,7 @@ public class Loader extends SubsystemBase {
    */
   public void unload() {
     motor.set(-Loading.LOADER_SPEED);
+    currentStatus = LoaderState.UNLOADING;
   }
 
   /**
@@ -54,7 +56,7 @@ public class Loader extends SubsystemBase {
    */
   public void load() {
     motor.set(Loading.LOADER_SPEED);
-
+    currentStatus = LoaderState.LOADING;
   }
 
   /**
@@ -63,23 +65,43 @@ public class Loader extends SubsystemBase {
    */
   public void stopLoader() {
     motor.set(0);
+    currentStatus = LoaderState.OFF;
   }
 
-  //Methods to access limit switches in the loader -Naomi
-  //LS1 is the top switch that would hold the first cargo
-  //LS2 is the bottom switch that would hold the second cargo
-  public boolean getCargoLimit(){
+  public boolean getCargoLimitTop() {
     return cargoUno.get();
   }
-  public boolean getCargoLimit2(){
+
+  public boolean getCargoLimitBottom() {
     return cargoDose.get();
   }
 
+  public void ballStatus() {
+    if(getCargoLimitTop() && getCargoLimitBottom()) {
+      balls = CargoState.DOUBLE;
+    } else if(getCargoLimitTop() || getCargoLimitBottom()) {
+      balls = CargoState.SINGULAR;
+    } else {
+      balls = CargoState.NADA;
+    }
+  }
+
+  public void setLight() {
+    LEDStrip.request(LightFlag.CARGO, balls.getStatusLight());
+  }
+
+  public void updateTelemetry() {
+    SmartDashboard.putBoolean("Cargo Top", getCargoLimitTop());
+    SmartDashboard.putBoolean("Cargo Bottom", getCargoLimitBottom());
+    SmartDashboard.putString("Ball State", balls.toString());
+    SmartDashboard.putString("Loader State", currentStatus.toString());
+  }
 
   @Override
   public void periodic() {
     // The method will be done once per run
-    SmartDashboard.putBoolean("Cargo LS1", getCargoLimit());
-    SmartDashboard.putBoolean("Cargo LS2", getCargoLimit2());
+    ballStatus();
+    setLight();
+    updateTelemetry();
   }
 }

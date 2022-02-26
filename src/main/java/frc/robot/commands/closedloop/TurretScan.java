@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.Limelight;
+import frc.robot.utils.State.TurretState;
 
 public class TurretScan extends CommandBase {
  
@@ -31,6 +32,7 @@ public class TurretScan extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    turret.setState(TurretState.SEEKING);
     if (turret.leftLimit()) {
       direction = 1.0;
     }
@@ -44,6 +46,7 @@ public class TurretScan extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     turret.stopTurret();
+    turret.setState(TurretState.FOUND);
   }
 
   // Returns true when the command should end.

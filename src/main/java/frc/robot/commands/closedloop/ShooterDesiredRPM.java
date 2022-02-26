@@ -7,6 +7,7 @@ package frc.robot.commands.closedloop;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Control;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterDesiredRPM extends CommandBase {
@@ -20,8 +21,8 @@ public class ShooterDesiredRPM extends CommandBase {
   public ShooterDesiredRPM(Shooter shooter, double desiredRPM) {
 
     this.shooter = shooter;
-    this.feedforward = new SimpleMotorFeedforward(0, 0);
-    this.controller = new PIDController(0, 0, 0);
+    this.feedforward = new SimpleMotorFeedforward(Control.FLYWHEEL_KVA[0], Control.FLYWHEEL_KVA[1]);
+    this.controller = new PIDController(Control.FLYWHEEL_PID[0], Control.FLYWHEEL_PID[1], Control.FLYWHEEL_PID[2]);
     this.desiredRPM = desiredRPM;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,6 +34,7 @@ public class ShooterDesiredRPM extends CommandBase {
   public void initialize() {
     shooter.stopFly();
     controller.setSetpoint(desiredRPM);
+    controller.setTolerance(Control.FLYWHEEL_TOLERANCE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +43,6 @@ public class ShooterDesiredRPM extends CommandBase {
     double volts = feedforward.calculate(desiredRPM);
     double errorFix = controller.calculate(shooter.getVelocity());
     shooter.flyVolt(volts + errorFix);
-
   }
 
   // Called once the command ends or is interrupted.

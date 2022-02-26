@@ -14,8 +14,7 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Control;
-import frc.robot.Constants.Shooters;
+import frc.robot.Constants.Experimental;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterState extends CommandBase {
@@ -34,13 +33,13 @@ public class ShooterState extends CommandBase {
   public ShooterState(Shooter shooter) {
     this.shooter = shooter;
 
-    this.flyWheelPlant = LinearSystemId.identifyVelocitySystem(Control.FLYWHEEL_KV, Control.FLYWHEEL_KA);
+    this.flyWheelPlant = LinearSystemId.identifyVelocitySystem(Experimental.FLYWHEEL_STATE_KV, Experimental.FLYWHEEL_STATE_KA);
 
-    this.observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(Control.MODEL_TRUST), VecBuilder.fill(Control.ENCODER_TRUST), Control.DELTA_TIME);
+    this.observer = new KalmanFilter<>(Nat.N1(), Nat.N1(), flyWheelPlant, VecBuilder.fill(Experimental.MODEL_TRUST), VecBuilder.fill(Experimental.ENCODER_TRUST), Experimental.DELTA_TIME);
 
-    this.controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(Control.VELOCITY_TOLERANCE), VecBuilder.fill(Control.MAX_VOLTS), Control.DELTA_TIME);
+    this.controller = new LinearQuadraticRegulator<>(flyWheelPlant, VecBuilder.fill(Experimental.VELOCITY_TOLERANCE), VecBuilder.fill(Experimental.MAX_STATE_VOLTS), Experimental.DELTA_TIME);
 
-    this.loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, Control.MAX_VOLTS, Control.DELTA_TIME);
+    this.loop = new LinearSystemLoop<>(flyWheelPlant, controller, observer, Experimental.MAX_STATE_VOLTS, Experimental.DELTA_TIME);
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -57,11 +56,11 @@ public class ShooterState extends CommandBase {
   @Override
   public void execute() {
 
-    loop.setNextR(VecBuilder.fill(Units.rotationsPerMinuteToRadiansPerSecond(Shooters.RADIAN_PER_SECOND)));
+    loop.setNextR(VecBuilder.fill(Units.rotationsPerMinuteToRadiansPerSecond(Experimental.RADIAN_PER_SECOND)));
 
     loop.correct(VecBuilder.fill(shooter.getVelocity()));
 
-    loop.predict(Control.DELTA_TIME);
+    loop.predict(Experimental.DELTA_TIME);
 
     double volts = loop.getU(0);
 

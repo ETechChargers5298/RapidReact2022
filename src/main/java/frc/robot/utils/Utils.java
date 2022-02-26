@@ -9,5 +9,4 @@ public class Utils {
     public static double clamp(double val, double max, double min) {
         return Math.min(max, Math.max(min, val));
     }
-
 }

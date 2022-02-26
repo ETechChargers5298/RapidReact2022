@@ -4,16 +4,16 @@
 
 package frc.robot.utils;
 
-import frc.robot.subsystems.LEDStripPT2;
+import frc.robot.subsystems.LEDStrip;
 
 /** Add your docs here. */
 public class State {
     public enum ClimberState {
         OFF(5298.0), 
-        REACHING(LEDStripPT2.CLIMB_REACHING),
-        READY(LEDStripPT2.CLIMB_READY), 
-        CLIMBING(LEDStripPT2.CLIMB_CLIMBING),
-        DONE(LEDStripPT2.CLIMB_DONE);
+        REACHING(LEDStrip.CLIMB_REACHING),
+        READY(LEDStrip.CLIMB_READY), 
+        CLIMBING(LEDStrip.CLIMB_CLIMBING),
+        DONE(LEDStrip.CLIMB_DONE);
         
         private double statusLight;
 
@@ -53,9 +53,9 @@ public class State {
 
     public enum ShooterState {
         OFF(5298.0),
-        RAMPING(LEDStripPT2.SHOOTER_RAMPING),
-        READY(LEDStripPT2.SHOOTER_READY),
-        PEWPEW(LEDStripPT2.SHOOTER_PEWPEW);
+        RAMPING(LEDStrip.SHOOTER_RAMPING),
+        READY(LEDStrip.SHOOTER_READY),
+        PEWPEW(LEDStrip.SHOOTER_PEWPEW);
 
         private double statusLight;
 
@@ -70,9 +70,9 @@ public class State {
 
     public enum TurretState {
         OFF(5298.0),
-        SEEKING(LEDStripPT2.LIMELIGHT_SEEKING),
-        FOUND(LEDStripPT2.LIMELIGHT_FOUND),
-        ONTARGET(LEDStripPT2.LIMELIGHT_ON_TARGET); 
+        SEEKING(LEDStrip.LIMELIGHT_SEEKING),
+        FOUND(LEDStrip.LIMELIGHT_FOUND),
+        ONTARGET(LEDStrip.LIMELIGHT_ON_TARGET); 
         
         private double statusLight;
 
@@ -86,10 +86,9 @@ public class State {
     }
 
     public enum CargoState {
-        OFF(5298.0),
-        SINGULAR(LEDStripPT2.CARGO_SINGULAR),
-        DOUBLE(LEDStripPT2.CARGO_DOUBLE),
-        NADA(LEDStripPT2.CARGO_NADA);
+        SINGULAR(LEDStrip.CARGO_SINGULAR),
+        DOUBLE(LEDStrip.CARGO_DOUBLE),
+        NADA(LEDStrip.CARGO_NADA);
 
         private double statusLight;
 

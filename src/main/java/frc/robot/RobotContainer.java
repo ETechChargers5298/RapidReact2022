@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.Gamepad;
+import frc.robot.commands.TrajectoryCommand;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.cargo.IntakeRetract;
@@ -20,7 +21,7 @@ import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.drive.ArcadeDrive;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
-import frc.robot.commands.basic.lights.KillLights;
+import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.ShooterSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
@@ -76,7 +77,7 @@ public class RobotContainer {
   private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
   // private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
-  private final KillLights killLights = new KillLights();
+  private final DisableStatus killLights = new DisableStatus();
   
   //public static Alliance allianceColor;
 
@@ -127,16 +128,14 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     //Intake Chomp POV buttons
-    new DPad(operatorController, Constants.Buttons.POV_DOWN).whenPressed(intakeChomp);
-    new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeRetract);  
+    new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
+    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);  
 
     //Aim button
     //new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
 
     // LED Strip Buttons
     new JoystickButton(driveController, Button.kX.value).whenPressed(killLights);
-
-
   }
   
   /**
@@ -157,49 +156,18 @@ public class RobotContainer {
     //testMotors.setDefaultCommand(testMoveMotors);
   }
 
+  public void resetDrivetrain() {
+    drivetrain.resetOdometry();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-
-
   public Command getAutonomousCommand() {
-    
-/* 
-   
-    // No autonomous code exists because we are not team 1678
-    drivetrain.resetOdometry();
-
-    TrajectoryConfig config = new TrajectoryConfig(
-      Control.MAX_VELO_METER_PER_SEC, Control.MAX_ACCEL_METER_PER_SEC)
-      .setKinematics(drivetrain.getKinematics())
-      .addConstraint(new DifferentialDriveVoltageConstraint(drivetrain.getFeedforward(), drivetrain.getKinematics(), 5.51));
-
-    Trajectory traj = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(),
-      List.of(new Translation2d(1, 0)),
-      new Pose2d(3, 0, new Rotation2d(0)), 
-      config);
-    
-    drivetrain.getField().getObject("Traj").setTrajectory(traj);
-
-    return new RamseteCommand(
-      traj,
-      drivetrain::getPose, 
-      drivetrain.getRamController(), 
-      drivetrain.getFeedforward(), 
-      drivetrain.getKinematics(), 
-      drivetrain::getWheelSpeeds,
-      drivetrain.getLeftWheelPID(),
-      drivetrain.getRightWheelPID(),
-      drivetrain::setWheelVolts, 
-      drivetrain);
-
-      */
-
-      return intakeEat; //placeholder so we don't get errors
-     }
+    return new TrajectoryCommand(drivetrain).driveStraightTest();
+  }
 
 
 }

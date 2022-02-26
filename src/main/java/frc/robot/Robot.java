@@ -77,7 +77,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    //LEDStrip.disabledLights();
+
   }
 
   @Override
@@ -106,6 +106,7 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_robotContainer.resetDrivetrain();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -118,6 +119,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    m_robotContainer.resetDrivetrain();
     CommandScheduler.getInstance().cancelAll();
   }
 

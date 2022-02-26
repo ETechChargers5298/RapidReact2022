@@ -42,7 +42,7 @@ public class ShooterSpin extends CommandBase {
   @Override
   public void execute() {
     //pew.revUp();
-    pew.flyVolt(Shooters.REV_VOLTAGE);
+    pew.flyVolt(Shooters.FLYWHEEL_SPIN_VOLTAGE);
     executeC++;
     SmartDashboard.putNumber("ExecuteC", executeC);
   }

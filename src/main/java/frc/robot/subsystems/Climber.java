@@ -10,14 +10,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
-import frc.robot.subsystems.LEDStripPT2.LightFlag;
+import frc.robot.subsystems.LEDStrip.LightFlag;
 import frc.robot.utils.State.ClimberState;
 
 public class Climber extends SubsystemBase {
 
   private CANSparkMax climbMotor;
   private RelativeEncoder climbEncoder;
-  private ClimberState currentStatus; 
+  private ClimberState currentStatus;
   
   /** Creates a new Climber. */
   public Climber() {
@@ -39,26 +39,6 @@ public class Climber extends SubsystemBase {
    */
   public void climberMove(double speed){
     climbMotor.set(speed);
-    setStatus();
-  }
-
-  public void setStatus() {
-    double climberDistance = getPosition();
-    
-    if(climberDistance > Climbers.REACH_START){
-      if (climberDistance < Climbers.REACH_BAR) {
-        currentStatus = ClimberState.REACHING;
-      }
-      else if(climberDistance < Climbers.CLIMB_START) {
-        currentStatus = ClimberState.READY;
-      }
-      else if(climberDistance < Climbers.CLIMB_DONE) {
-        currentStatus = ClimberState.CLIMBING;
-      }
-      else {
-        currentStatus = ClimberState.DONE;
-      }
-    }
   }
 
   /**
@@ -95,15 +75,35 @@ public class Climber extends SubsystemBase {
     climbEncoder.setPosition(0.0);
   }
 
-  public void updateTelemetry() {
-    SmartDashboard.putNumber("Climb Encoder", getPosition());
-    SmartDashboard.putString("Status", currentStatus.toString());
+  public void setStatus() {
+    double climberDistance = getPosition();
+    
+    if(climberDistance > Climbers.REACH_START){
+      if (climberDistance < Climbers.REACH_BAR) {
+        currentStatus = ClimberState.REACHING;
+      }
+      else if(climberDistance < Climbers.CLIMB_START) {
+        currentStatus = ClimberState.READY;
+      }
+      else if(climberDistance < Climbers.CLIMB_DONE) {
+        currentStatus = ClimberState.CLIMBING;
+      }
+      else {
+        currentStatus = ClimberState.DONE;
+      }
+    }
   }
 
   public void sendLight() {
     if (!currentStatus.equals(ClimberState.OFF)) {
-      LEDStripPT2.request(LightFlag.CLIMBING, currentStatus.getStatusLight());
+      LEDStrip.request(LightFlag.CLIMBING, currentStatus.getStatusLight());
     }
+  }
+
+
+  public void updateTelemetry() {
+    SmartDashboard.putNumber("Climb Encoder", getPosition());
+    SmartDashboard.putString("Status", currentStatus.toString());
   }
 
   @Override

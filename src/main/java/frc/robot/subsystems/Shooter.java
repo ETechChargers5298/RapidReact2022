@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.subsystems.LEDStrip.LightFlag;
 import frc.robot.utils.State.ShooterState;
 
 import com.revrobotics.CANSparkMax;
@@ -35,15 +36,6 @@ public class Shooter extends SubsystemBase {
     flyEncoder = flywheel.getEncoder();
 
     currentStatus = ShooterState.OFF;
-  }
-
-  /**
-   * shooter revs up to make a shot
-   * @author raymond
-   */
-  public void revUp() {
-    flywheel.set(Shooters.REV_SPEED);
-    currentStatus = ShooterState.RAMPING;
   }
 
   /**
@@ -81,15 +73,23 @@ public class Shooter extends SubsystemBase {
 
   public void updateTelemetry() {
     SmartDashboard.putNumber("Shooter Velocity", getVelocity());
+    SmartDashboard.putString("Shooter Status", currentStatus.toString());
   }
   
   public void setState(ShooterState state) {
     currentStatus = state;
   }
 
+  public void setLights() {
+    if(currentStatus != ShooterState.OFF) {
+      LEDStrip.request(LightFlag.SHOOTING, currentStatus.getStatusLight());
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setLights();
     updateTelemetry();
   }
 

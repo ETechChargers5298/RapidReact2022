@@ -34,7 +34,7 @@ public class FeedLoad extends CommandBase {
   @Override
   public void execute() {
     feeder.feed();
-    if(!loader.getCargoLimit()){
+    if(!loader.getCargoLimitTop()){
       loader.load();
     }
   }

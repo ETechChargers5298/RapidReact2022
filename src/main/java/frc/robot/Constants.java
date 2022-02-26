@@ -32,26 +32,25 @@ public final class Constants {
         public static final int DRIVE_RIGHT_B = 5; 
         public static final int DRIVE_RIGHT_C = 6;
 
+        public static final boolean LEFT_INVERTED = false;
+        public static final boolean RIGHT_INVERTED = true;
+
         public static final int ENCODER_LEFT_PORT_A = 9;
         public static final int ENCODER_LEFT_PORT_B = 8;
         public static final int ENCODER_RIGHT_PORT_A = 7;
         public static final int ENCODER_RIGHT_PORT_B = 6;
 
+        public static final int COUNTS_PER_REVOLUTION = 8192;
         public static final int ENCODER_ENCODING = 4;
-
-        public static final boolean LEFT_INVERTED = false;
-        public static final boolean RIGHT_INVERTED = true;
 
         public static final boolean ENCODER_LEFT_INVERTED = true;
         public static final boolean ENCODER_RIGHT_INVERTED = false;
-        public static final int COUNTS_PER_REVOLUTION = 8192;
         
         public static final int GEAR_SHIFT_TORQUE_PORT = 0;
         public static final int GEAR_SHIFT_SPEED_PORT = 1;
     }
     
     public static final class Shooters {
-
         public static final int FEEDER_MOTOR_PORT = 9;
         public static final boolean FEEDER_INVERSION = true;
         public static final double FEEDER_SPEED = 0.75;
@@ -62,32 +61,35 @@ public final class Constants {
 
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
-        public static final boolean TURRET_ENCODER_INVERSION = false;
 
         public static final int TURRET_LEFT_LIMIT_PORT = 3;
         public static final int TURRET_RIGHT_LIMIT_PORT = 4;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
-        public static final double REV_SPEED = .75;
-        public static final double REV_VOLTAGE = 8.8;
-        
-      
+        public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final int DESIRED_RPM = 1000;
-        public static final double RADIAN_PER_SECOND = 300;
-
-        //public static final boolean FLYWHEEL_ENCODER_INVERSION = false;  //can't invert built-in encoder
-        //public static final int FLYWHEEL_COUNTS_PER_REV = 8192;  
         
         public static final double LIMELIGHT_ANG_DEG = 45;
         public static final double GOAL_HEIGHT_INCH = 104;
     }
-    
-    public static final class Loading{
 
-        
-        public static final int CARGO_LIMIT_SWITCH_PORT = 1;
-        public static final int CARGO2_LIMIT_SWITCH_PORT = 2;
+    public static final class Experimental {
+        public static final double RADIAN_PER_SECOND = 300;
+
+        public static final double FLYWHEEL_STATE_KV = 0.020257;
+        public static final double FLYWHEEL_STATE_KA = 0.006987;
+
+        public static final double DELTA_TIME = 0.02;
+        public static final double MODEL_TRUST = 3.0;
+        public static final double ENCODER_TRUST = 0.15;
+        public static final double VELOCITY_TOLERANCE = 25;
+        public static final double MAX_STATE_VOLTS = 12;
+    }
+    
+    public static final class Loading {
+        public static final int CARGO_UNO_LIMIT_PORT = 1;
+        public static final int CARGO_DOS_LIMIT_PORT = 2;
         
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;
@@ -121,17 +123,59 @@ public final class Constants {
 
     public static final class Climbers {
         public static final int CLIMBER_MOTOR_PORT = 12;
-        public static final int CLIMBER_LIMIT_PORT = 5;
         public static final boolean CLIMBER_MOTOR_INVERSION = false;
         public static final double CLIMBER_MOTOR_SPEED = 0.75;
-        
+
         public static final int REACH_START = 10;
         public static final int REACH_BAR = 87;
         public static final int CLIMB_START = 200;
         public static final int CLIMB_DONE = 285;
+
+        public static final int CLIMBER_LIMIT_PORT = 5;
     }
 
     public static final class Control {
+        public static final double TURN_TO_ANGLE_P = 1;
+        public static final double TURN_TO_ANGLE_I = 0;
+        public static final double TURN_TO_ANGLE_D = 0;
+        public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
+
+        public static final double GYRO_DRIVE_DISTANCE_P = 1;
+        public static final double GYRO_DRIVE_DISTANCE_I = 0;
+        public static final double GYRO_DRIVE_DISTANCE_D = 0;
+        public static final double[] GYRO_DRIVE_DISTANCE_PID = {GYRO_DRIVE_DISTANCE_P, GYRO_DRIVE_DISTANCE_I, GYRO_DRIVE_DISTANCE_D};
+        public static final double GYRO_DRIVE_DISTANCE_TOLERANCE = 0.5;
+
+        public static final double GYRO_DRIVE_ANGLE_P = 1;
+        public static final double GYRO_DRIVE_ANGLE_I = 0;
+        public static final double GYRO_DRIVE_ANGLE_D = 0;
+        public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
+        public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
+
+        public static final double TURRET_AIM_P = 0.10;
+        public static final double TURRET_AIM_I = 0;
+        public static final double TURRET_AIM_D = 0;
+        public static final double[] TURRET_AIM_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
+        public static final double TURRET_AIM_TOLERANCE = 0.5;
+        
+        public static final double TURRET_CENTER_P = 1;
+        public static final double TURRET_CENTER_I = 0;
+        public static final double TURRET_CENTER_D = 0;
+        public static final double[] TURRET_CENTER_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
+        public static final double TURRET_CENTER_TOLERANCE = 15;
+
+        public static final double FLYWHEEL_KV = 0;
+        public static final double FLYWHEEL_KA = 0;
+        public static final double[] FLYWHEEL_KVA = {FLYWHEEL_KV, FLYWHEEL_KA};
+
+        public static final double FLYWHEEL_KP = 0;
+        public static final double FLYWHEEL_KI = 0;
+        public static final double FLYWHEEL_KD = 0;
+        public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
+        public static final double FLYWHEEL_TOLERANCE = 50;
+    }
+
+    public static final class Traj {
         public static final double DRIVE_LEFT_P = 1.0;
         public static final double DRIVE_LEFT_I = 0;
         public static final double DRIVE_LEFT_D = 0;
@@ -150,62 +194,7 @@ public final class Constants {
         public static final double RAM_B = 2.0;
         public static final double RAM_ZETA = 0.7;
 
-        public static final double MAX_VELO_METER_PER_SEC = 1;
-        public static final double MAX_ACCEL_METER_PER_SEC = 0.5;
-
-        public static final double TURN_TO_ANGLE_P = 1;
-        public static final double TURN_TO_ANGLE_I = 0;
-        public static final double TURN_TO_ANGLE_D = 0;
-        public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
-
-        public static final double TURRET_AIM_P = 0.10;
-        public static final double TURRET_AIM_I = 0;
-        public static final double TURRET_AIM_D = 0;
-        public static final double[] TURRET_AIM_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
-        public static final double TURRET_AIM_TOLERANCE = 0.5;
-        
-        public static final double TURRET_CENTER_P = 1;
-        public static final double TURRET_CENTER_I = 0;
-        public static final double TURRET_CENTER_D = 0;
-        public static final double[] TURRET_CENTER_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
-        public static final double TURRET_CENTER_TOLERANCE = 15;
-
-        public static final double CLIMB_P = 1;
-        public static final double CLIMB_I = 0;
-        public static final double CLIMB_D = 0;
-        public static final double[] CLIMB_PID = {CLIMB_P, CLIMB_I, CLIMB_D};
-
-        public static final double FLYWHEEL_KP = 0.019914;
-        public static final double FLYWHEEL_KI = 0;
-        public static final double FLYWHEEL_KD = 0;
-        public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
-        
-        public static final double GYRO_DRIVE_DISTANCE_P = 1;
-        public static final double GYRO_DRIVE_DISTANCE_I = 0;
-        public static final double GYRO_DRIVE_DISTANCE_D = 0;
-        public static final double[] GYRO_DRIVE_DISTANCE_PID = {GYRO_DRIVE_DISTANCE_P, GYRO_DRIVE_DISTANCE_I, GYRO_DRIVE_DISTANCE_D};
-        public static final double GYRO_DRIVE_DISTANCE_TOLERANCE = 0.5;
-
-        public static final double GYRO_DRIVE_ANGLE_P = 1;
-        public static final double GYRO_DRIVE_ANGLE_I = 0;
-        public static final double GYRO_DRIVE_ANGLE_D = 0;
-        public static final double[] GYRO_DRIVE_ANGLE_PID = {GYRO_DRIVE_ANGLE_P, GYRO_DRIVE_ANGLE_I, GYRO_DRIVE_ANGLE_D};
-        public static final double GYRO_DRIVE_ANGLE_TOLERANCE = 5;
-
-        public static final double FLYWHEEL_KV = 0.020257;
-        public static final double FLYWHEEL_KA = 0.006987;
-
-        public static final double DELTA_TIME = 0.02;
-        public static final double MODEL_TRUST = 3.0;
-        public static final double ENCODER_TRUST = 0.15;
-        public static final double VELOCITY_TOLERANCE = 25;
-        public static final double MAX_VOLTS = 12;
-    }
-
-    public static final class Buttons {
-        public static final int POV_UP = 0;
-        public static final int POV_RIGHT = 90;
-        public static final int POV_DOWN = 180;
-        public static final int POV_LEFT = 270;
+        public static final double MAX_VELO_FEET = 2;
+        public static final double MAX_ACCEL_FEET = 2;
     }
 }

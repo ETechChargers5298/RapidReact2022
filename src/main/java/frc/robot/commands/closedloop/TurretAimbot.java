@@ -11,6 +11,7 @@ import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Utils;
+import frc.robot.utils.State.TurretState;
 
 public class TurretAimbot extends CommandBase {
   
@@ -40,7 +41,16 @@ public class TurretAimbot extends CommandBase {
     if (Limelight.isValidTarget()) {
       double offset = Limelight.getHorizontalOffset();
       double speed = controller.calculate(offset);
+
+      if(Math.abs(offset) < Control.TURRET_AIM_TOLERANCE) {
+        turret.setState(TurretState.ONTARGET);
+      } else {
+        turret.setState(TurretState.FOUND);
+      }
+
       turret.moveTurret(Utils.clamp(speed, Shooters.TURRET_SPEED, -Shooters.TURRET_SPEED));
+    } else {
+      turret.setState(TurretState.OFF);
     }
   }
 
@@ -48,6 +58,7 @@ public class TurretAimbot extends CommandBase {
   @Override
   public void end(boolean interrupted) {   
       turret.stopTurret();
+      turret.setState(TurretState.OFF);
     }
 
   // Returns true when the command should end.

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.subsystems.LEDStrip.LightFlag;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.State.TurretState;
 
@@ -61,21 +62,25 @@ public class Turret extends SubsystemBase {
   }
 
   public double getTurretPosition() {
-    return encoderTurret.get();
+    return Shooters.TURRET_ENCODER_MULTIPLIER * encoderTurret.get();
   }
 
   public void setState(TurretState state) {
     currentStatus = state;
   }
 
-  public void updateTelemetry() {
-    SmartDashboard.putNumber("llhoroffset", Limelight.getHorizontalOffset());
-    SmartDashboard.putBoolean("llfound", Limelight.isValidTarget());
-    SmartDashboard.putNumber("lldistance", Limelight.getEstimatedDistance());
-    SmartDashboard.putNumber("llveroffset", Limelight.getVerticalOffset());
+  public void setLights() {
+    if(currentStatus != TurretState.OFF) {
+      LEDStrip.request(LightFlag.LIMELIGHT, currentStatus.getStatusLight());
+    }
   }
 
-  //
+  public void updateTelemetry() {
+    Limelight.updateTelemetry();
+    SmartDashboard.putBoolean("Left Turret Limit", leftLimit());
+    SmartDashboard.putBoolean("Right Turret Limit", rightLimit());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -5,6 +5,7 @@
 package frc.robot.commands.basic.shoot;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
@@ -35,7 +36,7 @@ public class ShooterShoot extends CommandBase {
   @Override
   public void execute() {
     // speeds up flywheel
-    pew.revUp();
+    pew.flyVolt(Shooters.FLYWHEEL_SPIN_VOLTAGE);
     
     // if Velocity is over 1000 it will shoot.
    if (pew.getVelocity() > 1000) {

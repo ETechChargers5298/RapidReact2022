@@ -10,14 +10,14 @@ import frc.robot.subsystems.LEDStrip;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class KillLights extends InstantCommand {
-  public KillLights() {
+public class DisableStatus extends InstantCommand {
+  public DisableStatus() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LEDStrip.killLights();
+    LEDStrip.disable();
   }
 }

@@ -4,169 +4,102 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.Robot;
-import frc.robot.utils.LEDColors;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import java.util.ArrayList;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Robot;
+import frc.robot.utils.LEDColors;
 
-
-/** Add your docs here. */
 public class LEDStrip extends SubsystemBase {
 
-    private static Spark lights = new Spark(Robot.BLINKIN_PORT);
-    private static Alliance allianceColor = DriverStation.getAlliance();
-    private static LightFlag winnerFlag = null;
-    private static ArrayList<LightFlag> requests = new ArrayList<LightFlag>();
+  private static Spark LED = new Spark(Robot.BLINKIN_PORT);
+  
+  public static final double CLIMB_REACHING = LEDColors.STROBE;
+  public static final double CLIMB_READY = LEDColors.LIGHT_CHASE;
+  public static final double CLIMB_CLIMBING = LEDColors.STROBE_2;
+  public static final double CLIMB_DONE = LEDColors.RAINBOW_PARTY;
+
+  public static final double SHOOTER_RAMPING = LEDColors.FAST_HEARTBEAT;
+  public static final double SHOOTER_READY = LEDColors.MEDIUM_HEARTBEAT;
+  public static final double SHOOTER_PEWPEW = LEDColors.SLOW_HEARTBEAT;
+ 
+  public static final double LIMELIGHT_SEEKING = LEDColors.LARSON_SCANNER;
+  public static final double LIMELIGHT_FOUND = LEDColors.RED_STROBE;
+  public static final double LIMELIGHT_ON_TARGET = LEDColors.LIME;
+ 
+  public static final double CARGO_SINGULAR = LEDColors.CONFETTI;
+  public static final double CARGO_DOUBLE = LEDColors.PARTY_TWINKLES;
+  public static final double CARGO_NADA = LEDColors.BLACK;
+
+  public static final double ALLIANCE_BLUE_DEFAULT = LEDColors.SHOT_BLUE;
+  public static final double ALLIANCE_RED_DEFAULT = LEDColors.SHOT_RED;
+
+  public static final double FIV_TOO_NEIN_EIGT = LEDColors.RAINBOW_RAINBOW;
+
+  private static int yourDesires = 4;
+  
+  private static double[] statuses = new double[LightFlag.DEFAULT.getPriority()];
+  
+  public enum LightFlag {
+    CLIMBING(0),
+    SHOOTING(1),
+    LIMELIGHT(2),
+    CARGO(3),
+    DEFAULT(4);
     
-    public static String prefLoaderLights = "";
-    public static String prefClimbingLights = "";
-    public static String prefOtherLights = "";
-    public static String prefShootingLights = "";
-
-    public enum LightFlag{
-        CLIMBING_LIGHT_FLAG(1),
-        SHOOTING_LIGHT_FLAG(2),
-        LOADING_LIGHT_FLAG(3),
-        OTHER_LIGHT_FLAG(4);
-
-        private LightFlag(int priority){
-            this.priority = priority;
-        }
-
-        private int priority;
+    private int priority;
+    
+    private LightFlag(int priority){
+      this.priority = priority;
     }
 
-    public static void makeRequest(LightFlag requested){
-        //SmartDashboard.putString("ltest", "makeRequest");
-        requests.add(requested);
+    public int getPriority() {
+      return priority;
+    }
+  }
+
+  public static void setPattern(double ledPattern) {
+    LED.set(ledPattern);
+  }
+
+  public static void disable() {
+    LED.stopMotor();
+  }
+  
+  public static void request(LightFlag priority, double status) {
+    if (priority.getPriority() < yourDesires) {
+      yourDesires = priority.getPriority();
+    }
+    statuses[priority.getPriority()] = status; 
+  }
+  
+  public static void setStatus() {
+    if (yourDesires < statuses.length) {
+      setPattern(statuses[yourDesires]);
+    }
+    else {
+      Alliance alliance = DriverStation.getAlliance();
+      switch(alliance) {
+        case Red: 
+          setPattern(ALLIANCE_RED_DEFAULT);
+          break;
+        case Blue:
+          setPattern(ALLIANCE_BLUE_DEFAULT);
+          break;
+        default:
+          setPattern(FIV_TOO_NEIN_EIGT);
+          break;
+      }
     }
 
-    public static void determine(){
-        
-        SmartDashboard.putNumber("requestLength", requests.size());
-        if (requests.size() > 0){
-            for (LightFlag flag : requests){
-                if (flag.priority < winnerFlag.priority){
-                    winnerFlag = flag;
-                }
-            }
-            SmartDashboard.putNumber("LightSystem", winnerFlag.priority);
-            //resetLights
-            for (int i = requests.size()-1; i >= 0; i--){
-                requests.remove(i);
-            }
-        } else {
-            winnerFlag = LightFlag.OTHER_LIGHT_FLAG;
-        }
-    }
-
-    public static void runLights(){
-
-        //SmartDashboard.putString("ltest", "runLights");
-        determine();
-
-        SmartDashboard.putString("ltest", "determined");
-        switch (winnerFlag.priority){
-
-            case 1: climbingLights();
-                    break;      
-            case 2: shootingLights();
-                    break;
-            case 3: loadingLights();
-                    break;
-            case 4: otheringLights();
-                    break;
-        }
-    }
-
-    private static void loadingLights(){
-        if (prefLoaderLights.equals("twoCargo"))
-            lights.set(LEDColors.VIOLET);
-        else if (prefLoaderLights.equals("oneCargo"))
-            lights.set(LEDColors.STROBE);
-        else if (prefLoaderLights.equals("noCargo"))
-            lights.set(LEDColors.WHITE_STROBE);
-        SmartDashboard.putString("Lights", prefLoaderLights);
-    }
-
-    private static void climbingLights(){
-        if (prefClimbingLights.equals("reaching"))
-            lights.set(LEDColors.BLUE_HEARTBEAT);
-        else if (prefClimbingLights.equals("isGoodClimb"))
-            lights.set(LEDColors.RED_HEARTBEAT);
-        else if (prefClimbingLights.equals("climbing"))
-            lights.set(LEDColors.MEDIUM_HEARTBEAT);
-        else if (prefClimbingLights.equals("celebrateClimb"))
-            lights.set(LEDColors.RAINBOW_PARTY);
-            SmartDashboard.putString("Lights", prefClimbingLights);
-
-    }
-
-    private static void shootingLights(){
-        if (prefShootingLights.equals("findingTarget"))
-        lights.set(LEDColors.ORANGE);
-        else if (prefShootingLights.equals("foundTarget"))
-        lights.set(LEDColors.BLUE_GREEN);
-        else if (prefShootingLights.equals("onTarget"))
-        lights.set(LEDColors.BLUE_STROBE);
-        SmartDashboard.putString("Lights", prefShootingLights);
-
-    }
-
-    private static void otheringLights(){
-        LEDStrip.startColor();
-    }
-
-/*  UNUSED
-    public static void moving() {
-        lights.set(LEDColors.GREEN);
-    }
-    public static void still() {
-        lights.set(LEDColors.YELLOW);  
-    }
-
-    public static void statusDead() {
-        lights.set(LEDColors.RED);
-    }
-
-    public static void setPattern(int pattern) {
-        lights.set(pattern);
-    }
-*/
-    /* GENERAL ROBOT COLORS */
-
-    public static void startColor() {
-        //lights.set(LEDColors.WHITE_HEARTBEAT);
-        if (allianceColor == Alliance.Red){
-            lights.set(LEDColors.GREEN);
-        } else if (allianceColor == Alliance.Blue){
-            lights.set(LEDColors.BLUE_LIGHT_CHASE);
-        } else {
-            lights.set(LEDColors.GRAY_LIGHT_CHASE);
-        }
-    }
-
-    public static void killLights(){
-        lights.stopMotor();
-    }
-
-    public static void disabledLights(){
-        lights.set(LEDColors.BLUE);
-    }
-
-
-    @Override
-    public void periodic() {
-      // This method will be called once per scheduler run
-      allianceColor = DriverStation.getAlliance();
-      runLights();
-      SmartDashboard.putString("AllianceColor", allianceColor.toString());
-    }
+    yourDesires = LightFlag.DEFAULT.getPriority();
+  } 
   
 
-
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    setStatus();
+  }
 }

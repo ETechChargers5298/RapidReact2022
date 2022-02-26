@@ -7,18 +7,17 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
@@ -28,8 +27,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Control;
 import frc.robot.Constants.Robot;
+import frc.robot.Constants.Traj;
 import frc.robot.utils.State.DriveState;
 import frc.robot.Constants.DriveTrain;
 import edu.wpi.first.wpilibj.SPI;
@@ -38,25 +37,25 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public class Drivetrain extends SubsystemBase {
   
   // hardware (motors, solenoid, encoders, gyro)
-  private final CANSparkMax leftMotorA, leftMotorB, leftMotorC;
-  private final CANSparkMax rightMotorA, rightMotorB, rightMotorC;
-  private final DoubleSolenoid gearShifter; 
-  private final Encoder encoderLeft, encoderRight;
-  private final AHRS navX;
+  private CANSparkMax leftMotorA, leftMotorB, leftMotorC;
+  private CANSparkMax rightMotorA, rightMotorB, rightMotorC;
+  private DoubleSolenoid gearShifter; 
+  private Encoder encoderLeft, encoderRight;
+  private AHRS navX;
 
   // drive control (motor controller groups, differential drive, kinematics, odometry)
-  private final MotorControllerGroup motorLeft, motorRight;
-  private final DifferentialDrive diffDrive;
-  private final DifferentialDriveKinematics diffDriveKinematics;
-  private final DifferentialDriveOdometry diffDriveOdometry;
+  private MotorControllerGroup motorLeft, motorRight;
+  private DifferentialDrive diffDrive;
+  private DifferentialDriveKinematics diffDriveKinematics;
+  private DifferentialDriveOdometry diffDriveOdometry;
 
   // control states (pid, feedforward)
-  private final PIDController leftWheelPID, rightWheelPID;
-  private final SimpleMotorFeedforward feedforward; 
+  private PIDController leftWheelPID, rightWheelPID;
+  private SimpleMotorFeedforward feedforward; 
   
   // trajectory
-  private final Pose2d pose;
-  private final Field2d field; 
+  private Pose2d pose;
+  private Field2d field;
 
   // states of drive 
   private DriveState currentStatus;
@@ -73,10 +72,11 @@ public class Drivetrain extends SubsystemBase {
     rightMotorA = configSpark(DriveTrain.DRIVE_RIGHT_A);
     rightMotorB = configSpark(DriveTrain.DRIVE_RIGHT_B);
     rightMotorC = configSpark(DriveTrain.DRIVE_RIGHT_C);
-   
+    
     // motor grouping
     motorLeft = new MotorControllerGroup(leftMotorA, leftMotorB, leftMotorC);
     motorRight = new MotorControllerGroup(rightMotorA, rightMotorB, rightMotorC);
+
     motorLeft.setInverted(DriveTrain.LEFT_INVERTED);
     motorRight.setInverted(DriveTrain.RIGHT_INVERTED);
     
@@ -87,8 +87,6 @@ public class Drivetrain extends SubsystemBase {
     encoderLeft = new Encoder(DriveTrain.ENCODER_LEFT_PORT_A, DriveTrain.ENCODER_LEFT_PORT_B);
     encoderRight = new Encoder(DriveTrain.ENCODER_RIGHT_PORT_A, DriveTrain.ENCODER_RIGHT_PORT_B);
     navX = new AHRS(SPI.Port.kMXP);
-    pose = new Pose2d();
-    
   
     resetEncoders();
     resetIMU();
@@ -96,18 +94,20 @@ public class Drivetrain extends SubsystemBase {
     // differential drive (differential drive object, kinematics, odometry)
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
     diffDriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Robot.TRACK_WIDTH_INCHES));
-    diffDriveOdometry = new DifferentialDriveOdometry(new Rotation2d());
+    diffDriveOdometry = new DifferentialDriveOdometry(getHeading());
+    pose = diffDriveOdometry.getPoseMeters();
     
     // pid controllers (left wheel pid, right wheel pid, feedforward)
-    leftWheelPID = new PIDController(Control.DRIVE_LEFT_PID[0], Control.DRIVE_LEFT_PID[1], Control.DRIVE_LEFT_PID[2]);
-    rightWheelPID = new PIDController(Control.DRIVE_RIGHT_PID[0], Control.DRIVE_RIGHT_PID[1], Control.DRIVE_RIGHT_PID[2]);
-    feedforward = new SimpleMotorFeedforward(Control.DRIVE_FEED_KSVA[0], Control.DRIVE_FEED_KSVA[1], Control.DRIVE_FEED_KSVA[2]);
+    leftWheelPID = new PIDController(Traj.DRIVE_LEFT_PID[0], Traj.DRIVE_LEFT_PID[1], Traj.DRIVE_LEFT_PID[2]);
+    rightWheelPID = new PIDController(Traj.DRIVE_RIGHT_PID[0], Traj.DRIVE_RIGHT_PID[1], Traj.DRIVE_RIGHT_PID[2]);
+    feedforward = new SimpleMotorFeedforward(Traj.DRIVE_FEED_KSVA[0], Traj.DRIVE_FEED_KSVA[1], Traj.DRIVE_FEED_KSVA[2]);
     
     // trajectory (ramsete controller, field2d)
     field = new Field2d();
 
     // current status
     currentStatus = DriveState.OFF;
+    shiftSpeed();
   }
   
   // configuration of sparks
@@ -134,25 +134,10 @@ public class Drivetrain extends SubsystemBase {
     motorLeft.set(0);
     motorRight.set(0);
   }
-  
-  public void setWheelSpeeds(DifferentialDriveWheelSpeeds speeds) {
-    double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
-    double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
-  
-    double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
-    double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
-  
-    motorLeft.setVoltage(leftVoltage + leftOffset);
-    motorRight.setVoltage(rightVoltage + rightOffset);
-  }
-  
-  public void setWheelSpeeds(double leftSpeed, double rightSpeed) {
-    setWheelSpeeds(new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed));
-  }
 
   public void setWheelVolts(double leftVolts, double rightVolts) {
-    motorLeft.setVoltage(leftVolts);
-    motorRight.setVoltage(rightVolts);
+    motorLeft.setVoltage(-leftVolts);
+    motorRight.setVoltage(-rightVolts);
 
     diffDrive.feed();
   }
@@ -160,10 +145,12 @@ public class Drivetrain extends SubsystemBase {
   // shifting gears either hi-speed or hi-torque
   public void shiftSpeed() {
     gearShifter.set(Value.kForward);
+    currentStatus = DriveState.SPEED;
   }
 
   public void shiftTorque() {
     gearShifter.set(Value.kReverse);
+    currentStatus = DriveState.TORQUE;
   }
   
   // reset methods
@@ -177,13 +164,11 @@ public class Drivetrain extends SubsystemBase {
   }
   
   public void resetOdometry() {
-
     resetEncoders();
     diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getHeading());
   }
 
   public void resetOdometry(Pose2d position) {
-
     resetEncoders();
     diffDriveOdometry.resetPosition(position, getHeading());
   }
@@ -196,26 +181,26 @@ public class Drivetrain extends SubsystemBase {
   public double getRightDistance() {
     return -encoderRight.getDistance() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
-  
-  public double getRightVelocity() {
-    return -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
-  }
  
   public double getLeftVelocity() {
     return encoderLeft.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
+
+  public double getRightVelocity() {
+    return -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
+  }
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-      encoderLeft.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING,
-      -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING);
+      getLeftVelocity(),
+      getRightVelocity());
   }
 
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-navX.getAngle());
   }
 
-  public double getDegrees(){
+  public double getDegrees() {
     return getHeading().getDegrees();
   }
 
@@ -232,11 +217,11 @@ public class Drivetrain extends SubsystemBase {
   }
   
   public Pose2d getPose(){
-    return diffDriveOdometry.getPoseMeters();
+    return pose;
   }
- 
-  public Field2d getField() {
-    return field;
+
+  public void setTraj(Trajectory trajectory) {
+    field.getObject("Traj").setTrajectory(trajectory);
   }
 
   public DifferentialDriveKinematics getKinematics() {
@@ -245,18 +230,26 @@ public class Drivetrain extends SubsystemBase {
   
   // odometry 
   public void updateOdometry() {
-    diffDriveOdometry.update(getHeading(), getLeftDistance(), getRightDistance());
-    field.setRobotPose(diffDriveOdometry.getPoseMeters());
+    pose = diffDriveOdometry.update(getHeading(), getLeftDistance(), getRightDistance());
+    field.setRobotPose(pose);
   }
 
   // displaying data
   public void updateTelemetry() {
+    SmartDashboard.putNumber("Native Left Position", encoderLeft.getDistance());
+    SmartDashboard.putNumber("Native Right Position", encoderRight.getDistance());
+    SmartDashboard.putNumber("Native Left Velocity", encoderLeft.getRate());
+    SmartDashboard.putNumber("Native Right Velocity", encoderRight.getRate());
     SmartDashboard.putNumber("Left Position", getLeftDistance());
     SmartDashboard.putNumber("Right Position", getRightDistance());
     SmartDashboard.putNumber("Left Velocity", getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightVelocity());
     SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
-    SmartDashboard.putData("Odometry", field);
+    SmartDashboard.putNumber("Odometry X", pose.getX());
+    SmartDashboard.putNumber("Odometry Y", pose.getY());
+    SmartDashboard.putNumber("Odometry Angle", pose.getRotation().getDegrees());
+    SmartDashboard.putData("Odometry Field", field);
+    SmartDashboard.putString("Drive State", currentStatus.toString());
   } 
 
   @Override
