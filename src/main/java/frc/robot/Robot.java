@@ -50,7 +50,7 @@ public class Robot extends LoggedRobot {
 
     Logger.getInstance().start();
 
-    LookCargo.setAllianceColor();
+    //LookCargo.setAllianceColor();
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

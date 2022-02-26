@@ -24,12 +24,12 @@ public class LookCargo {
 public static ArrayList<Cargo> BakasFound() {
 
    ArrayList<Cargo> bakaList = new ArrayList<Cargo>();
-   JSONArray objectsFound = new JSONArray(table);
+   String[] objectsFound = table.getEntry("detections").getStringArray(new String[0]);
    
        // Loops through each cargo that was found
-    for(int i = 0; i < objectsFound.length(); i++) {
+    for(int i = 0; i < objectsFound.length; i++) {
       // Gets the JSON for one cargo
-      JSONObject currentCargo = objectsFound.getJSONObject(i);
+      JSONObject currentCargo = new JSONObject(objectsFound[i]);
 
       // Obtains the label of the cargo
       String label = currentCargo.getString("label");
