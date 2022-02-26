@@ -117,10 +117,11 @@ public final class Constants {
         public static final int CLIMBER_LIMIT_PORT = 5;
         public static final boolean CLIMBER_MOTOR_INVERSION = false;
         public static final double CLIMBER_MOTOR_SPEED = 0.75;
-        public static final int CLIMBER_ENC_START = 10;
-        public static final int CLIMBER_ENC_TOP1 = 87;
-        public static final int CLIMBER_ENC_TOP2 = 200;
-        public static final int CLIMBER_ENC_DONE = 285;
+        
+        public static final int REACH_START = 10;
+        public static final int REACH_BAR = 87;
+        public static final int CLIMB_START = 200;
+        public static final int CLIMB_DONE = 285;
     }
 
     public static final class Control {
@@ -150,10 +151,17 @@ public final class Constants {
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
 
-        public static final double TURRET_P = 0.10;
-        public static final double TURRET_I = 0;
-        public static final double TURRET_D = 0;
-        public static final double TURRET_MARGIN = 0.5;
+        public static final double TURRET_AIM_P = 0.10;
+        public static final double TURRET_AIM_I = 0;
+        public static final double TURRET_AIM_D = 0;
+        public static final double[] TURRET_AIM_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
+        public static final double TURRET_AIM_TOLERANCE = 0.5;
+        
+        public static final double TURRET_CENTER_P = 1;
+        public static final double TURRET_CENTER_I = 0;
+        public static final double TURRET_CENTER_D = 0;
+        public static final double[] TURRET_CENTER_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
+        public static final double TURRET_CENTER_TOLERANCE = 15;
 
         public static final double CLIMB_P = 1;
         public static final double CLIMB_I = 0;

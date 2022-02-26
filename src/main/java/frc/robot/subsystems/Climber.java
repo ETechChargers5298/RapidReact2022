@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
+import frc.robot.subsystems.LEDStripPT2.LightFlag;
 import frc.robot.utils.State.ClimberState;
 
 public class Climber extends SubsystemBase {
@@ -42,25 +43,23 @@ public class Climber extends SubsystemBase {
   }
 
   public void setStatus() {
-    double e = Math.abs(getPosition());
+    double climberDistance = getPosition();
     
-    if (e > Climbers.CLIMBER_ENC_START){
-    LEDStrip.makeRequest(LEDStrip.LightFlag.CLIMBING_LIGHT_FLAG);
+    if(climberDistance > Climbers.REACH_START){
+      if (climberDistance < Climbers.REACH_BAR) {
+        currentStatus = ClimberState.REACHING;
+      }
+      else if(climberDistance < Climbers.CLIMB_START) {
+        currentStatus = ClimberState.READY;
+      }
+      else if(climberDistance < Climbers.CLIMB_DONE) {
+        currentStatus = ClimberState.CLIMBING;
+      }
+      else {
+        currentStatus = ClimberState.DONE;
+      }
     }
-
-    if(e < Climbers.CLIMBER_ENC_TOP1){
-      LEDStrip.prefClimbingLights = "reaching";
-    } else if(e < Climbers.CLIMBER_ENC_TOP2){
-      LEDStrip.prefClimbingLights = "isGoodClimb";
-    } else if( e < Climbers.CLIMBER_ENC_DONE) {
-      LEDStrip.prefClimbingLights = "climbing";
-    } else {
-      LEDStrip.prefClimbingLights = "celebrateClimb";
-    }
-   
-
   }
-  
 
   /**
    * Movers climber up
@@ -88,7 +87,7 @@ public class Climber extends SubsystemBase {
 
   //Gets the encoder value
   public double getPosition() {
-    return climbEncoder.getPosition();
+    return Math.abs(climbEncoder.getPosition());
   }
 
   //Sets the Encoder value back to Zero
@@ -96,11 +95,22 @@ public class Climber extends SubsystemBase {
     climbEncoder.setPosition(0.0);
   }
 
+  public void updateTelemetry() {
+    SmartDashboard.putNumber("Climb Encoder", getPosition());
+    SmartDashboard.putString("Status", currentStatus.toString());
+  }
+
+  public void sendLight() {
+    if (!currentStatus.equals(ClimberState.OFF)) {
+      LEDStripPT2.request(LightFlag.CLIMBING, currentStatus.getStatusLight());
+    }
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ClimbEncoder", getPosition());
-    SmartDashboard.putString("ClimbPhase", LEDStrip.prefClimbingLights);
+    setStatus();
+    sendLight();
+    updateTelemetry();
   }
 }
