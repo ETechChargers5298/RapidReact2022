@@ -4,38 +4,25 @@
 
 package frc.robot.commands.basic.drive;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Drivetrain;
 
-public class ShiftTorque extends CommandBase {
-  // Drivetrain subsystem needed for this command
-  private Drivetrain drivetrain; 
-  
-  /** Creates a new ShiftTorque. */
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class ShiftTorque extends InstantCommand {
+
+  private Drivetrain drivetrain;
   public ShiftTorque(Drivetrain drivetrain) {
-    // Assigns drivetrain parameter to drivetrain field 
+
     this.drivetrain = drivetrain;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // Changes the gear to torque mode
+  public void initialize() {
+    
     drivetrain.shiftTorque();
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    // Only runs this command once
-    return true;
   }
 }
