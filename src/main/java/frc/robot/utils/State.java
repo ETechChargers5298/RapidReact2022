@@ -70,7 +70,7 @@ public class State {
 
     public enum TurretState {
         OFF(5298.0),
-        SEEK(LEDStripPT2.LIMELIGHT_SEEK),
+        SEEKING(LEDStripPT2.LIMELIGHT_SEEKING),
         FOUND(LEDStripPT2.LIMELIGHT_FOUND),
         ONTARGET(LEDStripPT2.LIMELIGHT_ON_TARGET); 
         

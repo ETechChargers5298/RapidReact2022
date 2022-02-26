@@ -18,8 +18,8 @@ public class Loader extends SubsystemBase {
   
   // creates motor for loader
   private CANSparkMax motor;
-  private DigitalInput ls1;
-  private DigitalInput ls2;
+  private DigitalInput cargoUno;
+  private DigitalInput cargoDose;
 
   private LoaderState currentStatus;
   private CargoState balls;
@@ -30,8 +30,8 @@ public class Loader extends SubsystemBase {
     motor = new CANSparkMax(Loading.LOADER_MOTOR_PORT, MotorType.kBrushless);
 
     //creates 2 limit switches
-    ls1 = new DigitalInput(Loading.CARGO_LIMIT_SWITCH_PORT);
-    ls2 = new DigitalInput(Loading.CARGO2_LIMIT_SWITCH_PORT);
+    cargoUno = new DigitalInput(Loading.CARGO_LIMIT_SWITCH_PORT);
+    cargoDose = new DigitalInput(Loading.CARGO2_LIMIT_SWITCH_PORT);
 
     // inverts motor
     motor.setInverted(Loading.LOADER_INVERSION);
@@ -55,15 +55,6 @@ public class Loader extends SubsystemBase {
   public void load() {
     motor.set(Loading.LOADER_SPEED);
 
-    LEDStrip.makeRequest(LEDStrip.LightFlag.LOADING_LIGHT_FLAG);
-
-    if(getCargoLimit() && getCargoLimit2()){
-      LEDStrip.prefLoaderLights = "twoCargo";
-    } else if (getCargoLimit()){
-      LEDStrip.prefLoaderLights = "oneCargo";
-    } else{
-      LEDStrip.prefLoaderLights = "noCargo";
-    }
   }
 
   /**
@@ -78,10 +69,10 @@ public class Loader extends SubsystemBase {
   //LS1 is the top switch that would hold the first cargo
   //LS2 is the bottom switch that would hold the second cargo
   public boolean getCargoLimit(){
-    return ls1.get();
+    return cargoUno.get();
   }
   public boolean getCargoLimit2(){
-    return ls2.get();
+    return cargoDose.get();
   }
 
 

@@ -24,7 +24,6 @@ import frc.robot.commands.basic.lights.KillLights;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.ShooterSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
-import frc.robot.commands.closedloop.TurretAim;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -75,7 +74,7 @@ public class RobotContainer {
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
   private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
-  private final TurretAim turretAim = new TurretAim(turret);
+  // private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
   private final KillLights killLights = new KillLights();
   
@@ -132,7 +131,7 @@ public class RobotContainer {
     new DPad(operatorController, Constants.Buttons.POV_UP).whenPressed(intakeRetract);  
 
     //Aim button
-    new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
+    //new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
 
     // LED Strip Buttons
     new JoystickButton(driveController, Button.kX.value).whenPressed(killLights);

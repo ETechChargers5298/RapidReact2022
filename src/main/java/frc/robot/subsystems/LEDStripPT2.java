@@ -24,7 +24,7 @@ public class LEDStripPT2 extends SubsystemBase {
   public static final double SHOOTER_READY = LEDColors.MEDIUM_HEARTBEAT;
   public static final double SHOOTER_PEWPEW = LEDColors.SLOW_HEARTBEAT;
  
-  public static final double LIMELIGHT_SEEK = LEDColors.LARSON_SCANNER;
+  public static final double LIMELIGHT_SEEKING = LEDColors.LARSON_SCANNER;
   public static final double LIMELIGHT_FOUND = LEDColors.RED_STROBE;
   public static final double LIMELIGHT_ON_TARGET = LEDColors.LIME;
  
