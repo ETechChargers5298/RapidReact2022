@@ -9,6 +9,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.commands.TrajectoryCommand;
 import frc.robot.commands.basic.cargo.IntakeChomp;
@@ -25,6 +27,7 @@ import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.ShooterSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
+import frc.robot.commands.closedloop.ShooterDesiredRPM;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -78,8 +81,8 @@ public class RobotContainer {
   // private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
   private final DisableStatus killLights = new DisableStatus();
-  
-  //public static Alliance allianceColor;
+
+  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -94,6 +97,8 @@ public class RobotContainer {
     configureButtonBindings();
     // Configures the axes bindings 
     configureAxes();
+
+    autoChooser();
 
     //LEDStrip.startcolor();
     
@@ -122,7 +127,7 @@ public class RobotContainer {
 
     // Shooting Trigger and Button
     //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(shoot, true);  //not working well yet
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelSpin, true);  //works but fluctuates with battery
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDesiredRPM(shooter, 4800), true);  //works but fluctuates with battery
     //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelRPM, true);
     //new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
@@ -160,13 +165,19 @@ public class RobotContainer {
     drivetrain.resetOdometry();
   }
 
+  public void autoChooser() {
+    autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
+    autoChooser.addOption("Drive Curved", new TrajectoryCommand(drivetrain).driveCurvedTest());
+    SmartDashboard.putData("Autonomous Chooser", autoChooser);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new TrajectoryCommand(drivetrain).driveStraightTest();
+    return autoChooser.getSelected();
   }
 
 

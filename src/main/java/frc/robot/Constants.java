@@ -164,9 +164,9 @@ public final class Constants {
         public static final double[] TURRET_CENTER_PID = {TURRET_AIM_P, TURRET_AIM_I, TURRET_AIM_D};
         public static final double TURRET_CENTER_TOLERANCE = 15;
 
-        public static final double FLYWHEEL_KV = 0;
-        public static final double FLYWHEEL_KA = 0;
-        public static final double[] FLYWHEEL_KVA = {FLYWHEEL_KV, FLYWHEEL_KA};
+        public static final double FLYWHEEL_KS = 0;
+        public static final double FLYWHEEL_KV = 0.0022030987;
+        public static final double[] FLYWHEEL_KSV = {FLYWHEEL_KS, FLYWHEEL_KV};
 
         public static final double FLYWHEEL_KP = 0;
         public static final double FLYWHEEL_KI = 0;
