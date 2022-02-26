@@ -1,85 +1,154 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.utils;
 
-//Google's gson library downloadable from https://search.maven.org/artifact/com.google.code.gson/gson/2.9.0/jar
-import com.google.gson.Gson;
-// import com.google.gson.JsonElement;
-// import com.google.gson.JsonObject;
-// import com.google.gson.JsonParser;
-// import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-/** Class to process information about the Cargo we're looking at with the Machine Learning */
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
+/** Add your docs here. */
 public class LookCargo {
 
-    private static ArrayList<Cargo> cargoList;
-    private static int mlImageWidth = 800;
-    private static int mlImageHeight = 600;
-    private static String allianceColor = "Blue";
-	
-    //LookCargo constructor... NEEDS to get the real JSON, not this example
-    public static void updateCargoList(){
-        String jsonArr = "[{\"label\": \"ball\", \"box\": {\"ymin\": 38, \"xmin\": 70, \"ymax\": 52, \"xmax\": 86}, \"confidence\": 0.88671875}, {\"label\": \"ball\", \"box\": {\"ymin\": 40, \"xmin\": 21, \"ymax\": 53, \"xmax\": 33}, \"confidence\": 0.6640625}]";
-		Type listType = new TypeToken<ArrayList<Cargo>>() {}.getType();
-		cargoList = new Gson().fromJson(jsonArr, listType);
-    }
+  private static NetworkTableInstance instance = NetworkTableInstance.getDefault();
+   private static NetworkTable table = instance.getTable("ML");
+   private static ArrayList<Cargo> owo;
 
-    public static void setAllianceColor(){
-        allianceColor = DriverStation.getAlliance().toString();
-    }
+public static ArrayList<Cargo> BakasFound() {
 
-    public static String getAllianceColor(){
-        return allianceColor;
-    }
+   ArrayList<Cargo> bakaList = new ArrayList<Cargo>();
+   JSONArray objectsFound = new JSONArray(table);
+   
+       // Loops through each cargo that was found
+    for(int i = 0; i < objectsFound.length(); i++) {
+      // Gets the JSON for one cargo
+      JSONObject currentCargo = objectsFound.getJSONObject(i);
 
-    //accessor
-	public static ArrayList<Cargo> getCargo() {
-		return cargoList;
-	}
+      // Obtains the label of the cargo
+      String label = currentCargo.getString("label");
 
-    //Used to identify the closest Cargo of a specific color in the ArrayList -Omar lloyd
-    public static Cargo findClosestCargo(String color){
-        //write full method here
-        int big = -1;
-        Cargo bigC = null;
-        //go through the arryList
-        for(Cargo c : cargoList ){
+      // Obtains confidence of the cargo
+      double confidence = currentCargo.getDouble("confidence");
 
-            int dis = c.gety();
-            if(dis > big  && c.getColor().equals(color)){
-                big = dis;
-                bigC = c;
-            } 
-        }
-        return bigC;
-        //return new Cargo(allianceColor, 0,0,0,0, 100.0);
-    }
+      // Obtains the box
+      JSONObject boundingBox = currentCargo.getJSONObject("box");
 
+      // Gets each dimension of bounding box
+      int xmin = boundingBox.getInt("xmin");
+      int ymin = boundingBox.getInt("ymin");
+      int xmax = boundingBox.getInt("xmax");
+      int ymax = boundingBox.getInt("ymax");
 
-    //Method to find the "error" difference (in pixels) between a desired Cargo and facing the front of the robot -Omar lloyd
-    public static int angleToCargo(Cargo c){
-        //write full method here
-        int mid = mlImageWidth / 2;
-        int tar = c.getx();
-        int dist = tar - mid;
-    
+      Cargo baka = new Cargo(label, ymin, xmin, ymax, xmax, confidence);
+      bakaList.add(baka);
 
-        return dist;
-    }
-
-
-    //Method to find the "error" difference (in pixels) between a desired Cargo and the front intake rollers -omar lloyd
-    public static int distanceToCargo(Cargo c){
-
-        int robodist = mlImageHeight - c.gety();
-        
-        return robodist;
-    }
-    
-
+   }
+return bakaList;
 }
+
+private static String[] putString() {
+
+   String[] uwu = new String[BakasFound().size()];
+   ArrayList<Cargo> help = BakasFound();
+
+   for (int i = 0; i < help.size(); i++) {
+
+     uwu[i] = help.get(i).toString();
+   }
+
+   return uwu;
+}
+
+
+public static void updateTelementary() {
+
+   SmartDashboard.putStringArray("Cargo", putString());
+}
+}
+
+/*
+-------------------------------------------------------------------------
+This is the code I had in the replit
+-------------------------------------------------------------------------
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import java.util.*;
+import java.lang.Number;
+
+public class JsonDecodeDemo {
+
+   public static void main(String[] args) {
+	
+      JSONParser parser = new JSONParser();
+      String s = "[{\"label\": \"ball\", \"box\": {\"ymin\": 38, \"xmin\": 70, \"ymax\": 52, \"xmax\": 86}, \"confidence\": 0.88671875}, {\"label\": \"ball\", \"box\": {\"ymin\": 40, \"xmin\": 21, \"ymax\": 53, \"xmax\": 33}, \"confidence\": 0.6640625}]";
+		
+      try{
+         Object obj = parser.parse(s);
+         JSONArray array = (JSONArray)obj;			
+      
+				//get ONE particular element/Cargo
+         System.out.println("The 2nd element of array");
+         System.out.println(array.get(1));
+         System.out.println();
+
+				//Find 
+         JSONObject obj2 = (JSONObject)array.get(1);
+         System.out.println("Field \"1\"");
+         System.out.println(obj2.get("ymax"));    
+
+         s = "{}";
+         obj = parser.parse(s);
+         System.out.println(obj);
+
+         s = "[5,]";
+         obj = parser.parse(s);
+         System.out.println(obj);
+
+         s = "[5,,2]";
+         obj = parser.parse(s);
+         System.out.println(obj);
+
+        ArrayList<Cargo> no = new ArrayList<Cargo>();
+
+         for (int i = 0; i < array.size(); i++) {
+JSONObject obj3 = (JSONObject)array.get(i);
+
+ String label = obj3.get("label").toString();
+
+ int ymax = 0;
+ int xmax = 0;
+ int ymin = 0;
+ int xmin = 0;
+
+
+ System.out.println(obj3.get("box").toString());
+         }
+
+         System.out.println(no);
+
+    
+      }catch(ParseException pe) {
+		
+         System.out.println("position: " + pe.getPosition());
+         System.out.println(pe);
+      }
+   }
+}
+
+*/

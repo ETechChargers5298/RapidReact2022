@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 //Cargo Class from Raymond G
 public class Cargo {
 
@@ -7,6 +9,7 @@ public class Cargo {
 	private int y;
 	private int x;
 	private double confidence;
+ 
 
 	public Cargo(String label, int ymin, int xmin, int ymax, int xmax, double confidence) {
 
