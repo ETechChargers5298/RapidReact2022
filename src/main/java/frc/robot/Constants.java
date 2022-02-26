@@ -32,8 +32,15 @@ public final class Constants {
         public static final int DRIVE_RIGHT_B = 5; 
         public static final int DRIVE_RIGHT_C = 6;
 
-        public static final boolean LEFT_INVERTED = true;
-        public static final boolean RIGHT_INVERTED = false;
+        public static final int ENCODER_LEFT_PORT_A = 9;
+        public static final int ENCODER_LEFT_PORT_B = 8;
+        public static final int ENCODER_RIGHT_PORT_A = 7;
+        public static final int ENCODER_RIGHT_PORT_B = 6;
+
+        public static final int ENCODER_ENCODING = 4;
+
+        public static final boolean LEFT_INVERTED = false;
+        public static final boolean RIGHT_INVERTED = true;
 
         public static final boolean ENCODER_LEFT_INVERTED = true;
         public static final boolean ENCODER_RIGHT_INVERTED = false;

@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -40,7 +41,7 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax leftMotorA, leftMotorB, leftMotorC;
   private final CANSparkMax rightMotorA, rightMotorB, rightMotorC;
   private final DoubleSolenoid gearShifter; 
-  private final RelativeEncoder encoderLeft, encoderRight;
+  private final Encoder encoderLeft, encoderRight;
   private final AHRS navX;
 
   // drive control (motor controller groups, differential drive, kinematics, odometry)
@@ -54,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
   private final SimpleMotorFeedforward feedforward; 
   
   // trajectory
-  private final RamseteController ramController;
+  private final Pose2d pose;
   private final Field2d field; 
 
   // states of drive 
@@ -83,26 +84,18 @@ public class Drivetrain extends SubsystemBase {
     gearShifter = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, DriveTrain.GEAR_SHIFT_SPEED_PORT, DriveTrain.GEAR_SHIFT_TORQUE_PORT);
 
     // encoders (left side encoder, right side encoder, navx)
-    // encoderLeft = leftMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
-    // encoderRight = rightMotorA.getAlternateEncoder(DriveTrain.COUNTS_PER_REVOLUTION);
-    encoderLeft = leftMotorA.getEncoder();
-    encoderRight = rightMotorA.getEncoder();
+    encoderLeft = new Encoder(DriveTrain.ENCODER_LEFT_PORT_A, DriveTrain.ENCODER_LEFT_PORT_B);
+    encoderRight = new Encoder(DriveTrain.ENCODER_RIGHT_PORT_A, DriveTrain.ENCODER_RIGHT_PORT_B);
     navX = new AHRS(SPI.Port.kMXP);
+    pose = new Pose2d();
     
-    // configure sensors (encoders, gyro)
-    //encoderLeft.setInverted(DriveTrain.ENCODER_LEFT_INVERTED);
-    //encoderRight.setInverted(DriveTrain.ENCODER_RIGHT_INVERTED);
-
-    encoderLeft.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));
-    encoderRight.setPositionConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));
-    encoderLeft.setVelocityConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));
-    encoderRight.setVelocityConversionFactor(Units.inchesToMeters(Math.PI * Robot.WHEEL_DIAMETER_INCH));
+  
     resetEncoders();
     resetIMU();
     
     // differential drive (differential drive object, kinematics, odometry)
     diffDrive = new DifferentialDrive(motorLeft, motorRight);
-    diffDriveKinematics = new DifferentialDriveKinematics(Robot.TRACK_WIDTH_INCHES);
+    diffDriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Robot.TRACK_WIDTH_INCHES));
     diffDriveOdometry = new DifferentialDriveOdometry(new Rotation2d());
     
     // pid controllers (left wheel pid, right wheel pid, feedforward)
@@ -111,7 +104,6 @@ public class Drivetrain extends SubsystemBase {
     feedforward = new SimpleMotorFeedforward(Control.DRIVE_FEED_KSVA[0], Control.DRIVE_FEED_KSVA[1], Control.DRIVE_FEED_KSVA[2]);
     
     // trajectory (ramsete controller, field2d)
-    ramController = new RamseteController(Control.RAM_B, Control.RAM_ZETA);
     field = new Field2d();
 
     // current status
@@ -130,10 +122,12 @@ public class Drivetrain extends SubsystemBase {
   // collection of movement control methods
   public void arcadeDrive(double linear, double rotational) {
     diffDrive.arcadeDrive(linear, rotational);
+    diffDrive.feed();
   }
   
   public void tankDrive(double leftSpeed, double rightSpeed) {
     diffDrive.tankDrive(leftSpeed, rightSpeed);
+    diffDrive.feed();
   }
 
   public void motorStop() {
@@ -145,8 +139,8 @@ public class Drivetrain extends SubsystemBase {
     double leftVoltage = feedforward.calculate(speeds.leftMetersPerSecond);
     double rightVoltage = feedforward.calculate(speeds.rightMetersPerSecond);
   
-    double leftOffset = leftWheelPID.calculate(encoderLeft.getVelocity(), speeds.leftMetersPerSecond);
-    double rightOffset = rightWheelPID.calculate(encoderRight.getVelocity(), speeds.rightMetersPerSecond);
+    double leftOffset = leftWheelPID.calculate(encoderLeft.getRate(), speeds.leftMetersPerSecond);
+    double rightOffset = rightWheelPID.calculate(encoderRight.getRate(), speeds.rightMetersPerSecond);
   
     motorLeft.setVoltage(leftVoltage + leftOffset);
     motorRight.setVoltage(rightVoltage + rightOffset);
@@ -174,8 +168,8 @@ public class Drivetrain extends SubsystemBase {
   
   // reset methods
   private void resetEncoders() {
-    encoderLeft.setPosition(0);
-    encoderRight.setPosition(0);
+    encoderLeft.reset();
+    encoderRight.reset();
   }
   
   private void resetIMU() {
@@ -183,40 +177,46 @@ public class Drivetrain extends SubsystemBase {
   }
   
   public void resetOdometry() {
-    diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getAngle());
+
+    resetEncoders();
+    diffDriveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d()), getHeading());
   }
 
   public void resetOdometry(Pose2d position) {
-    diffDriveOdometry.resetPosition(position, getAngle());
+
+    resetEncoders();
+    diffDriveOdometry.resetPosition(position, getHeading());
   }
 
   // getter methods
   public double getLeftDistance() {
-    return encoderLeft.getPosition();
+    return encoderLeft.getDistance() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
  
   public double getRightDistance() {
-    return encoderRight.getPosition();
+    return -encoderRight.getDistance() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
   
   public double getRightVelocity() {
-    return encoderRight.getVelocity();
+    return -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
  
   public double getLeftVelocity() {
-    return encoderLeft.getVelocity();
+    return encoderLeft.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+    return new DifferentialDriveWheelSpeeds(
+      encoderLeft.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING,
+      -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING);
   }
 
-  public Rotation2d getAngle() {
+  public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-navX.getAngle());
   }
 
   public double getDegrees(){
-    return getAngle().getDegrees();
+    return getHeading().getDegrees();
   }
 
   public SimpleMotorFeedforward getFeedforward() {
@@ -234,10 +234,6 @@ public class Drivetrain extends SubsystemBase {
   public Pose2d getPose(){
     return diffDriveOdometry.getPoseMeters();
   }
-  
-  public RamseteController getRamController() {
-    return ramController;
-  }
  
   public Field2d getField() {
     return field;
@@ -249,7 +245,7 @@ public class Drivetrain extends SubsystemBase {
   
   // odometry 
   public void updateOdometry() {
-    diffDriveOdometry.update(getAngle(), getLeftDistance(), getRightDistance());
+    diffDriveOdometry.update(getHeading(), getLeftDistance(), getRightDistance());
     field.setRobotPose(diffDriveOdometry.getPoseMeters());
   }
 
@@ -259,7 +255,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Position", getRightDistance());
     SmartDashboard.putNumber("Left Velocity", getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", getRightVelocity());
-    SmartDashboard.putNumber("Gyro", getAngle().getDegrees());
+    SmartDashboard.putNumber("Gyro", getHeading().getDegrees());
     SmartDashboard.putData("Odometry", field);
   } 
 

@@ -26,7 +26,7 @@ public class GyroDriveStraight extends CommandBase {
     this.rightStart = drivetrain.getRightDistance();
     this.distancePID.setSetpoint((leftStart + rightStart) / 2 + targetMeters);
     this.distancePID.setTolerance(Control.GYRO_DRIVE_DISTANCE_TOLERANCE);
-    this.anglePID.setSetpoint(drivetrain.getAngle().getDegrees()); 
+    this.anglePID.setSetpoint(drivetrain.getHeading().getDegrees()); 
     this.anglePID.setTolerance(Control.GYRO_DRIVE_ANGLE_TOLERANCE);
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,7 +43,7 @@ public class GyroDriveStraight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rot = anglePID.calculate(drivetrain.getAngle().getDegrees());
+    double rot = anglePID.calculate(drivetrain.getHeading().getDegrees());
     double linear = distancePID.calculate((drivetrain.getLeftDistance() + drivetrain.getRightDistance()) / 2);
     drivetrain.arcadeDrive(linear, rot);
 
