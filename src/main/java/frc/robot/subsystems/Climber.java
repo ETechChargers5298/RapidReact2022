@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
 import frc.robot.subsystems.LEDStrip.LightFlag;
+import frc.robot.utils.ColorSensor;
 import frc.robot.utils.State.ClimberState;
 
 public class Climber extends SubsystemBase {
@@ -104,6 +105,7 @@ public class Climber extends SubsystemBase {
   public void updateTelemetry() {
     SmartDashboard.putNumber("Climb Encoder", getPosition());
     SmartDashboard.putString("Status", currentStatus.toString());
+    ColorSensor.updateTelemetry();
   }
 
   @Override

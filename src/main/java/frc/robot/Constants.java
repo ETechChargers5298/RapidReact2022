@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
     public static final class Robot {
         public static final double WHEEL_DIAMETER_INCH = 6.0;
-        public static final double TRACK_WIDTH_INCHES = 25.0;
+        public static final double TRACK_WIDTH_INCHES = 27.0;
         public static final double ROBOT_HEIGHT_INCH = 40;
 
         public static final int BLINKIN_PORT = 9;
@@ -32,8 +32,8 @@ public final class Constants {
         public static final int DRIVE_RIGHT_B = 5; 
         public static final int DRIVE_RIGHT_C = 6;
 
-        public static final boolean LEFT_INVERTED = false;
-        public static final boolean RIGHT_INVERTED = true;
+        public static final boolean LEFT_INVERTED = true;
+        public static final boolean RIGHT_INVERTED = false;
 
         public static final int ENCODER_LEFT_PORT_A = 9;
         public static final int ENCODER_LEFT_PORT_B = 8;
@@ -43,11 +43,11 @@ public final class Constants {
         public static final int COUNTS_PER_REVOLUTION = 8192;
         public static final int ENCODER_ENCODING = 4;
 
-        public static final boolean ENCODER_LEFT_INVERTED = true;
-        public static final boolean ENCODER_RIGHT_INVERTED = false;
+        public static final boolean ENCODER_LEFT_INVERTED = false;
+        public static final boolean ENCODER_RIGHT_INVERTED = true;
         
-        public static final int GEAR_SHIFT_TORQUE_PORT = 0;
-        public static final int GEAR_SHIFT_SPEED_PORT = 1;
+        public static final int GEAR_SHIFT_TORQUE_PORT = 1;
+        public static final int GEAR_SHIFT_SPEED_PORT = 0;
     }
     
     public static final class Shooters {
@@ -99,8 +99,8 @@ public final class Constants {
         public static final boolean INTAKE_INVERSION = false;
         public static final double INTAKE_SPEED = 0.75;
 
-        public static final int INTAKE_CHOMP_PORT = 2;
-        public static final int INTAKE_RETRACT_PORT = 3;
+        public static final int INTAKE_CHOMP_PORT = 3;
+        public static final int INTAKE_RETRACT_PORT = 2;
     }
   
     public static final class Gamepad {
@@ -176,25 +176,25 @@ public final class Constants {
     }
 
     public static final class Traj {
-        public static final double DRIVE_LEFT_P = 1.0;
+        public static final double DRIVE_LEFT_P = 0;
         public static final double DRIVE_LEFT_I = 0;
         public static final double DRIVE_LEFT_D = 0;
         public static final double[] DRIVE_LEFT_PID = {DRIVE_LEFT_P, DRIVE_LEFT_I, DRIVE_LEFT_D};
 
-        public static final double DRIVE_RIGHT_P = 1.0;
+        public static final double DRIVE_RIGHT_P = 0;
         public static final double DRIVE_RIGHT_I = 0;
         public static final double DRIVE_RIGHT_D = 0;
         public static final double[] DRIVE_RIGHT_PID = {DRIVE_RIGHT_P, DRIVE_RIGHT_I, DRIVE_RIGHT_D};
 
-        public static final double DRIVE_FEED_STATIC = 0.11808;
-        public static final double DRIVE_FEED_VELOCITY = 2.5926;
-        public static final double DRIVE_FEED_ACCELERATION = .295;
+        public static final double DRIVE_FEED_STATIC = 0.097229;
+        public static final double DRIVE_FEED_VELOCITY = 4.493;
+        public static final double DRIVE_FEED_ACCELERATION = 0.54095;
         public static final double[] DRIVE_FEED_KSVA = {DRIVE_FEED_STATIC, DRIVE_FEED_VELOCITY, DRIVE_FEED_ACCELERATION};
 
         public static final double RAM_B = 2.0;
         public static final double RAM_ZETA = 0.7;
 
-        public static final double MAX_VELO_FEET = 2;
-        public static final double MAX_ACCEL_FEET = 2;
+        public static final double MAX_VELO_FEET = 10;
+        public static final double MAX_ACCEL_FEET = 5;
     }
 }

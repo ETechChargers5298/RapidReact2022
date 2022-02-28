@@ -37,8 +37,6 @@ public class Intake extends SubsystemBase {
 
     // creates solenoid for lifting and dropping intake
     chomp = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Loading.INTAKE_CHOMP_PORT, Loading.INTAKE_RETRACT_PORT); 
-    
-    intakeRetract();
 
     currentStatus = IntakeState.OFF;
     chompStatus = IntakeState.UNCHOMPED;

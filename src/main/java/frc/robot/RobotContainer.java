@@ -5,14 +5,20 @@
 package frc.robot;
 
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
-import frc.robot.commands.TrajectoryCommand;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.cargo.IntakeRetract;
@@ -25,9 +31,9 @@ import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
-import frc.robot.commands.basic.shoot.ShooterSpin;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
+import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -77,7 +83,7 @@ public class RobotContainer {
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
-  private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
+  //private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
   // private final TurretAim turretAim = new TurretAim(turret);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
   private final DisableStatus killLights = new DisableStatus();
@@ -98,9 +104,17 @@ public class RobotContainer {
     // Configures the axes bindings 
     configureAxes();
 
-    autoChooser();
+    String trajectoryJSON = "paths/TestFour.wpilib.json";
+    Trajectory trajectory = new Trajectory();
 
-    //LEDStrip.startcolor();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+   } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+   }
+
+    autoChooser(trajectory);
     
   }
 
@@ -127,7 +141,7 @@ public class RobotContainer {
 
     // Shooting Trigger and Button
     //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(shoot, true);  //not working well yet
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDesiredRPM(shooter, 4800), true);  //works but fluctuates with battery
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDesiredRPM(shooter, 4000), true);  //works but fluctuates with battery
     //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelRPM, true);
     //new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
@@ -165,9 +179,12 @@ public class RobotContainer {
     drivetrain.resetOdometry();
   }
 
-  public void autoChooser() {
+  public void autoChooser(Trajectory traj) {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
     autoChooser.addOption("Drive Curved", new TrajectoryCommand(drivetrain).driveCurvedTest());
+    autoChooser.addOption("Drive Back", new TrajectoryCommand(drivetrain).driveBackTest());
+    autoChooser.addOption("Drive Back Curved", new TrajectoryCommand(drivetrain).driveBackCurvedTest());
+    autoChooser.addOption("PATH WEAVER", new TrajectoryCommand(drivetrain).pathCommand(traj));
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 

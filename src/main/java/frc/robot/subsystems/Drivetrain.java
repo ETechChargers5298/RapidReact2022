@@ -87,7 +87,10 @@ public class Drivetrain extends SubsystemBase {
     encoderLeft = new Encoder(DriveTrain.ENCODER_LEFT_PORT_A, DriveTrain.ENCODER_LEFT_PORT_B);
     encoderRight = new Encoder(DriveTrain.ENCODER_RIGHT_PORT_A, DriveTrain.ENCODER_RIGHT_PORT_B);
     navX = new AHRS(SPI.Port.kMXP);
-  
+
+    encoderLeft.setReverseDirection(DriveTrain.ENCODER_LEFT_INVERTED);
+    encoderRight.setReverseDirection(DriveTrain.ENCODER_RIGHT_INVERTED);
+    
     resetEncoders();
     resetIMU();
     
@@ -107,7 +110,6 @@ public class Drivetrain extends SubsystemBase {
 
     // current status
     currentStatus = DriveState.OFF;
-    shiftSpeed();
   }
   
   // configuration of sparks
@@ -136,8 +138,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setWheelVolts(double leftVolts, double rightVolts) {
-    motorLeft.setVoltage(-leftVolts);
-    motorRight.setVoltage(-rightVolts);
+    SmartDashboard.putNumber("LEFT VOLTS", leftVolts);
+    SmartDashboard.putNumber("RIGHT VOLTS", rightVolts);
+    motorLeft.setVoltage(leftVolts);
+    motorRight.setVoltage(rightVolts);
 
     diffDrive.feed();
   }
@@ -179,7 +183,7 @@ public class Drivetrain extends SubsystemBase {
   }
  
   public double getRightDistance() {
-    return -encoderRight.getDistance() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
+    return encoderRight.getDistance() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
  
   public double getLeftVelocity() {
@@ -187,7 +191,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getRightVelocity() {
-    return -encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
+    return encoderRight.getRate() * Math.PI * Units.inchesToMeters(Robot.WHEEL_DIAMETER_INCH) / DriveTrain.COUNTS_PER_REVOLUTION * DriveTrain.ENCODER_ENCODING;
   }
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -255,7 +259,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    updateTelemetry();
     updateOdometry();
+    updateTelemetry();
   }
 }

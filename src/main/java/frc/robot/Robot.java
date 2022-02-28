@@ -10,7 +10,6 @@ import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
 import org.littletonrobotics.junction.io.ByteLogReceiver;
 import org.littletonrobotics.junction.io.ByteLogReplay;
 import org.littletonrobotics.junction.io.LogSocketServer;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -41,7 +40,7 @@ public class Robot extends LoggedRobot {
 
     if (isReal()) {
       SmartDashboard.putBoolean("REAL REACHED", true);
-      Logger.getInstance().addDataReceiver(new ByteLogReceiver("src/main/java/frc/robot/logs/"));
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/"));
       Logger.getInstance().addDataReceiver(new LogSocketServer(5800));
     }  
     else {
@@ -54,6 +53,7 @@ public class Robot extends LoggedRobot {
     Logger.getInstance().start();
 
     SmartDashboard.putString("Log Status", "INSTANCE STARTED");
+
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
