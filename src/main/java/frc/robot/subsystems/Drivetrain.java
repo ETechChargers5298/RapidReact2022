@@ -138,8 +138,6 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setWheelVolts(double leftVolts, double rightVolts) {
-    SmartDashboard.putNumber("LEFT VOLTS", leftVolts);
-    SmartDashboard.putNumber("RIGHT VOLTS", rightVolts);
     motorLeft.setVoltage(leftVolts);
     motorRight.setVoltage(rightVolts);
 

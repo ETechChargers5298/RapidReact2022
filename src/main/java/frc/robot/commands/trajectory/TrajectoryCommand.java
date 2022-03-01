@@ -35,6 +35,8 @@ public class TrajectoryCommand {
     private TrajectoryConfig configPresetForward;
     private TrajectoryConfig configPresetBackward;
 
+    public static HashMap<String, Trajectory> PATH_WEAVER_PATHS = getPaths();
+
     public TrajectoryCommand(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
 
@@ -111,7 +113,7 @@ public class TrajectoryCommand {
         return createTrajCommand(traj);
     }
 
-    public void getPaths() { 
+    public static HashMap<String, Trajectory> getPaths() { 
         Path pathsDirectory = Filesystem.getDeployDirectory().toPath().resolve("paths");
         Iterator<Path> paths = pathsDirectory.iterator();
 
@@ -127,5 +129,7 @@ public class TrajectoryCommand {
                 DriverStation.reportError("Unable to open trajectory: " + path, e.getStackTrace());
             }
         }
+
+        return trajectories;
     }
 }

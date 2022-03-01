@@ -85,6 +85,7 @@ public class RobotContainer {
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
   //private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
   // private final TurretAim turretAim = new TurretAim(turret);
+  private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
   private final DisableStatus killLights = new DisableStatus();
 

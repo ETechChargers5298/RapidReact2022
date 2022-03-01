@@ -54,12 +54,12 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean leftLimit() {
-    limitSwitchLeft.get();
+    //limitSwitchLeft.get();
     return false;
   }
 
   public boolean rightLimit() {
-    limitSwitchRight.get();
+    //limitSwitchRight.get();
     return false;
   }
 
@@ -81,6 +81,7 @@ public class Turret extends SubsystemBase {
     Limelight.updateTelemetry();
     SmartDashboard.putBoolean("Left Turret Limit", leftLimit());
     SmartDashboard.putBoolean("Right Turret Limit", rightLimit());
+    SmartDashboard.putNumber("Turret Position", getTurretPosition());
   }
 
   @Override

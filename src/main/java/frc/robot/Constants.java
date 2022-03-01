@@ -70,7 +70,7 @@ public final class Constants {
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final int DESIRED_RPM = 1000;
         
-        public static final double LIMELIGHT_ANG_DEG = 45;
+        public static final double LIMELIGHT_ANG_DEG = 27.174516;
         public static final double GOAL_HEIGHT_INCH = 104;
     }
 

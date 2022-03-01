@@ -6,6 +6,8 @@ package frc.robot.commands.closedloop;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Control;
@@ -17,6 +19,7 @@ public class ShooterDesiredRPM extends CommandBase {
   private PIDController controller;
   private Shooter shooter;
   private double desiredRPM;
+  private NetworkTable table;
 
   /** Creates a new ShooterDesiredRPM. */
   public ShooterDesiredRPM(Shooter shooter, double desiredRPM) {
@@ -25,6 +28,8 @@ public class ShooterDesiredRPM extends CommandBase {
     this.feedforward = new SimpleMotorFeedforward(Control.FLYWHEEL_KSV[0], Control.FLYWHEEL_KSV[1]);
     this.controller = new PIDController(Control.FLYWHEEL_PID[0], Control.FLYWHEEL_PID[1], Control.FLYWHEEL_PID[2]);
     this.desiredRPM = desiredRPM;
+    this.table = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    table.getEntry("SHOOTER DESIRED RPM").setDouble(0.0);
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
@@ -41,6 +46,7 @@ public class ShooterDesiredRPM extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double desiredRPM = table.getEntry("SHOOTER DESIRED RPM").getDouble(0);
     double volts = feedforward.calculate(desiredRPM);
     SmartDashboard.putNumber("FLYWHEEL VOLTS", volts);
     double errorFix = controller.calculate(shooter.getVelocity());
