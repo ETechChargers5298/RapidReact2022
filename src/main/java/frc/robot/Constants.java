@@ -16,7 +16,6 @@ public final class Constants {
     public static final class Robot {
         public static final double WHEEL_DIAMETER_INCH = 6.0;
         public static final double TRACK_WIDTH_INCHES = 27.0;
-        public static final double ROBOT_HEIGHT_INCH = 40;
 
         public static final int BLINKIN_PORT = 9;
 
@@ -70,8 +69,7 @@ public final class Constants {
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final int DESIRED_RPM = 1000;
         
-        public static final double LIMELIGHT_ANG_DEG = 27.174516;
-        public static final double GOAL_HEIGHT_INCH = 104;
+        public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
     }
 
     public static final class Experimental {
