@@ -5,7 +5,6 @@
 package frc.robot.utils;
 
 import org.json.JSONArray;
-import org.opencv.ml.Ml;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,13 +19,12 @@ public MLCam() {
 }
 
 
-public static void updateTelemetry() {
-String name = "Baka";
+    public static void updateTelemetry() {
+        String name = "Baka";
         for (int i = 0; i < findBaka.length(); i++) {
             name += i;
             SmartDashboard.putString(name, findBaka.getString(i));
             name = "Baka";
-        }
-    
-}
+        } 
+    }
 }

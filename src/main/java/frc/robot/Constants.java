@@ -68,6 +68,7 @@ public final class Constants {
         public static final boolean FLYWHEEL_INVERSION = true;
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final int DESIRED_RPM = 1000;
+        public static final double[] DESIRED_RPM_K = {20, 2147};
         
         public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
     }

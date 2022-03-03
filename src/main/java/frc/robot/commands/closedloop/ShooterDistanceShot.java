@@ -5,9 +5,11 @@
 package frc.robot.commands.closedloop;
 
 import frc.robot.subsystems.Shooter;
+import frc.robot.utils.Limelight;
 
 public class ShooterDistanceShot extends ShooterDesiredRPM {
   /** Creates a new ShooterDistanceShot. */
+
   public ShooterDistanceShot(Shooter shooter) {
     super(shooter, 0);
   }
@@ -16,7 +18,7 @@ public class ShooterDistanceShot extends ShooterDesiredRPM {
   @Override
   public void execute() {
     // Equation using limelight distance goes here
-    desiredRPM = 0;
+    desiredRPM = shooter.getRpmFromDistance(Limelight.getEstimatedDistance());
     super.execute();
   }
 }

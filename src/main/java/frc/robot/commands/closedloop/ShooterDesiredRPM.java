@@ -17,7 +17,7 @@ public class ShooterDesiredRPM extends CommandBase {
 
   private SimpleMotorFeedforward feedforward;
   private PIDController controller;
-  private Shooter shooter;
+  protected Shooter shooter;
   protected double desiredRPM;
   private NetworkTable table;
 

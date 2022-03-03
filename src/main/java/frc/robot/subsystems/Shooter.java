@@ -55,11 +55,8 @@ public class Shooter extends SubsystemBase {
   }
 
   
-  public int getRpmFromDistance(int dis){
-
-  return 20 * dis + 2147;
-
-
+  public double getRpmFromDistance(double distanceInches){
+    return Shooters.DESIRED_RPM_K[0] * distanceInches + Shooters.DESIRED_RPM_K[1];
   }
 
    /**
