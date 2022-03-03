@@ -53,6 +53,15 @@ public class Shooter extends SubsystemBase {
     flywheel.set(speed);
     currentStatus = ShooterState.RAMPING;
   }
+
+  
+  public int getRpmFromDistance(int dis){
+
+  return 20 * dis + 2147;
+
+
+  }
+
    /**
    * controls flywheel using volts
    * @author catears
