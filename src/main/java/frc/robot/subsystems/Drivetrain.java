@@ -32,6 +32,7 @@ import frc.robot.Constants.Robot;
 import frc.robot.Constants.DriveTrain;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Drivetrain extends SubsystemBase {
   
@@ -263,5 +264,11 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     updateTelemetry();
     updateOdometry();
+    // SmartDashboard.putNumber("ML Dist to Cargo", LookCargo.distanceToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
+    // SmartDashboard.putNumber("ML Angle To Cargo", LookCargo.angleToCargo(LookCargo.findClosestCargo(LookCargo.getAllianceColor())));
+    // SmartDashboard.putNumber("ML Dist to Cargo", LookCargo.distanceToCargo(LookCargo.findClosestCargo(Alliance.Blue.toString())));
+    // SmartDashboard.putNumber("ML Angle To Cargo", LookCargo.angleToCargo(LookCargo.findClosestCargo(Alliance.Blue.toString())));
+
+    
   }
 }

@@ -64,6 +64,12 @@ public class Shooter extends SubsystemBase {
   }
 
   
+  public int getRpmFromDistance(int dis){
+
+  return 20 * dis + 2147;
+
+
+  }
 
    /**
    * controls flywheel using volts
