@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.subsystems.LEDStrip.LightFlag;
+import frc.robot.utils.State.ShooterState;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -20,6 +22,8 @@ public class Shooter extends SubsystemBase {
   // declares encoder for flywheel
   private RelativeEncoder flyEncoder;
 
+  private ShooterState currentStatus;
+  
   /** Creates a new Shooter. */
   public Shooter() {
     // creates motor
@@ -29,25 +33,9 @@ public class Shooter extends SubsystemBase {
     flywheel.setInverted(Shooters.FLYWHEEL_INVERSION);
 
     // obtains encoder
-    //flyEncoder = flywheel.getAlternateEncoder(Shooters.FLYWHEEL_COUNTS_PER_REV);
     flyEncoder = flywheel.getEncoder();
 
-    //flyEncoder.setVelocityConversionFactor(2 * Math.PI);
-    //flyEncoder.setPositionConversionFactor(2 * Math.PI);
-
-    // inverts encoder
-    //flyEncoder.setInverted(Shooters.FLYWHEEL_ENCODER_INVERSION);
-
-    
-  }
-
-
-  /**
-   * shooter revs up to make a shot
-   * @author raymond
-   */
-  public void revUp() {
-    flywheel.set(Shooters.REV_SPEED);
+    currentStatus = ShooterState.OFF;
   }
 
   /**
@@ -58,9 +46,12 @@ public class Shooter extends SubsystemBase {
     return flyEncoder.getVelocity();
   }
 
-
-  public double getPosition() {
-    return flyEncoder.getPosition();
+   /**
+   * controls flywheel basic
+   */
+  public void fly(double speed){
+    flywheel.set(speed);
+    currentStatus = ShooterState.RAMPING;
   }
 
   
@@ -77,6 +68,7 @@ public class Shooter extends SubsystemBase {
    */
   public void flyVolt(double voltage){
     flywheel.setVoltage(voltage);
+    currentStatus = ShooterState.RAMPING;
   }
   
   /**
@@ -85,12 +77,29 @@ public class Shooter extends SubsystemBase {
    */
   public void stopFly(){
     flywheel.set(0);
+    currentStatus = ShooterState.OFF;
+  }
+
+  public void updateTelemetry() {
+    SmartDashboard.putNumber("Shooter Velocity", getVelocity());
+    SmartDashboard.putString("Shooter Status", currentStatus.toString());
+  }
+  
+  public void setState(ShooterState state) {
+    currentStatus = state;
+  }
+
+  public void setLights() {
+    if(currentStatus != ShooterState.OFF) {
+      LEDStrip.request(LightFlag.SHOOTING, currentStatus.getStatusLight());
+    }
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Encoder V", getVelocity());
-    SmartDashboard.putNumber("Shooter Position", getPosition());
+    setLights();
+    updateTelemetry();
   }
+
 }

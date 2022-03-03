@@ -10,9 +10,10 @@ import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
 import org.littletonrobotics.junction.io.ByteLogReceiver;
 import org.littletonrobotics.junction.io.ByteLogReplay;
 import org.littletonrobotics.junction.io.LogSocketServer;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.robot.utils.PneumaticsUtil;
 
 /**
@@ -38,16 +39,21 @@ public class Robot extends LoggedRobot {
     Logger.getInstance().recordMetadata("ProjectName", "FRC5298");
 
     if (isReal()) {
-      Logger.getInstance().addDataReceiver(new ByteLogReceiver("src/main/java/frc/robot/logs/"));
+      SmartDashboard.putBoolean("REAL REACHED", true);
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/"));
       Logger.getInstance().addDataReceiver(new LogSocketServer(5800));
     }  
     else {
+      SmartDashboard.putBoolean("REAL REACHED", true);
       String path = ByteLogReplay.promptForPath();
       Logger.getInstance().setReplaySource(new ByteLogReplay(path));
       Logger.getInstance().addDataReceiver(new ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")));
     }
 
     Logger.getInstance().start();
+
+    SmartDashboard.putString("Log Status", "INSTANCE STARTED");
+
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -69,16 +75,20 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+    //LEDStrip.runLights();
     PneumaticsUtil.reload();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+     
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -101,6 +111,7 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_robotContainer.resetDrivetrain();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -113,6 +124,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    m_robotContainer.resetDrivetrain();
     CommandScheduler.getInstance().cancelAll();
   }
 

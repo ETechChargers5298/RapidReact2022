@@ -7,13 +7,16 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
+import frc.robot.utils.State.FeederState;;
 
 public class Feeder extends SubsystemBase {
 
   // declares feeder motor
   private CANSparkMax feedMotor;
+  private FeederState currentStatus;
 
   /** Creates a new Feeder. */
   public Feeder() {
@@ -22,6 +25,8 @@ public class Feeder extends SubsystemBase {
 
     // inverts motor
     feedMotor.setInverted(Shooters.FEEDER_INVERSION);
+
+    currentStatus = FeederState.OFF;
   }
 
   /**
@@ -30,14 +35,7 @@ public class Feeder extends SubsystemBase {
    */
   public void feed() {
     feedMotor.set(Shooters.FEEDER_SPEED);
-  }
-
-  /**
-   * Unfeeds ball into loader
-   * @author raymond
-   */
-  public void unfeed() {
-    feedMotor.set(-Shooters.FEEDER_SPEED);
+    currentStatus = FeederState.FEEDING;
   }
 
   /**
@@ -46,10 +44,17 @@ public class Feeder extends SubsystemBase {
    */
   public void stopFeed() {
     feedMotor.set(0);
+    currentStatus = FeederState.OFF;
   }
+
+  public void updateTelemetry() {
+    SmartDashboard.putString("Feeder Status", currentStatus.toString());
+  }
+
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // This method will be called once per scheduler run\
+    updateTelemetry();
   }
 }

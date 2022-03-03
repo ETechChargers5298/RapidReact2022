@@ -6,6 +6,11 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class DPad extends Button {
 
+    public static final int POV_UP = 0;
+    public static final int POV_RIGHT = 90;
+    public static final int POV_DOWN = 180;
+    public static final int POV_LEFT = 270;
+    
     private XboxController controller;
     private int pov;
     

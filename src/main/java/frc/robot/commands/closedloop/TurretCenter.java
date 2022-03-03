@@ -2,21 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.basic.shoot;
+package frc.robot.commands.closedloop;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Control;
+import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Turret;
+import frc.robot.utils.Utils;
 
-public class TurretLeft extends CommandBase {
-  
-  // Declares the turret
+public class TurretCenter extends CommandBase {
+
   private Turret turret;
-
-  /** Creates a new TurretLeft. */
-  public TurretLeft(Turret turret) {
-    // Obtaining the turret
+  private PIDController controller;
+  
+  /** Creates a new TurretCenter. */
+  public TurretCenter(Turret turret) {
     this.turret = turret;
-
+    this.controller = new PIDController(1,0,0);
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turret);
   }
@@ -24,28 +28,28 @@ public class TurretLeft extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // The turret doesn't move at the start
     turret.stopTurret();
+    controller.setSetpoint(0.0);
+    controller.setTolerance(Control.TURRET_CENTER_TOLERANCE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // The turret moves left
-    turret.moveTurretLeft();
-  }
+      double offset = turret.getTurretPosition();
+      double speed = controller.calculate(offset);
+      turret.moveTurret(Utils.clamp(speed, Shooters.TURRET_SPEED, -Shooters.TURRET_SPEED));
+    }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // The turret stops in the end
     turret.stopTurret();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // It never stops
-    return false;
+    return controller.atSetpoint();
   }
 }

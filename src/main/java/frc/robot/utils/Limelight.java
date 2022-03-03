@@ -4,10 +4,9 @@
 
 package frc.robot.utils;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Constants.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Shooters;
 
 /** Add your docs here. */
@@ -31,7 +30,8 @@ public class Limelight {
 
     // Gets the estimated distance from the robot to the target
     public static double getEstimatedDistance() {
-        return (Shooters.GOAL_HEIGHT_INCH - Robot.ROBOT_HEIGHT_INCH) / Math.tan(Units.degreesToRadians(Shooters.LIMELIGHT_ANG_DEG) + Units.degreesToRadians(getVerticalOffset()));
+        double offset = getVerticalOffset();
+        return Shooters.LIMELIGHT_DISTANCE_K[0] * Math.pow(offset, 2) - Shooters.LIMELIGHT_DISTANCE_K[1] * offset + Shooters.LIMELIGHT_DISTANCE_K[2];
     }
 
     // Gets the active pipeline (0 to 9)
@@ -64,5 +64,12 @@ public class Limelight {
         else {
             table.getEntry("camMode").setNumber(1);
         } 
+    }
+
+    public static void updateTelemetry() {
+        SmartDashboard.putBoolean("Limelight Valid Target", isValidTarget());
+        SmartDashboard.putNumber("Limelight Vertical Offset", getVerticalOffset());
+        SmartDashboard.putNumber("Limelight Horizontal Offset", getHorizontalOffset());
+        SmartDashboard.putNumber("Limelight Estimate Distance", getEstimatedDistance());
     }
 }

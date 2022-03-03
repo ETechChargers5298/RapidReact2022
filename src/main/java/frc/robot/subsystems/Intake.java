@@ -7,12 +7,15 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
 import frc.robot.Constants.Robot;
+import frc.robot.utils.State.IntakeState;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends SubsystemBase {
   
@@ -21,6 +24,9 @@ public class Intake extends SubsystemBase {
 
   // declares intake solenoid
   private DoubleSolenoid chomp;
+
+  private IntakeState currentStatus;
+  private IntakeState chompStatus;
 
   /** Creates a new Intake. */
   public Intake() {
@@ -32,6 +38,9 @@ public class Intake extends SubsystemBase {
 
     // creates solenoid for lifting and dropping intake
     chomp = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Loading.INTAKE_CHOMP_PORT, Loading.INTAKE_RETRACT_PORT); 
+
+    currentStatus = IntakeState.OFF;
+    chompStatus = IntakeState.UNCHOMPED;
 }
 
   /**
@@ -40,6 +49,7 @@ public class Intake extends SubsystemBase {
    */
   public void intakeEat() {
     motor.set(Loading.INTAKE_SPEED);
+    currentStatus = IntakeState.SUCKING;
   }
 
   /**
@@ -48,6 +58,7 @@ public class Intake extends SubsystemBase {
    */
   public void intakeSpit() {
     motor.set(-Loading.INTAKE_SPEED);
+    currentStatus = IntakeState.SPITTING;
   }
 
   /**
@@ -56,6 +67,7 @@ public class Intake extends SubsystemBase {
    */
   public void stopIntake(){
     motor.set(0);
+    currentStatus = IntakeState.OFF;
   }
 
   /**
@@ -64,6 +76,7 @@ public class Intake extends SubsystemBase {
    */
   public void intakeChomp(){
     chomp.set(Value.kForward);
+    chompStatus = IntakeState.CHOMPED;
   }
 
   /**
@@ -72,10 +85,18 @@ public class Intake extends SubsystemBase {
    */
   public void intakeRetract(){
     chomp.set(Value.kReverse);
+    chompStatus = IntakeState.UNCHOMPED;
+  }
+
+  public void updateTelemetry() {
+    SmartDashboard.putString("Intake Status", currentStatus.toString());
+    SmartDashboard.putString("Chomp Status", chompStatus.toString());
+    SmartDashboard.putString("DefinitelyNotABaka", NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("D:"));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateTelemetry();
   }
 }
