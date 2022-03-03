@@ -35,6 +35,7 @@ import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
+import frc.robot.commands.closedloop.ShooterLimelightRPM;
 import frc.robot.commands.closedloop.TurretAimbot;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
@@ -89,6 +90,7 @@ public class RobotContainer {
   private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
 
   private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
+  private final ShooterLimelightRPM rpm2 = new ShooterLimelightRPM(shooter); 
 
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
@@ -133,7 +135,7 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
     // Shooting Trigger and Button
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(rpm, true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(rpm2, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     //Intake Chomp POV buttons
