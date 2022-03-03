@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
 import frc.robot.Constants.Robot;
+import frc.robot.utils.MLCam;
 import frc.robot.utils.State.IntakeState;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -91,12 +92,13 @@ public class Intake extends SubsystemBase {
   public void updateTelemetry() {
     SmartDashboard.putString("Intake Status", currentStatus.toString());
     SmartDashboard.putString("Chomp Status", chompStatus.toString());
-    SmartDashboard.putString("DefinitelyNotABaka", NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("D:"));
+    //SmartDashboard.putString("DefinitelyNotABaka", NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("D:"));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateTelemetry();
+    MLCam.updateTelemetry();
   }
 }
