@@ -42,6 +42,10 @@ public class Turret extends SubsystemBase {
     // creates the encoder for turret
     encoderTurret = new AnalogEncoder(Shooters.TURRET_ENCODER_PORT);
 
+    // limit switch limits
+    limitSwitchLeft = new DigitalInput(Shooters.TURRET_LEFT_LIMIT_PORT);
+    limitSwitchRight = new DigitalInput(Shooters.TURRET_RIGHT_LIMIT_PORT);
+
     currentStatus = TurretState.OFF;
   }
 
@@ -54,12 +58,12 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean leftLimit() {
-    //limitSwitchLeft.get();
+    //return limitSwitchLeft.get();
     return false;
   }
 
   public boolean rightLimit() {
-    //limitSwitchRight.get();
+    //return limitSwitchRight.get();
     return false;
   }
 

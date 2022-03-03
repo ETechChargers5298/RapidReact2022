@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Loading;
@@ -90,6 +91,7 @@ public class Intake extends SubsystemBase {
   public void updateTelemetry() {
     SmartDashboard.putString("Intake Status", currentStatus.toString());
     SmartDashboard.putString("Chomp Status", chompStatus.toString());
+    SmartDashboard.putString("DefinitelyNotABaka", NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("D:"));
   }
 
   @Override

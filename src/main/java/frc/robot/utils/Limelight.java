@@ -4,11 +4,9 @@
 
 package frc.robot.utils;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.Robot;
 import frc.robot.Constants.Shooters;
 
 /** Add your docs here. */

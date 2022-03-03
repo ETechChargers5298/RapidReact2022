@@ -7,6 +7,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
+import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.cargo.IntakeRetract;
@@ -33,6 +35,7 @@ import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
+import frc.robot.commands.closedloop.TurretAimbot;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -46,6 +49,8 @@ import frc.robot.utils.DPad;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -57,66 +62,57 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // Subsystems are created here
   private static final Drivetrain drivetrain = new Drivetrain();
-  private static final Turret turret = new Turret();
-  private static final Climber climber = new Climber();
   private static final Intake intake = new Intake();
   private static final Loader loader = new Loader();
-  private static final Shooter shooter = new Shooter();
   private static final Feeder feeder = new Feeder();
-  //private static final TestMotors testMotors = new TestMotors();
+  private static final Turret turret = new Turret();
+  private static final Shooter shooter = new Shooter();
+  private static final Climber climber = new Climber();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
   private static final XboxController operatorController = new XboxController(Gamepad.OPERATOR_PORT);
-  //private static final XboxController testController = new XboxController(Gamepad.TEST_PORT);
 
   // Commands are created here
-  //private final TestMoveMotors testMoveMotors = new TestMoveMotors(testMotors, () -> operatorController.getLeftY(), () -> testController.getRightY(), () -> testController.getLeftTriggerAxis(), () -> testController.getRightTriggerAxis());
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(drivetrain, () -> -driveController.getLeftY(), () -> driveController.getRightX());
   private final ShiftSpeed shiftSpeed = new ShiftSpeed(drivetrain);
   private final ShiftTorque shiftTorque = new ShiftTorque(drivetrain);
+
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
   private final IntakeChomp intakeChomp = new IntakeChomp(intake);
   private final IntakeRetract intakeRetract = new IntakeRetract(intake);
+
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
-  private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
+
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
-  //private final ShooterSpin flywheelSpin = new ShooterSpin(shooter);
-  // private final TurretAim turretAim = new TurretAim(turret);
+
+  private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
+
   private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
+
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+
   private final DisableStatus killLights = new DisableStatus();
+
+  private final TurretAimbot asuna = new TurretAimbot(turret);
 
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    //Gets alliance color from the 
-    //allianceColor = DriverStation.getAlliance();
-
     // Starts Camera
     CameraServer.startAutomaticCapture();
     
     // Configures the button bindings
     configureButtonBindings();
+
     // Configures the axes bindings 
     configureAxes();
 
-    String trajectoryJSON = "paths/TestFour.wpilib.json";
-    Trajectory trajectory = new Trajectory();
-
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-   } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-   }
-
-    autoChooser(trajectory);
-    
+    // Sends the auto routines
+    autoChooser();
   }
 
   /**
@@ -126,13 +122,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
     // Gear shifting Buttons
     new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ParallelCommandGroup(shiftSpeed));
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque));
 
     // Intake eat & spit buttons
-    //new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
     new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
     new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeSpit, true);
     
@@ -141,18 +135,12 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
     // Shooting Trigger and Button
-    //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(shoot, true);  //not working well yet
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDesiredRPM(shooter, 4000), true);  //works but fluctuates with battery
-    //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(flywheelRPM, true);
-    //new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feed, true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(rpm, true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     //Intake Chomp POV buttons
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
-    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);  
-
-    //Aim button
-    //new TriggerButton(operatorController, TriggerButton.Left).whileHeld(turretAim, true);
+    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
     // LED Strip Buttons
     new JoystickButton(driveController, Button.kX.value).whenPressed(killLights);
@@ -166,27 +154,44 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    turret.setDefaultCommand(turretMove);
+    // turret.setDefaultCommand(asuna);
 
-    
     // Sets the test bed to always move the test motor
     climber.setDefaultCommand(climbMove);
-
-    // Sets the test bed to always move the test motor
-    //testMotors.setDefaultCommand(testMoveMotors);
   }
 
   public void resetDrivetrain() {
     drivetrain.resetOdometry();
   }
 
-  public void autoChooser(Trajectory traj) {
+  public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
     autoChooser.addOption("Drive Curved", new TrajectoryCommand(drivetrain).driveCurvedTest());
     autoChooser.addOption("Drive Back", new TrajectoryCommand(drivetrain).driveBackTest());
     autoChooser.addOption("Drive Back Curved", new TrajectoryCommand(drivetrain).driveBackCurvedTest());
-    autoChooser.addOption("PATH WEAVER", new TrajectoryCommand(drivetrain).pathCommand(traj));
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
+  }
+
+  public void autoPathAdder(SendableChooser<Command> chooser) {
+    String trajectoryJSON = "paths/TestFour.wpilib.json";
+    Trajectory trajectory = new Trajectory();
+
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+
+    chooser.addOption("Singular Path", new TrajectoryCommand(drivetrain).pathCommand(trajectory));
+  }
+
+  public void autoPathsAdder(SendableChooser<Command> chooser) {
+    HashMap<String, Trajectory> trajectories = TrajectoryCommand.PATH_WEAVER_PATHS;
+
+    for(String key : trajectories.keySet()) {
+      chooser.addOption(key, new TrajectoryCommand(drivetrain).createTrajCommand(trajectories.get(key)));
+    }
   }
 
   /**
@@ -195,8 +200,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return new AutoTwoCargoAuto(intake, shooter, drivetrain);
   }
-
-
 }

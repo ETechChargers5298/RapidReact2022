@@ -18,7 +18,7 @@ public class ShooterDesiredRPM extends CommandBase {
   private SimpleMotorFeedforward feedforward;
   private PIDController controller;
   private Shooter shooter;
-  private double desiredRPM;
+  protected double desiredRPM;
   private NetworkTable table;
 
   /** Creates a new ShooterDesiredRPM. */
@@ -39,7 +39,6 @@ public class ShooterDesiredRPM extends CommandBase {
   @Override
   public void initialize() {
     shooter.stopFly();
-    controller.setSetpoint(desiredRPM);
     controller.setTolerance(Control.FLYWHEEL_TOLERANCE);
   }
 
@@ -49,7 +48,7 @@ public class ShooterDesiredRPM extends CommandBase {
     double desiredRPM = table.getEntry("SHOOTER DESIRED RPM").getDouble(0);
     double volts = feedforward.calculate(desiredRPM);
     SmartDashboard.putNumber("FLYWHEEL VOLTS", volts);
-    double errorFix = controller.calculate(shooter.getVelocity());
+    double errorFix = controller.calculate(shooter.getVelocity(), desiredRPM);
     shooter.flyVolt(volts + errorFix);
   }
 
@@ -62,6 +61,7 @@ public class ShooterDesiredRPM extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("AT SETPOINT SHOOTER", controller.atSetpoint());
     return false;
   }
 }

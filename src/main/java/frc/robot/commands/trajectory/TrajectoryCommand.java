@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -114,16 +113,16 @@ public class TrajectoryCommand {
     }
 
     public static HashMap<String, Trajectory> getPaths() { 
-        Path pathsDirectory = Filesystem.getDeployDirectory().toPath().resolve("paths");
-        Iterator<Path> paths = pathsDirectory.iterator();
+        String[] paths = Filesystem.getDeployDirectory().toPath().resolve("paths").toFile().list();
 
         HashMap<String, Trajectory> trajectories = new HashMap<String, Trajectory>();
 
-        while(paths.hasNext()) {
-            Path path = paths.next();
+        for(int i = 0; i < paths.length; i++) {
+            Path path = Filesystem.getDeployDirectory().toPath().resolve("paths/" + paths[i]);
             try {
                 Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(path);
                 String fileName = path.getFileName().toString();
+
                 trajectories.put(fileName.substring(0, fileName.indexOf(".")), trajectory);
             } catch(IOException e) {
                 DriverStation.reportError("Unable to open trajectory: " + path, e.getStackTrace());
@@ -131,5 +130,8 @@ public class TrajectoryCommand {
         }
 
         return trajectories;
+
+
     }
+
 }
