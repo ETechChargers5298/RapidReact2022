@@ -98,6 +98,6 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     updateTelemetry();
-    MLCam.updateTelemetry();
+    //MLCam.updateTelemetry();  //causing NPE errors
   }
 }
