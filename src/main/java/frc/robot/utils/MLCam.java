@@ -15,16 +15,18 @@ public class MLCam {
     private static JSONArray findBaka;
 
 public MLCam() {
-    findBaka = new JSONArray(NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("D:"));
+    findBaka = new JSONArray(NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("[]"));
 }
 
 
     public static void updateTelemetry() {
         String name = "Baka";
         for (int i = 0; i < findBaka.length(); i++) {
-            name += i;
-            SmartDashboard.putString(name, findBaka.getString(i));
+            name += i + "";
+            //SmartDashboard.putString(name, findBaka.getString(i));
+            SmartDashboard.putString("NameTest", name);
             name = "Baka";
         } 
     }
+
 }
