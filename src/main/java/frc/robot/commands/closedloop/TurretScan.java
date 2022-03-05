@@ -14,11 +14,14 @@ public class TurretScan extends CommandBase {
  
   private Turret turret;
   private double direction;
+
+  public static final double LEFT = -1.0;
+  public static final double RIGHT = 1.0;
  
   /** Creates a new TurretScan. */
-  public TurretScan(Turret turret) {
+  public TurretScan(Turret turret, double direction) {
     this.turret = turret;
-    this.direction = -1.0;
+    this.direction = direction;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turret);
   }
@@ -34,10 +37,10 @@ public class TurretScan extends CommandBase {
   public void execute() {
     turret.setState(TurretState.SEEKING);
     if (turret.leftLimit()) {
-      direction = 1.0;
+      direction = RIGHT;
     }
     else if (turret.rightLimit()) {
-      direction = -1.0;
+      direction = LEFT;
     }
     turret.moveTurret(direction * Shooters.TURRET_SPEED);
   }

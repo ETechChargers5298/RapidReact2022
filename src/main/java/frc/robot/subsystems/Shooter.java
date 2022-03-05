@@ -58,6 +58,14 @@ public class Shooter extends SubsystemBase {
   public double getRpmFromDistance(double distanceInches){
     return Shooters.DESIRED_RPM_K[0] * distanceInches + Shooters.DESIRED_RPM_K[1];
   }
+  
+  public ShooterState getShooterState() {
+    return currentStatus;
+  }
+
+  public boolean isReady() {
+    return currentStatus == ShooterState.READY;
+  }
 
    /**
    * controls flywheel using volts

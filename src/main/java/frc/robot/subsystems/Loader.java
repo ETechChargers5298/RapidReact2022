@@ -19,8 +19,8 @@ public class Loader extends SubsystemBase {
   
   // creates motor for loader
   private CANSparkMax motor;
-  private DigitalInput cargoUno;
-  private DigitalInput cargoDose;
+  private DigitalInput cargoTop;
+  private DigitalInput cargoBottom;
 
   private LoaderState currentStatus;
   private CargoState balls;
@@ -31,8 +31,8 @@ public class Loader extends SubsystemBase {
     motor = new CANSparkMax(Loading.LOADER_MOTOR_PORT, MotorType.kBrushless);
 
     //creates 2 limit switches
-    cargoUno = new DigitalInput(Loading.CARGO_UNO_LIMIT_PORT);
-    cargoDose = new DigitalInput(Loading.CARGO_DOS_LIMIT_PORT);
+    cargoTop = new DigitalInput(Loading.CARGO_UNO_LIMIT_PORT);
+    cargoBottom = new DigitalInput(Loading.CARGO_DOS_LIMIT_PORT);
 
     // inverts motor
     motor.setInverted(Loading.LOADER_INVERSION);
@@ -69,11 +69,11 @@ public class Loader extends SubsystemBase {
   }
 
   public boolean getCargoLimitTop() {
-    return cargoUno.get();
+    return cargoTop.get();
   }
 
   public boolean getCargoLimitBottom() {
-    return cargoDose.get();
+    return cargoBottom.get();
   }
 
   public void ballStatus() {

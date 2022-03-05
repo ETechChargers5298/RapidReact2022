@@ -11,14 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climbers;
 import frc.robot.subsystems.LEDStrip.LightFlag;
-import frc.robot.utils.ColorSensor;
 import frc.robot.utils.State.ClimberState;
 
 public class Climber extends SubsystemBase {
 
   private CANSparkMax climbMotor;
   private RelativeEncoder climbEncoder;
-  private ClimberState currentStatus;
+  private ClimberState currentStatus; 
   
   /** Creates a new Climber. */
   public Climber() {
@@ -40,6 +39,26 @@ public class Climber extends SubsystemBase {
    */
   public void climberMove(double speed){
     climbMotor.set(speed);
+    setState();
+  }
+
+  public void setState() {
+    double climberDistance = getPosition();
+    
+    if(climberDistance > Climbers.REACH_START){
+      if (climberDistance < Climbers.REACH_BAR) {
+        currentStatus = ClimberState.REACHING;
+      }
+      else if(climberDistance < Climbers.CLIMB_START) {
+        currentStatus = ClimberState.READY;
+      }
+      else if(climberDistance < Climbers.CLIMB_DONE) {
+        currentStatus = ClimberState.CLIMBING;
+      }
+      else {
+        currentStatus = ClimberState.DONE;
+      }
+    }
   }
 
   /**
@@ -76,23 +95,9 @@ public class Climber extends SubsystemBase {
     climbEncoder.setPosition(0.0);
   }
 
-  public void setStatus() {
-    double climberDistance = getPosition();
-    
-    if(climberDistance > Climbers.REACH_START){
-      if (climberDistance < Climbers.REACH_BAR) {
-        currentStatus = ClimberState.REACHING;
-      }
-      else if(climberDistance < Climbers.CLIMB_START) {
-        currentStatus = ClimberState.READY;
-      }
-      else if(climberDistance < Climbers.CLIMB_DONE) {
-        currentStatus = ClimberState.CLIMBING;
-      }
-      else {
-        currentStatus = ClimberState.DONE;
-      }
-    }
+  public void updateTelemetry() {
+    SmartDashboard.putNumber("Climb Encoder", getPosition());
+    SmartDashboard.putString("Status", currentStatus.toString());
   }
 
   public void sendLight() {
@@ -101,17 +106,10 @@ public class Climber extends SubsystemBase {
     }
   }
 
-
-  public void updateTelemetry() {
-    SmartDashboard.putNumber("Climb Encoder", getPosition());
-    SmartDashboard.putString("Status", currentStatus.toString());
-    ColorSensor.updateTelemetry();
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setStatus();
+    setState();
     sendLight();
     updateTelemetry();
   }

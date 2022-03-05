@@ -71,6 +71,8 @@ public final class Constants {
         public static final double[] DESIRED_RPM_K = {20, 2147};
         
         public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
+
+        public static final double SHOOTER_DELAY = 0.5;
     }
 
     public static final class Experimental {
