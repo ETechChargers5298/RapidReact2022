@@ -13,7 +13,7 @@ import org.littletonrobotics.junction.io.LogSocketServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.utils.FMSData;
 import frc.robot.utils.PneumaticsUtil;
 
 /**
@@ -33,6 +33,9 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+
+    FMSData.updateFMS();
+
     // startup for advantage kit
     setUseTiming(isReal()); 
     LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); 
@@ -70,6 +73,9 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    FMSData.updateFMS();
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
