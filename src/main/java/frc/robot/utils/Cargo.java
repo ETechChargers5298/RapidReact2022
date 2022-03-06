@@ -34,4 +34,14 @@ public class Cargo {
         baka[1] = y;
         return baka;
     }
+
+    public String toString() {
+
+        return "C: " + color + "XY: " + x + ", " + y + "c:" + confidence;
+
+
+
+
+        
+    }
 }

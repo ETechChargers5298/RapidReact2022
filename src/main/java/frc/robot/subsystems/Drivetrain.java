@@ -33,6 +33,7 @@ import frc.robot.utils.State.DriveState;
 import frc.robot.Constants.DriveTrain;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Drivetrain extends SubsystemBase {
   
@@ -59,6 +60,7 @@ public class Drivetrain extends SubsystemBase {
 
   // states of drive 
   private DriveState currentStatus;
+  private Alliance allianceColor;
  
   /** Creates a new NewDrivetrain. */
   public Drivetrain() {
