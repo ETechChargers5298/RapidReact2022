@@ -28,8 +28,11 @@ public class AutoReal2Cargo extends SequentialCommandGroup {
       new AutoShootCargo(shooter, feeder, loader), //Pew Pew 
       new ParallelCommandGroup(
         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoAuto")),
-      new AutoIntakeToLoad(intake, loader)),
+        new SequentialCommandGroup(
+          new AutoIntakeToLoad(intake, loader),
+          new AutoIntakeToLoad(intake, loader))),
       new AutoShootCargo(shooter, feeder, loader)
       );
   }
 }
+
