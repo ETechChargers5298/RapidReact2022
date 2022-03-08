@@ -38,7 +38,7 @@ public class TurretAimbot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Limelight.isValidTarget() && !turret.leftLimit() && !turret.rightLimit()) {
+    if (Limelight.isValidTarget()) {
       double offset = Limelight.getHorizontalOffset();
       double speed = controller.calculate(offset);
 
@@ -47,8 +47,16 @@ public class TurretAimbot extends CommandBase {
       } else {
         turret.setState(TurretState.FOUND);
       }
+      double leftClamp = -Shooters.TURRET_SPEED;
+      double rightClamp = Shooters.TURRET_SPEED;
 
-      turret.moveTurret(-Utils.clamp(speed, Shooters.TURRET_SPEED, -Shooters.TURRET_SPEED));
+      if(turret.leftLimit()) {
+        leftClamp = 0;
+      } else if(turret.rightLimit()) {
+        rightClamp = 0;
+      }
+
+      turret.moveTurret(-Utils.clamp(speed, rightClamp, leftClamp));
     } else {
       turret.setState(TurretState.OFF);
       turret.stopTurret();

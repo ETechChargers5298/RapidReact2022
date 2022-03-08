@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
+import frc.robot.commands.auto.AutoReal2Cargo;
+import frc.robot.commands.auto.AutoShootCargo;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
@@ -35,7 +37,9 @@ import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.TurretMove;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
+import frc.robot.commands.closedloop.ShooterDistanceShot;
 import frc.robot.commands.closedloop.ShooterLimelightRPM;
+import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
@@ -51,6 +55,7 @@ import frc.robot.utils.MLCam;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -99,6 +104,8 @@ public class RobotContainer {
 
   private final TurretAimbot asuna = new TurretAimbot(turret);
 
+  private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
+
 //  private final MLCam cam = new MLCam();
 
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
@@ -138,8 +145,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
 
     // Shooting Trigger and Button
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(rpm2, true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDistanceShot(shooter), true);
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
+    new TriggerButton(operatorController, TriggerButton.Left).whenPressed(new AutoShootCargo(shooter, feeder, loader));
 
     //Intake Chomp POV buttons
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
@@ -157,7 +165,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    // turret.setDefaultCommand(asuna);
+    //turret.setDefaultCommand(asuna);
 
     // Sets the test bed to always move the test motor
     climber.setDefaultCommand(climbMove);
@@ -203,6 +211,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutoTwoCargoAuto(intake, shooter, drivetrain);
+    //return new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain);
+    return new AutoReal2Cargo(intake, shooter, feeder, drivetrain, loader);
+    //return new AutoShootCargo(shooter, feeder, loader);
   }
 }

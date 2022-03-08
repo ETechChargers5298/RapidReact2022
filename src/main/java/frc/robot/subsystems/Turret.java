@@ -58,13 +58,13 @@ public class Turret extends SubsystemBase {
   }
 
   public boolean leftLimit() {
-    //return limitSwitchLeft.get();
-    return false;
+    return limitSwitchLeft.get();
+    //return false;
   }
 
   public boolean rightLimit() {
-    //return limitSwitchRight.get();
-    return false;
+    return limitSwitchRight.get();
+    //return false;
   }
 
   public double getTurretPosition() {

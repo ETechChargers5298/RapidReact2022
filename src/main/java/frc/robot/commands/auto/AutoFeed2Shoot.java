@@ -6,15 +6,18 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Loader;
 
 public class AutoFeed2Shoot extends CommandBase {
   
   private Feeder feeder;
+  private Loader load;
 
   /** Creates a new AutoFeed2Shoot. */
-  public AutoFeed2Shoot(Feeder feed) {
+  public AutoFeed2Shoot(Feeder feed, Loader load) {
     
     this.feeder = feed;
+    this.load = load;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(feeder);
@@ -42,6 +45,6 @@ public class AutoFeed2Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !load.getCargoLimitTop();
   }
 }

@@ -76,6 +76,10 @@ public class Loader extends SubsystemBase {
     return cargoBottom.get();
   }
 
+  public boolean noCargo() {
+    return !cargoTop.get() && !cargoBottom.get() && currentStatus == LoaderState.OFF;
+  }
+
   public void ballStatus() {
     if(getCargoLimitTop() && getCargoLimitBottom()) {
       balls = CargoState.DOUBLE;

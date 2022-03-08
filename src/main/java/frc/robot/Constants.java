@@ -72,7 +72,7 @@ public final class Constants {
         
         public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
 
-        public static final double SHOOTER_DELAY = 0.5;
+        public static final double SHOOTER_DELAY = 1.5;
     }
 
     public static final class Experimental {
@@ -136,7 +136,7 @@ public final class Constants {
     }
 
     public static final class Control {
-        public static final double TURN_TO_ANGLE_P = 1;
+        public static final double TURN_TO_ANGLE_P = 10;
         public static final double TURN_TO_ANGLE_I = 0;
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};
@@ -173,7 +173,7 @@ public final class Constants {
         public static final double FLYWHEEL_KI = 0;
         public static final double FLYWHEEL_KD = 0;
         public static final double[] FLYWHEEL_PID = {FLYWHEEL_KP, FLYWHEEL_KI, FLYWHEEL_KD};
-        public static final double FLYWHEEL_TOLERANCE = 50;
+        public static final double FLYWHEEL_TOLERANCE = 200;
     }
 
     public static final class Traj {
