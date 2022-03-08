@@ -8,19 +8,15 @@ package frc.robot.utils;
 public class Cargo {
 
     private String color;
-    private int ymin;
-    private int xmin;
-    private int ymax;
-    private int xmax;
+    private int x;
+    private int y;
     private float confidence;
 
-    public Cargo(String label, int ymin, int ymax, int xmin, int xmax, float confidence) {
+    public Cargo(String label, int xmin, int xmax, int ymin, int ymax, float confidence) {
 
         color = label;
-        this.ymin = ymin;
-        this.ymax = ymax;
-        this.xmin = xmin;
-        this.xmax = xmax;
+        this.x = (xmax - xmin);
+        this.y = (ymax - ymin);
         this.confidence = confidence;
     }
 
@@ -34,8 +30,18 @@ public class Cargo {
 
     public int[] getXY() {
         int[] baka = new int[2];
-        baka[0] = (xmax - xmin);
-        baka[1] = (ymax - ymin);
+        baka[0] = x;
+        baka[1] = y;
         return baka;
+    }
+
+    public String toString() {
+
+        return "C: " + color + "XY: " + x + ", " + y + "c:" + confidence;
+
+
+
+
+        
     }
 }
