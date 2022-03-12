@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.commands.auto.AutoReal2Cargo;
-import frc.robot.commands.auto.AutoShootCargo;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
+import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.cargo.IntakeRetract;
@@ -166,7 +166,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    //turret.setDefaultCommand(asuna);
+    turret.setDefaultCommand(asuna);
 
     // Sets the test bed to always move the test motor
     //climber.setDefaultCommand(climbMove);
@@ -178,10 +178,9 @@ public class RobotContainer {
 
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
-    autoChooser.addOption("Drive Curved", new TrajectoryCommand(drivetrain).driveCurvedTest());
-    autoChooser.addOption("Drive Back", new TrajectoryCommand(drivetrain).driveBackTest());
-    autoChooser.addOption("Drive Back Curved", new TrajectoryCommand(drivetrain).driveBackCurvedTest());
-    SmartDashboard.putData("Autonomous Chooser", autoChooser);
+    autoChooser.addOption("AutoThreeCargo", new AutoReal2Cargo(intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
+    autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
   }
 
   public void autoPathAdder(SendableChooser<Command> chooser) {
@@ -212,8 +211,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain);
-    return new AutoReal2Cargo(intake, shooter, feeder, drivetrain, loader);
-    //return new AutoShootCargo(shooter, feeder, loader);
+    return autoChooser.getSelected();
   }
 }

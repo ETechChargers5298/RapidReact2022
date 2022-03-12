@@ -52,7 +52,7 @@ public class LLAngleCalib extends CommandBase {
   public void execute() {
     if (Limelight.isValidTarget()) {
       double height = Robot.ROBOT_HEIGHT_INCHES + Robot.HUB_HEIGHT_INCHES;
-      double distance = leftEncoderPos + rightEncoderPos/2;
+      double distance = (leftEncoderPos + rightEncoderPos)/2;
       double angle1 = Math.toDegrees(Math.atan(height/distance)) + Limelight.getVerticalOffset();
       SmartDashboard.putNumber("Angles", angle1);
       

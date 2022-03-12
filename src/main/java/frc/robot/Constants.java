@@ -63,8 +63,8 @@ public final class Constants {
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
 
-        public static final int TURRET_LEFT_LIMIT_PORT = 3;
-        public static final int TURRET_RIGHT_LIMIT_PORT = 4;
+        public static final int TURRET_LEFT_LIMIT_PORT = 4;
+        public static final int TURRET_RIGHT_LIMIT_PORT = 3;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;

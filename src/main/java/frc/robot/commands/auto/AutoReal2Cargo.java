@@ -7,6 +7,8 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveTrain;
+import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
+import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Drivetrain;
