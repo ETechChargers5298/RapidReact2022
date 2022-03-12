@@ -73,7 +73,7 @@ public class RobotContainer {
   private static final Feeder feeder = new Feeder();
   private static final Turret turret = new Turret();
   private static final Shooter shooter = new Shooter();
-  private static final Climber climber = new Climber();
+  //private static final Climber climber = new Climber();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
@@ -99,7 +99,7 @@ public class RobotContainer {
   private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
   private final ShooterLimelightRPM rpm2 = new ShooterLimelightRPM(shooter); 
 
-  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  //private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
   private final DisableStatus killLights = new DisableStatus();
 
@@ -169,7 +169,7 @@ public class RobotContainer {
     //turret.setDefaultCommand(asuna);
 
     // Sets the test bed to always move the test motor
-    climber.setDefaultCommand(climbMove);
+    //climber.setDefaultCommand(climbMove);
   }
 
   public void resetDrivetrain() {
