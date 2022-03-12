@@ -16,6 +16,8 @@ public final class Constants {
     public static final class Robot {
         public static final double WHEEL_DIAMETER_INCH = 6.0;
         public static final double TRACK_WIDTH_INCHES = 27.0;
+        public static final double ROBOT_HEIGHT_INCHES = 40.0;
+        public static final double HUB_HEIGHT_INCHES = 104.0;
 
         public static final int BLINKIN_PORT = 9;
 
