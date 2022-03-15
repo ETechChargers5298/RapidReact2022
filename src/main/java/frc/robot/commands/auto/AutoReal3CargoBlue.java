@@ -28,8 +28,10 @@ public class AutoReal3CargoBlue extends SequentialCommandGroup {
     addCommands(
       new IntakeChomp(intake), //Drop intake
       new AutoShootCargo(shooter, feeder, loader), //Pew Pew 
+
       new ParallelCommandGroup(
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoAuto")), //Follow Traj
+       
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("5CargoP1")), //Follow Traj
         new SequentialCommandGroup(
           new AutoIntakeToLoad(intake, loader), //Eat first ball
           new AutoIntakeToLoad(intake, loader))), //Eat the other

@@ -7,17 +7,15 @@ package frc.robot.utils;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-/** Add your docs here. */
 public class FMSData {
 
     private static String alliance;
 
+    public static void updateFMS() {
+        alliance = DriverStation.getAlliance().toString();
+    }
 
-public static void updateFMS() {
-    alliance = DriverStation.getAlliance().toString();
-}
-
-public static String getAllianceColor() {
-    return alliance;
-}
+    public static String getAllianceColor() {
+        return alliance;
+    }
 }
