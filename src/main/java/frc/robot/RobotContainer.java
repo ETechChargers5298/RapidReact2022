@@ -139,8 +139,8 @@ public class RobotContainer {
     new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque));
 
     // Intake eat & spit buttons
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeSpit, true);
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeEat, true);
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeSpit, true);
     
     // Loader Buttons
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
