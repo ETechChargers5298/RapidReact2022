@@ -23,7 +23,13 @@ public class Shooter extends SubsystemBase {
   private RelativeEncoder flyEncoder;
 
   private ShooterState currentStatus;
+
+  public enum ShootMode {
+    LIMELIGHT, ODOMETRY, POGSHOTS
+  }
   
+  private ShootMode mode;
+
   /** Creates a new Shooter. */
   public Shooter() {
     // creates motor
@@ -36,6 +42,8 @@ public class Shooter extends SubsystemBase {
     flyEncoder = flywheel.getEncoder();
 
     currentStatus = ShooterState.OFF;
+
+    mode = ShootMode.LIMELIGHT;
   }
 
   /**
@@ -65,6 +73,26 @@ public class Shooter extends SubsystemBase {
 
   public boolean isReady() {
     return currentStatus == ShooterState.READY;
+  }
+
+  public ShootMode getMode() {
+    return mode;
+  }
+
+  public void setMode(ShootMode mode) {
+    this.mode = mode;
+  }
+
+  public boolean llMode() {
+    return mode == ShootMode.LIMELIGHT;
+  }
+
+  public boolean odoMode() {
+    return mode == ShootMode.ODOMETRY;
+  }
+
+  public boolean pogMode() {
+    return mode == ShootMode.POGSHOTS;
   }
 
    /**

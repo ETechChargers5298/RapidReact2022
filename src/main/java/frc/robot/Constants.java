@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -74,7 +76,11 @@ public final class Constants {
         
         public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
 
-        public static final double SHOOTER_DELAY = 1.5;
+        public static final double SHOOTER_DELAY = 1;
+
+        public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
+        public static final double GOAL_X_INCHES = Units.metersToInches(8.3);
+        public static final double GOAL_Y_INCHES = Units.metersToInches(4.1);
     }
 
     public static final class Experimental {

@@ -61,6 +61,8 @@ public class Drivetrain extends SubsystemBase {
   // states of drive 
   private DriveState currentStatus;
   private Alliance allianceColor;
+
+  private double speedMultiplier;
  
   /** Creates a new NewDrivetrain. */
   public Drivetrain() {
@@ -112,6 +114,8 @@ public class Drivetrain extends SubsystemBase {
 
     // current status
     currentStatus = DriveState.OFF;
+
+    speedMultiplier = 1;
   }
   
   // configuration of sparks
@@ -144,6 +148,18 @@ public class Drivetrain extends SubsystemBase {
     motorRight.setVoltage(rightVolts);
 
     diffDrive.feed();
+  }
+
+  public void halfSpeed() {
+    speedMultiplier = 0.5;
+  }
+
+  public void fullSpeed() {
+    speedMultiplier = 1;
+  }
+
+  public double getSpeedMultiplier() {
+    return speedMultiplier;
   }
 
   // shifting gears either hi-speed or hi-torque

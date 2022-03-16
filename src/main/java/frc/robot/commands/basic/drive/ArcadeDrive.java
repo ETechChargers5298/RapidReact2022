@@ -43,8 +43,10 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Robot will move depending on left joystick 
-    drivetrain.arcadeDrive(linear.getAsDouble(), rotational.getAsDouble());
+    // Robot will move depending on left joystick
+    double lin = drivetrain.getSpeedMultiplier() * linear.getAsDouble();
+    double rot =  drivetrain.getSpeedMultiplier() * rotational.getAsDouble();
+    drivetrain.arcadeDrive(lin, rot);
   }
 
   // Called once the command ends or is interrupted.

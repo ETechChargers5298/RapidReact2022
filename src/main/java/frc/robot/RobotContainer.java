@@ -7,6 +7,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Driver;
 import java.util.HashMap;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
+import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.AutoReal2Cargo;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
@@ -30,18 +32,24 @@ import frc.robot.commands.basic.cargo.IntakeRetract;
 import frc.robot.commands.basic.cargo.IntakeSpit;
 import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
+import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.drive.ArcadeDrive;
+import frc.robot.commands.basic.drive.HalfSpeed;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
-import frc.robot.commands.basic.shoot.TurretMove;
+import frc.robot.commands.basic.shoot.SetShootMode;
+import frc.robot.commands.basic.shoot.TurretAuto;
+import frc.robot.commands.basic.shoot.TurretManual;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
 import frc.robot.commands.closedloop.ShooterDistanceShot;
 import frc.robot.commands.closedloop.ShooterLimelightRPM;
+import frc.robot.commands.closedloop.ShooterOdoShot;
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
+import frc.robot.commands.closedloop.TurretScan;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -49,15 +57,18 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Shooter.ShootMode;
 import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
 import frc.robot.utils.MLCam;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -94,21 +105,20 @@ public class RobotContainer {
 
   private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
 
-  private final TurretMove turretMove = new TurretMove(turret, () -> operatorController.getLeftX());
-
   private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
   private final ShooterLimelightRPM rpm2 = new ShooterLimelightRPM(shooter); 
+
+  private final HalfSpeed halfspeed = new HalfSpeed(drivetrain);
 
   //private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
   private final DisableStatus killLights = new DisableStatus();
 
-  private final TurretAimbot asuna = new TurretAimbot(turret);
+  private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getLeftX());
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
-//  private final MLCam cam = new MLCam();
-
+  //  private final MLCam cam = new MLCam();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -134,28 +144,56 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Gear shifting Buttons
-    new JoystickButton(driveController, Button.kLeftBumper.value).whenPressed(new ParallelCommandGroup(shiftSpeed));
-    new JoystickButton(driveController, Button.kRightBumper.value).whenPressed(new ParallelCommandGroup(shiftTorque));
+    new TriggerButton(driveController, TriggerButton.Left).whileHeld(loaderLoad);
+    new TriggerButton(driveController, TriggerButton.Right).whileHeld(intakeEat);
+    new JoystickButton(driveController, Button.kLeftBumper.value).whileHeld(loaderUnload);
+    new JoystickButton(driveController, Button.kRightBumper.value).whileHeld(intakeSpit);
 
-    // Intake eat & spit buttons
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeEat, true);
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeSpit, true);
+    new JoystickButton(driveController, Button.kY.value).whileHeld(new Vomit(loader, intake), true);
+
+    new JoystickButton(driveController, Button.kX.value).whenPressed(shiftSpeed);
+    new JoystickButton(driveController, Button.kB.value).whenPressed(shiftTorque);
+
+    new JoystickButton(driveController, Button.kA.value).whileHeld(halfspeed, true);
+
+    new DPad(driveController, DPad.POV_UP).whenHeld(new TurnToAnglePID(drivetrain, 0));
+    new DPad(driveController, DPad.POV_LEFT).whenHeld(new TurnToAnglePID(drivetrain, 90));
+    new DPad(driveController, DPad.POV_RIGHT).whenHeld(new TurnToAnglePID(drivetrain, 270));
+    new DPad(driveController, DPad.POV_DOWN).whenHeld(new TurnToAnglePID(drivetrain, 180));
     
+
     // Loader Buttons
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
-    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(loaderUnload, true);
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(loaderLoad, true);
 
     // Shooting Trigger and Button
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new ShooterDistanceShot(shooter), true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(
+      new ConditionalCommand(
+        new ShooterDistanceShot(shooter),
+        new ConditionalCommand(
+          new ShooterOdoShot(shooter, drivetrain), 
+          new ShooterDesiredRPM(shooter, Shooters.DESIRED_RPM), 
+          shooter::odoMode), 
+        shooter::llMode), 
+      true);
+    
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
+
     new TriggerButton(operatorController, TriggerButton.Left).whenPressed(new AutoShootCargo(shooter, feeder, loader));
 
     //Intake Chomp POV buttons
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
-    // LED Strip Buttons
-    new JoystickButton(driveController, Button.kX.value).whenPressed(killLights);
+    new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
+    new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
+    
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(new TurretScan(turret, TurretScan.LEFT));
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(new TurretScan(turret, TurretScan.RIGHT));
+
+    new JoystickButton(operatorController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.LIMELIGHT));
+    new JoystickButton(operatorController, Button.kBack.value).whenPressed(new SetShootMode(shooter, ShootMode.ODOMETRY));
+    new JoystickButton(driveController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.POGSHOTS));
   }
   
   /**
@@ -181,6 +219,7 @@ public class RobotContainer {
     autoChooser.addOption("AutoThreeCargo", new AutoReal2Cargo(intake, shooter, feeder, drivetrain, loader));
     autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
     autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   public void autoPathAdder(SendableChooser<Command> chooser) {

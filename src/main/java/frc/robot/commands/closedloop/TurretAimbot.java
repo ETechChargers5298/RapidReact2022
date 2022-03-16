@@ -4,6 +4,8 @@
 
 package frc.robot.commands.closedloop; 
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Control;
@@ -17,11 +19,13 @@ public class TurretAimbot extends CommandBase {
   
   private Turret turret;
   private PIDController controller;
+  private DoubleSupplier input;
 
   /** Creates a new TurretAimbot. */
-  public TurretAimbot(Turret turret) {
+  public TurretAimbot(Turret turret, DoubleSupplier input) {
     this.turret = turret;
     this.controller = new PIDController(Control.TURRET_AIM_PID[0], Control.TURRET_AIM_PID[1], Control.TURRET_AIM_PID[2]);
+    this.input = input;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turret);
@@ -38,9 +42,9 @@ public class TurretAimbot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Limelight.isValidTarget()) {
+    if (Limelight.isValidTarget() && !turret.getManual()) {
       double offset = Limelight.getHorizontalOffset();
-      double speed = controller.calculate(offset);
+      double speed = -controller.calculate(offset);
 
       if(Math.abs(offset) < Control.TURRET_AIM_TOLERANCE) {
         turret.setState(TurretState.ONTARGET);
@@ -56,10 +60,18 @@ public class TurretAimbot extends CommandBase {
         rightClamp = 0;
       }
 
-      turret.moveTurret(-Utils.clamp(speed, rightClamp, leftClamp));
+      turret.moveTurret(Utils.clamp(speed, rightClamp, leftClamp));
     } else {
       turret.setState(TurretState.OFF);
       turret.stopTurret();
+    }
+
+    if(Math.abs(input.getAsDouble()) > 0.5) {
+      if(input.getAsDouble() < -0.5) {
+        turret.moveTurret(-Shooters.TURRET_SPEED);
+      } else {
+        turret.moveTurret(Shooters.TURRET_SPEED);
+      }
     }
   }
 

@@ -29,6 +29,8 @@ public class Turret extends SubsystemBase {
   private AnalogEncoder encoderTurret;
   private DigitalInput limitSwitchLeft;
   private DigitalInput limitSwitchRight;
+
+  private boolean manual;
   
   
   /** Creates a new Turret. */
@@ -41,12 +43,13 @@ public class Turret extends SubsystemBase {
 
     // creates the encoder for turret
     encoderTurret = new AnalogEncoder(Shooters.TURRET_ENCODER_PORT);
-
+    
     // limit switch limits
     limitSwitchLeft = new DigitalInput(Shooters.TURRET_LEFT_LIMIT_PORT);
     limitSwitchRight = new DigitalInput(Shooters.TURRET_RIGHT_LIMIT_PORT);
 
     currentStatus = TurretState.OFF;
+    manual = false;
   }
 
   public void moveTurret(double speed){
@@ -81,10 +84,18 @@ public class Turret extends SubsystemBase {
     }
   }
 
+  public void setManual(boolean man) {
+    manual = man;
+  }
+
+  public boolean getManual() {
+    return manual;
+  }
+
   public void updateTelemetry() {
     Limelight.updateTelemetry();
-    SmartDashboard.putBoolean("Left Turret Limit", leftLimit());
-    SmartDashboard.putBoolean("Right Turret Limit", rightLimit());
+    SmartDashboard.putBoolean("Right Turret Limit", leftLimit());
+    SmartDashboard.putBoolean("Left Turret Limit", rightLimit());
     SmartDashboard.putNumber("Turret Position", getTurretPosition());
   }
 
