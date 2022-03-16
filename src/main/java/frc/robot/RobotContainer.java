@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.Constants.Shooters;
-import frc.robot.commands.auto.AutoReal2Cargo;
+import frc.robot.commands.auto.Auto2BallDrift;
+import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
@@ -160,6 +161,9 @@ public class RobotContainer {
     new DPad(driveController, DPad.POV_LEFT).whenHeld(new TurnToAnglePID(drivetrain, 90));
     new DPad(driveController, DPad.POV_RIGHT).whenHeld(new TurnToAnglePID(drivetrain, 270));
     new DPad(driveController, DPad.POV_DOWN).whenHeld(new TurnToAnglePID(drivetrain, 180));
+    // Intake eat & spit buttons
+    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeEat, true);
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeSpit, true);
     
 
     // Loader Buttons
@@ -216,10 +220,11 @@ public class RobotContainer {
 
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
-    autoChooser.addOption("AutoThreeCargo", new AutoReal2Cargo(intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
     autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
     autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser.addOption("AutoTwoCargo", new Auto2BallDrift(intake, shooter, feeder, drivetrain, loader));
+    SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 
   public void autoPathAdder(SendableChooser<Command> chooser) {
