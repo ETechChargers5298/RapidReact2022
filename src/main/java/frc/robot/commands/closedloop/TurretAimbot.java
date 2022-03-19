@@ -7,7 +7,9 @@ package frc.robot.commands.closedloop;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Turret;
@@ -46,11 +48,14 @@ public class TurretAimbot extends CommandBase {
       double offset = Limelight.getHorizontalOffset();
       double speed = -controller.calculate(offset);
 
+      SmartDashboard.putNumber("Turret Auto Speed", speed);
+
       if(Math.abs(offset) < Control.TURRET_AIM_TOLERANCE) {
         turret.setState(TurretState.ONTARGET);
       } else {
         turret.setState(TurretState.FOUND);
       }
+
       double leftClamp = -Shooters.TURRET_SPEED;
       double rightClamp = Shooters.TURRET_SPEED;
 
@@ -60,7 +65,13 @@ public class TurretAimbot extends CommandBase {
         rightClamp = 0;
       }
 
+      SmartDashboard.putNumber("LEFT CLAMP", leftClamp);
+      SmartDashboard.putNumber("RIGHT CLAMP", rightClamp);
+
+      SmartDashboard.putNumber("AFTER CLAMP", Utils.clamp(speed, rightClamp, leftClamp));
+
       turret.moveTurret(Utils.clamp(speed, rightClamp, leftClamp));
+      
     } else {
       turret.setState(TurretState.OFF);
       turret.stopTurret();

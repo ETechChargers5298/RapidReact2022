@@ -31,7 +31,7 @@ public class Limelight {
     // Gets the estimated distance from the robot to the target
     public static double getEstimatedDistance() {
         double offset = getVerticalOffset();
-        return Shooters.LIMELIGHT_DISTANCE_K[0] * Math.pow(offset, 2) - Shooters.LIMELIGHT_DISTANCE_K[1] * offset + Shooters.LIMELIGHT_DISTANCE_K[2];
+        return Shooters.LIMELIGHT_DISTANCE_K[0] * Math.pow(offset, 2) + Shooters.LIMELIGHT_DISTANCE_K[1] * offset + Shooters.LIMELIGHT_DISTANCE_K[2];
     }
 
     // Gets the active pipeline (0 to 9)

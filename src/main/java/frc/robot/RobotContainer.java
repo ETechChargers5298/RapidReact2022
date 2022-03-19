@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
@@ -37,7 +38,6 @@ import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
 import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberButtonMove;
-import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.climb.ClimberReach;
 import frc.robot.commands.basic.climb.ToggleClimber;
 import frc.robot.commands.basic.drive.ArcadeDrive;
@@ -58,6 +58,7 @@ import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
 import frc.robot.commands.closedloop.TurretScan;
 import frc.robot.commands.closedloop.TurretScanMove;
+import frc.robot.commands.test.ShooterCalib;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -74,7 +75,10 @@ import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.PerpetualCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -126,6 +130,8 @@ public class RobotContainer {
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
+  private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
+
   //  private final MLCam cam = new MLCam();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
@@ -142,6 +148,20 @@ public class RobotContainer {
 
     // Sends the auto routines
     autoChooser();
+
+    SmartDashboard.putBoolean("startrev", false);
+  }
+
+  public void testRunner() {
+    LiveWindow.setEnabled(false);
+    if(shooterCalib.isEnabled()) {
+      SmartDashboard.putString("Boo", "Scheduling");
+      shooterCalib.schedule();
+    }
+    if(SmartDashboard.getBoolean("startrev", false)){
+      SmartDashboard.putString("Boo1", "Scheduling");
+      new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
+    }
   }
 
   /**

@@ -60,13 +60,13 @@ public final class Constants {
        
         public static final int TURRET_MOTOR_PORT = 10;
         public static final boolean TURRET_INVERSION = false;
-        public static final double TURRET_SPEED = 0.30;
+        public static final double TURRET_SPEED = 0.60;
 
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
 
-        public static final int TURRET_LEFT_LIMIT_PORT = 4;
-        public static final int TURRET_RIGHT_LIMIT_PORT = 3;
+        public static final int TURRET_LEFT_LIMIT_PORT = 3;
+        public static final int TURRET_RIGHT_LIMIT_PORT = 4;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
@@ -75,7 +75,7 @@ public final class Constants {
         public static final int DESIRED_RPM = 1000;
         public static final double[] DESIRED_RPM_K = {20, 2147};
         
-        public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
+        public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
 
         public static final double SHOOTER_DELAY = 2;
 
