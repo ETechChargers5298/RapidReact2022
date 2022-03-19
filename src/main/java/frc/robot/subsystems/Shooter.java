@@ -116,6 +116,7 @@ public class Shooter extends SubsystemBase {
   public void updateTelemetry() {
     SmartDashboard.putNumber("Shooter Velocity", getVelocity());
     SmartDashboard.putString("Shooter Status", currentStatus.toString());
+    SmartDashboard.putString("Shooter Mode", mode.toString());
   }
   
   public void setState(ShooterState state) {

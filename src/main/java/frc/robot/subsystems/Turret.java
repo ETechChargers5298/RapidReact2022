@@ -97,6 +97,7 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putBoolean("Right Turret Limit", leftLimit());
     SmartDashboard.putBoolean("Left Turret Limit", rightLimit());
     SmartDashboard.putNumber("Turret Position", getTurretPosition());
+    SmartDashboard.putBoolean("Turret Manual", getManual());
   }
 
   @Override

@@ -18,6 +18,7 @@ public class Climber extends SubsystemBase {
   private CANSparkMax climbMotor;
   private RelativeEncoder climbEncoder;
   private ClimberState currentStatus; 
+  private boolean inversion;
   
   /** Creates a new Climber. */
   public Climber() {
@@ -25,6 +26,7 @@ public class Climber extends SubsystemBase {
     climbMotor = new CANSparkMax(Climbers.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
 
     // inverts motor
+    inversion = Climbers.CLIMBER_MOTOR_INVERSION;
     climbMotor.setInverted(Climbers.CLIMBER_MOTOR_INVERSION);
 
     // obtains encoder
@@ -40,6 +42,11 @@ public class Climber extends SubsystemBase {
   public void climberMove(double speed){
     climbMotor.set(speed);
     setState();
+  }
+
+  public void toggleInversion() {
+    inversion = !inversion;
+    climbMotor.setInverted(inversion);
   }
 
   public void setState() {

@@ -71,12 +71,13 @@ public final class Constants {
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
+        public static final double FLYWHEEL_UNJAM_SPEED = 0.5;
         public static final int DESIRED_RPM = 1000;
         public static final double[] DESIRED_RPM_K = {20, 2147};
         
         public static final double[] LIMELIGHT_DISTANCE_K = {0.1633, 4.0911, 93.5};
 
-        public static final double SHOOTER_DELAY = 1;
+        public static final double SHOOTER_DELAY = 2;
 
         public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
         public static final double GOAL_X_INCHES = Units.metersToInches(8.3);

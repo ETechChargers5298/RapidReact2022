@@ -224,6 +224,10 @@ public class Drivetrain extends SubsystemBase {
     return getHeading().getDegrees();
   }
 
+  public double getPoseDegrees() {
+    return pose.getRotation().getDegrees();
+  }
+
   public SimpleMotorFeedforward getFeedforward() {
     return feedforward;
   }

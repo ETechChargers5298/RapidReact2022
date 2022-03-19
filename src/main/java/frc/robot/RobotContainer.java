@@ -27,6 +27,8 @@ import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
+import frc.robot.commands.autoFunctions.FancyShot;
+import frc.robot.commands.autoFunctions.TeleShoot;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.cargo.IntakeRetract;
@@ -34,7 +36,10 @@ import frc.robot.commands.basic.cargo.IntakeSpit;
 import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
 import frc.robot.commands.basic.cargo.Vomit;
+import frc.robot.commands.basic.climb.ClimberButtonMove;
 import frc.robot.commands.basic.climb.ClimberMove;
+import frc.robot.commands.basic.climb.ClimberReach;
+import frc.robot.commands.basic.climb.ToggleClimber;
 import frc.robot.commands.basic.drive.ArcadeDrive;
 import frc.robot.commands.basic.drive.HalfSpeed;
 import frc.robot.commands.basic.drive.ShiftSpeed;
@@ -42,6 +47,7 @@ import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.lights.DisableStatus;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.SetShootMode;
+import frc.robot.commands.basic.shoot.ShooterUnJam;
 import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.basic.shoot.TurretManual;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
@@ -51,6 +57,7 @@ import frc.robot.commands.closedloop.ShooterOdoShot;
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
 import frc.robot.commands.closedloop.TurretScan;
+import frc.robot.commands.closedloop.TurretScanMove;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -85,7 +92,7 @@ public class RobotContainer {
   private static final Feeder feeder = new Feeder();
   private static final Turret turret = new Turret();
   private static final Shooter shooter = new Shooter();
-  //private static final Climber climber = new Climber();
+  private static final Climber climber = new Climber();
 
   // Controllers are created here
   private static final XboxController driveController = new XboxController(Gamepad.DRIVER_PORT);
@@ -144,60 +151,45 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Gear shifting Buttons
-    new TriggerButton(driveController, TriggerButton.Left).whileHeld(loaderLoad);
     new TriggerButton(driveController, TriggerButton.Right).whileHeld(intakeEat);
-    new JoystickButton(driveController, Button.kLeftBumper.value).whileHeld(loaderUnload);
     new JoystickButton(driveController, Button.kRightBumper.value).whileHeld(intakeSpit);
 
     new JoystickButton(driveController, Button.kY.value).whileHeld(new Vomit(loader, intake), true);
 
     new JoystickButton(driveController, Button.kX.value).whenPressed(shiftSpeed);
     new JoystickButton(driveController, Button.kB.value).whenPressed(shiftTorque);
-
+    
     new JoystickButton(driveController, Button.kA.value).whileHeld(halfspeed, true);
 
     new DPad(driveController, DPad.POV_UP).whenHeld(new TurnToAnglePID(drivetrain, 0));
     new DPad(driveController, DPad.POV_LEFT).whenHeld(new TurnToAnglePID(drivetrain, 90));
     new DPad(driveController, DPad.POV_RIGHT).whenHeld(new TurnToAnglePID(drivetrain, 270));
     new DPad(driveController, DPad.POV_DOWN).whenHeld(new TurnToAnglePID(drivetrain, 180));
-    // Intake eat & spit buttons
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(intakeEat, true);
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(intakeSpit, true);
-    
 
-    // Loader Buttons
-    new JoystickButton(operatorController, Button.kA.value).whileHeld(loaderUnload, true);
-    new JoystickButton(operatorController, Button.kY.value).whileHeld(loaderLoad, true);
+    new JoystickButton(operatorController, Button.kA.value).whenHeld(new FancyShot(shooter, drivetrain), true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new TeleShoot(shooter, feeder, loader, drivetrain), true);
 
-    // Shooting Trigger and Button
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(
-      new ConditionalCommand(
-        new ShooterDistanceShot(shooter),
-        new ConditionalCommand(
-          new ShooterOdoShot(shooter, drivetrain), 
-          new ShooterDesiredRPM(shooter, Shooters.DESIRED_RPM), 
-          shooter::odoMode), 
-        shooter::llMode), 
-      true);
-    
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
-    new TriggerButton(operatorController, TriggerButton.Left).whenPressed(new AutoShootCargo(shooter, feeder, loader));
-
-    //Intake Chomp POV buttons
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
+
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber));
+    new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberButtonMove(climber));
 
     new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
     new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
     
-    new JoystickButton(operatorController, Button.kX.value).whileHeld(new TurretScan(turret, TurretScan.LEFT));
-    new JoystickButton(operatorController, Button.kB.value).whileHeld(new TurretScan(turret, TurretScan.RIGHT));
+    new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
+    new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
+
+    new JoystickButton(operatorController, Button.kY.value).whileHeld(new ShooterUnJam(shooter, feeder), true);
 
     new JoystickButton(operatorController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.LIMELIGHT));
     new JoystickButton(operatorController, Button.kBack.value).whenPressed(new SetShootMode(shooter, ShootMode.ODOMETRY));
     new JoystickButton(driveController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.POGSHOTS));
+
+    new JoystickButton(driveController, Button.kBack.value).whenPressed(new ToggleClimber(climber));
   }
   
   /**
@@ -210,6 +202,8 @@ public class RobotContainer {
     // Sets the test bed to always move the test motor
     turret.setDefaultCommand(asuna);
 
+    new TurretScanMove(turret, () -> operatorController.getRightX());
+
     // Sets the test bed to always move the test motor
     //climber.setDefaultCommand(climbMove);
   }
@@ -220,7 +214,7 @@ public class RobotContainer {
 
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
-    autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
+    //autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
     autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
     autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
     autoChooser.addOption("AutoTwoCargo", new Auto2BallDrift(intake, shooter, feeder, drivetrain, loader));

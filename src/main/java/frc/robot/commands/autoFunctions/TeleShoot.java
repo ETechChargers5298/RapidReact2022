@@ -4,9 +4,12 @@
 
 package frc.robot.commands.autoFunctions;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.closedloop.ShooterDistanceShot;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Shooter;
@@ -14,16 +17,20 @@ import frc.robot.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TeleShoot extends ParallelRaceGroup {
+public class TeleShoot extends ParallelCommandGroup {
   /** Creates a new TeleShoot. */
-  public TeleShoot(Shooter shooter, Feeder feeder, Loader loader) {
+  public TeleShoot(Shooter shooter, Feeder feeder, Loader loader, Drivetrain drivetrain) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ShooterDistanceShot(shooter),
+      new FancyShot(shooter, drivetrain),
       new SequentialCommandGroup(
-        new AutoFeedLoadCry(shooter, loader, feeder), 
-        new AutoFeedLoadCry(shooter, loader, feeder), 
+        new AutoFeedLoadCry(shooter, loader, feeder),
+        new AutoFeedLoadCry(shooter, loader, feeder),
+        new AutoFeedLoadCry(shooter, loader, feeder),
+        new AutoFeedLoadCry(shooter, loader, feeder),
+        new AutoFeedLoadCry(shooter, loader, feeder),
+        new AutoFeedLoadCry(shooter, loader, feeder),
         new AutoFeedLoadCry(shooter, loader, feeder)
       )
     );

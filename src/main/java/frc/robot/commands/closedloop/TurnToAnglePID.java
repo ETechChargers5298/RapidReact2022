@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.Control;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Utils;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,7 +25,7 @@ public class TurnToAnglePID extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         () -> angle,
         // This uses the output
-        output -> drivetrain.arcadeDrive(output, 0),
+        output -> drivetrain.arcadeDrive(0, Utils.clamp(-output, -0.75, 0.75)),
         
         drivetrain
         );

@@ -13,6 +13,7 @@ import frc.robot.utils.State.TurretState;
 public class TurretScan extends CommandBase {
  
   private Turret turret;
+  private double givenDirection;
   private double direction;
 
   public static final double LEFT = -1.0;
@@ -22,6 +23,8 @@ public class TurretScan extends CommandBase {
   public TurretScan(Turret turret, double direction) {
     this.turret = turret;
     this.direction = direction;
+    this.givenDirection = direction;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turret);
   }
@@ -30,6 +33,7 @@ public class TurretScan extends CommandBase {
   @Override
   public void initialize() {
     turret.stopTurret();
+    direction = givenDirection;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

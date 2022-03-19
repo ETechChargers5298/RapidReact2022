@@ -5,7 +5,6 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class FMSData {
 

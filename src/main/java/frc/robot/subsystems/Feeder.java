@@ -40,6 +40,10 @@ public class Feeder extends SubsystemBase {
     currentStatus = FeederState.FEEDING;
   }
 
+  public void unfeed() {
+    feedMotor.set(-Shooters.FEEDER_SPEED);
+  }
+
   /**
    * stops feeder motor
    * @author raymond
