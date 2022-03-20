@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autoFunctions;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -26,8 +27,12 @@ public class AutoFeedLoadCry extends SequentialCommandGroup {
       new ConditionalCommand(
         new SequentialCommandGroup(
           new AutoFeed2Shoot(feeder, loader),
-          new WaitCommand(Shooters.SHOOTER_DELAY)), 
+          new WaitUntilCommand(this::shooterSetpoint)), 
         new AutoLoad2Top(loader), 
         loader::getCargoLimitTop));
+  }
+
+  public boolean shooterSetpoint() {
+    return SmartDashboard.getBoolean("AT SETPOINT SHOOTER", false);
   }
 }

@@ -57,12 +57,13 @@ public class ShooterDesiredRPM extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.stopFly();
+    SmartDashboard.putBoolean("AT SETPOINT SHOOTER", false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //SmartDashboard.putBoolean("AT SETPOINT SHOOTER", controller.atSetpoint());
+    SmartDashboard.putBoolean("AT SETPOINT SHOOTER", controller.atSetpoint());
     if(controller.atSetpoint()){
       shooter.setState(ShooterState.READY);
     }
