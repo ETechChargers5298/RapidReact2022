@@ -2,45 +2,44 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.basic.cargo;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Loader;
 
-public class TurretLeft extends CommandBase {
-  
-  // Declares the turret
-  private Turret turret;
+public class LoaderLoad extends CommandBase {
 
-  /** Creates a new TurretLeft. */
-  public TurretLeft(Turret turret) {
-    // Obtaining the turret
-    this.turret = turret;
+  // declares loader
+  private Loader loader;
+
+  /** Creates a new LoaderLoad. */
+  public LoaderLoad(Loader loader) {
+    // stores the loader
+    this.loader = loader;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret);
+    addRequirements(loader);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // The turret doesn't move at the start
-    turret.stopTurret();
+    // The loader doesn't move at start
+    loader.stopLoader();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // The turret moves left
-    turret.moveTurretLeft();
-    System.out.println("o wow left works");
+    // The loader loads the ball
+    loader.load();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // The turret stops in the end
-    turret.stopTurret();
+    // The loader stops in the end.
+    loader.stopLoader();
   }
 
   // Returns true when the command should end.

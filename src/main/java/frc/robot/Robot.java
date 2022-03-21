@@ -4,9 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
+import org.littletonrobotics.junction.io.ByteLogReceiver;
+import org.littletonrobotics.junction.io.ByteLogReplay;
+import org.littletonrobotics.junction.io.LogSocketServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.FMSData;
+import frc.robot.utils.PneumaticsUtil;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -14,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -25,10 +33,36 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    FMSData.updateFMS();
+
+    // startup for advantage kit
+    setUseTiming(isReal()); 
+    LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); 
+    Logger.getInstance().recordMetadata("ProjectName", "FRC5298");
+
+    if (isReal()) {
+      SmartDashboard.putBoolean("REAL REACHED", true);
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/"));
+      Logger.getInstance().addDataReceiver(new LogSocketServer(5800));
+    }  
+    else {
+      SmartDashboard.putBoolean("REAL REACHED", true);
+      String path = ByteLogReplay.promptForPath();
+      Logger.getInstance().setReplaySource(new ByteLogReplay(path));
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")));
+    }
+
+    Logger.getInstance().start();
+
+    SmartDashboard.putString("Log Status", "INSTANCE STARTED");
+
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
   }
+ 
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
@@ -39,19 +73,28 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    FMSData.updateFMS();
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    //LEDStrip.runLights();
+    PneumaticsUtil.reload();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+     
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -74,6 +117,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_robotContainer.resetDrivetrain();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -86,10 +130,13 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    m_robotContainer.resetDrivetrain();
     CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    m_robotContainer.testRunner();
+  }
 }
