@@ -11,11 +11,21 @@ import frc.robot.subsystems.Climber;
 public class ClimberButtonMove extends CommandBase {
 
   private Climber climber;
+  private double direction;
 
   /** Creates a new ClimberButtonMove. */
   public ClimberButtonMove(Climber climber) {
 
     this.climber = climber;
+    this.direction = 1;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(climber);
+  }
+
+  public ClimberButtonMove(Climber climber, double direction) {
+
+    this.climber = climber;
+    this.direction = direction;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
   }
@@ -29,7 +39,7 @@ public class ClimberButtonMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.climberMove(Climbers.CLIMBER_MOTOR_SPEED);
+    climber.climberMove(direction * Climbers.CLIMBER_MOTOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.

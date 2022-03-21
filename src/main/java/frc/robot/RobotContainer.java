@@ -194,7 +194,7 @@ public class RobotContainer {
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber));
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberButtonMove(climber, -1));
     new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberButtonMove(climber));
 
     new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
@@ -208,8 +208,6 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.LIMELIGHT));
     new JoystickButton(operatorController, Button.kBack.value).whenPressed(new SetShootMode(shooter, ShootMode.ODOMETRY));
     new JoystickButton(driveController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.POGSHOTS));
-
-    new JoystickButton(driveController, Button.kBack.value).whenPressed(new ToggleClimber(climber));
   }
   
   /**
