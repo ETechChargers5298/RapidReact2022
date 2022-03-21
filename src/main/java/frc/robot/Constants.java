@@ -73,7 +73,7 @@ public final class Constants {
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final double FLYWHEEL_UNJAM_SPEED = 0.5;
 
-        public static final double SHOOTER_DELAY = 2;
+        public static final double SHOOTER_DELAY = 0.3;
         public static final int DESIRED_RPM = 1000;
 
         //LIMELIGHT CALIBRATION: Use the following spreadsheet to update:

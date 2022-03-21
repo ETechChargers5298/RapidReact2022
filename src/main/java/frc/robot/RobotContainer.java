@@ -130,7 +130,7 @@ public class RobotContainer {
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
-  private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
+  //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
   //  private final MLCam cam = new MLCam();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
@@ -152,17 +152,17 @@ public class RobotContainer {
     SmartDashboard.putBoolean("startrev", false);
   }
 
-  public void testRunner() {
-    LiveWindow.setEnabled(false);
-    if(shooterCalib.isEnabled()) {
-      SmartDashboard.putString("Boo", "Scheduling");
-      shooterCalib.schedule();
-    }
-    if(SmartDashboard.getBoolean("startrev", false)){
-      SmartDashboard.putString("Boo1", "Scheduling");
-      new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
-    }
-  }
+  // public void testRunner() {
+  //   LiveWindow.setEnabled(false);
+  //   if(shooterCalib.isEnabled()) {
+  //     SmartDashboard.putString("Boo", "Scheduling");
+  //     shooterCalib.schedule();
+  //   }
+  //   if(SmartDashboard.getBoolean("startrev", false)){
+  //     SmartDashboard.putString("Boo1", "Scheduling");
+  //     new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
+  //   }
+  // }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
