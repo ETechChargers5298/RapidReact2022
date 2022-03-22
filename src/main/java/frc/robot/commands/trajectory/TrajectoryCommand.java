@@ -125,6 +125,12 @@ public class TrajectoryCommand {
         return createTrajCommand(newTraj);
     }   
 
+    public Command trajTransform(Pose2d starting, Trajectory traj) {
+        Transform2d transform = starting.minus(traj.getInitialPose());
+        Trajectory moddTraj = traj.transformBy(transform);
+        return createTrajCommand(moddTraj);
+    }
+
     public static HashMap<String, Trajectory> getPaths() { 
         String[] paths = Filesystem.getDeployDirectory().toPath().resolve("paths").toFile().list();
 
