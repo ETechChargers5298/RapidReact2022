@@ -232,7 +232,7 @@ public class RobotContainer {
 
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
-    //autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
     autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
     autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
     autoChooser.addOption("AutoTwoCargo", new Auto2BallDrift(intake, shooter, feeder, drivetrain, loader));
