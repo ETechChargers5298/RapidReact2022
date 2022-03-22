@@ -133,7 +133,7 @@ public class RobotContainer {
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
-  private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
+  //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
   //  private final MLCam cam = new MLCam();
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
@@ -155,17 +155,17 @@ public class RobotContainer {
     SmartDashboard.putBoolean("startrev", false);
   }
 
-  public void testRunner() {
-    LiveWindow.setEnabled(false);
-    if(shooterCalib.isEnabled()) {
-      SmartDashboard.putString("Boo", "Scheduling");
-      shooterCalib.schedule();
-    }
-    if(SmartDashboard.getBoolean("startrev", false)){
-      SmartDashboard.putString("Boo1", "Scheduling");
-      new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
-    }
-  }
+  // public void testRunner() {
+  //   LiveWindow.setEnabled(false);
+  //   if(shooterCalib.isEnabled()) {
+  //     SmartDashboard.putString("Boo", "Scheduling");
+  //     shooterCalib.schedule();
+  //   }
+  //   if(SmartDashboard.getBoolean("startrev", false)){
+  //     SmartDashboard.putString("Boo1", "Scheduling");
+  //     new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
+  //   }
+  // }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -197,7 +197,7 @@ public class RobotContainer {
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber));
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberButtonMove(climber, -1));
     new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberButtonMove(climber));
 
     new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
@@ -211,8 +211,6 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.LIMELIGHT));
     new JoystickButton(operatorController, Button.kBack.value).whenPressed(new SetShootMode(shooter, ShootMode.ODOMETRY));
     new JoystickButton(driveController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.POGSHOTS));
-
-    new JoystickButton(driveController, Button.kBack.value).whenPressed(new ToggleClimber(climber));
   }
   
   /**
