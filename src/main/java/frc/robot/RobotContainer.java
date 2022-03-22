@@ -30,6 +30,14 @@ import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
+import frc.robot.commands.auto.baka.AutoBlueFourCargoC;
+import frc.robot.commands.auto.baka.AutoBlueTwoCargoA;
+import frc.robot.commands.auto.baka.AutoBlueTwoCargoC;
+import frc.robot.commands.auto.baka.AutoBlueTwoCargoD;
+import frc.robot.commands.auto.baka.AutoRedFourCargoC;
+import frc.robot.commands.auto.baka.AutoRedTwoCargoA;
+import frc.robot.commands.auto.baka.AutoRedTwoCargoC;
+import frc.robot.commands.auto.baka.AutoRedTwoCargoD;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.autoFunctions.FancyShot;
 import frc.robot.commands.autoFunctions.TeleShoot;
@@ -235,14 +243,31 @@ public class RobotContainer {
 
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
-    autoChooser.addOption("AutoThreeCargoBlue", new AutoReal3CargoBlue(intake, shooter, feeder, drivetrain, loader));
-    autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
-    autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
-    autoChooser.addOption("AutoTwoCargo", new Auto2BallDrift(intake, shooter, feeder, drivetrain, loader));
-    autoChooser.addOption("Blue2Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(7.661, 2.128, Rotation2d.fromDegrees(80))));
-    autoChooser.addOption("Red1Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(8.848, 6.070, Rotation2d.fromDegrees(195))));
-    autoChooser.addOption("Red2Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(10.439, 3.203, Rotation2d.fromDegrees(165))));
-    autoChooser.addOption("AutoBackShoot", new AutoBackShoot((new Pose2d(7.661, 2.128, Rotation2d.fromDegrees(80))), intake, shooter, feeder, drivetrain, loader));
+
+    autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+
+    autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+    autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+
+    autoChooser.addOption("Blue TwoCargo C", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    autoChooser.addOption("Red TwoCargo C", new AutoRedTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+
+    autoChooser.addOption("Blue TwoCargo D", new AutoBlueTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+    autoChooser.addOption("Red TwoCargo D", new AutoRedTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+
+    autoChooser.addOption("Blue Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    autoChooser.addOption("Red Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+
+    autoChooser.addOption("Blue Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    autoChooser.addOption("Red Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+
+    autoChooser.addOption("Blue Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    autoChooser.addOption("Red Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+
+    autoChooser.addOption("Blue Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    autoChooser.addOption("Red Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 
