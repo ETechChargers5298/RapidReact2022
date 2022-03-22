@@ -11,6 +11,8 @@ import java.sql.Driver;
 import java.util.HashMap;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
+import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTwoCargoAuto;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
@@ -236,6 +239,10 @@ public class RobotContainer {
     autoChooser.addOption("AutoFakeTwoCargo", new AutoTwoCargoAuto(intake, shooter, feeder, loader, drivetrain));
     autoChooser.addOption("Just Shoot", new AutoShootCargo(shooter, feeder, loader));
     autoChooser.addOption("AutoTwoCargo", new Auto2BallDrift(intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("Blue2Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(7.661, 2.128, Rotation2d.fromDegrees(80))));
+    autoChooser.addOption("Red1Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(8.848, 6.070, Rotation2d.fromDegrees(195))));
+    autoChooser.addOption("Red2Test", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(10.439, 3.203, Rotation2d.fromDegrees(165))));
+    autoChooser.addOption("AutoBackShoot", new AutoBackShoot((new Pose2d(7.661, 2.128, Rotation2d.fromDegrees(80))), intake, shooter, feeder, drivetrain, loader));
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 
