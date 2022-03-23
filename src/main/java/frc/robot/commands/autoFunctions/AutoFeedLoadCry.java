@@ -27,11 +27,11 @@ public class AutoFeedLoadCry extends SequentialCommandGroup {
       new ConditionalCommand(
         new SequentialCommandGroup(
           new AutoFeed2Shoot(feeder, loader),
-          new WaitUntilCommand(this::shooterSetpoint)), 
+          new WaitUntilCommand(this::shooterSetpoint)),
         new AutoLoad2Top(loader), 
         loader::getCargoLimitTop));
   }
-
+  
   public boolean shooterSetpoint() {
     return SmartDashboard.getBoolean("AT SETPOINT SHOOTER", false);
   }

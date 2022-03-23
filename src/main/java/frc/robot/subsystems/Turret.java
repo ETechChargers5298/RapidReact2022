@@ -49,7 +49,7 @@ public class Turret extends SubsystemBase {
     limitSwitchRight = new DigitalInput(Shooters.TURRET_RIGHT_LIMIT_PORT);
 
     currentStatus = TurretState.OFF;
-    manual = false;
+    manual = true;
   }
 
   public void moveTurret(double speed){

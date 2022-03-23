@@ -12,6 +12,8 @@ import java.util.HashMap;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -112,6 +114,23 @@ public class TrajectoryCommand {
         return createTrajCommand(traj);
     }
 
+    public Command driveBack(Pose2d starting) {
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            Arrays.asList(
+                new Pose2d(0, 0, new Rotation2d()),
+                new Pose2d(-2, 0, new Rotation2d())),
+                configPresetBackward);
+        Transform2d transform = starting.minus(trajectory.getInitialPose());
+        Trajectory newTraj = trajectory.transformBy(transform);
+        return createTrajCommand(newTraj);
+    }   
+
+    public Command trajTransform(Pose2d starting, Trajectory traj) {
+        Transform2d transform = starting.minus(traj.getInitialPose());
+        Trajectory moddTraj = traj.transformBy(transform);
+        return createTrajCommand(moddTraj);
+    }
+
     public static HashMap<String, Trajectory> getPaths() { 
         String[] paths = Filesystem.getDeployDirectory().toPath().resolve("paths").toFile().list();
 
@@ -133,5 +152,4 @@ public class TrajectoryCommand {
 
 
     }
-
 }
