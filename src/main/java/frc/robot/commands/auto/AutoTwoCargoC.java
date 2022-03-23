@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
+import frc.robot.commands.autoFunctions.AutoShootCargoRPM;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.shoot.TurretAuto;
@@ -39,7 +40,10 @@ public class AutoTwoCargoC extends SequentialCommandGroup {
         new AutoIntakeToLoad(intake, loader)),  // runs intake as same time as path
       
       //new TurretAuto(turret),
-      new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
+      new AutoShootCargoRPM(4700, shooter, feeder, loader)
+      //new TurretAuto(turret),  // shoots at the end
+      //new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
+      
       //new TurretManual(turret)
       
       ); 
