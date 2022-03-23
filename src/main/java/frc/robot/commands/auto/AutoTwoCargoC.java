@@ -12,6 +12,8 @@ import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
+import frc.robot.commands.basic.shoot.TurretAuto;
+import frc.robot.commands.basic.shoot.TurretManual;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -36,7 +38,9 @@ public class AutoTwoCargoC extends SequentialCommandGroup {
         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")), // runs till path is done
         new AutoIntakeToLoad(intake, loader)),  // runs intake as same time as path
       
+      //new TurretAuto(turret),
       new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
+      //new TurretManual(turret)
       
       ); 
   }

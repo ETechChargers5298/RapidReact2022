@@ -260,6 +260,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
 
     autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
 
     
     autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
