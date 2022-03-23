@@ -29,7 +29,8 @@ import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
-import frc.robot.commands.auto.AutoTwoCargoAuto;
+import frc.robot.commands.auto.AutoTwoCargoC;
+import frc.robot.commands.auto.AutoFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueTwoCargoA;
 import frc.robot.commands.auto.baka.AutoBlueTwoCargoC;
@@ -244,6 +245,9 @@ public class RobotContainer {
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
 
+    autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+
+    
     autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 
