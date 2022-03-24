@@ -31,7 +31,7 @@ public class AutoRedTwoCargoC extends SequentialCommandGroup {
     addCommands(
       new IntakeChomp(intake),
       new ParallelRaceGroup(
-        new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSide")),
+        new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")),
         new IntakeEat(intake)),
       new AutoShootCargo(shooter, feeder, loader)
     );

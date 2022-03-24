@@ -29,7 +29,8 @@ import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
-import frc.robot.commands.auto.AutoTwoCargoAuto;
+import frc.robot.commands.auto.AutoTwoCargoC;
+import frc.robot.commands.auto.AutoFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueTwoCargoA;
 import frc.robot.commands.auto.baka.AutoBlueTwoCargoC;
@@ -163,6 +164,20 @@ public class RobotContainer {
 
     SmartDashboard.putBoolean("startrev", false);
   }
+/*
+  public void testRunner() {
+    LiveWindow.setEnabled(false);
+    if(shooterCalib.isEnabled()) {
+      SmartDashboard.putString("Boo", "Scheduling");
+      shooterCalib.schedule();
+    }
+    if(SmartDashboard.getBoolean("startrev", false)){
+      SmartDashboard.putString("Boo1", "Scheduling");
+      new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
+    }
+  }
+*/
+
 
   // public void testRunner() {
   //   LiveWindow.setEnabled(false);
@@ -242,11 +257,15 @@ public class RobotContainer {
     drivetrain.resetOdometry();
   }
 
+  public void climberReset() {
+    climber.resetEncoder();
+  }
+
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
 
-    // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    autoChooser.addOption("2CargoBC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
 
     // autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
@@ -270,8 +289,8 @@ public class RobotContainer {
     // autoChooser.addOption("Red Solo Shoot D", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
 
     autoChooser.addOption("Solo Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
-    autoChooser.addOption("Double Shoot BC", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("4 Cargo C", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Double Shoot BC", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("4 Cargo C", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }

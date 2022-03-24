@@ -29,7 +29,7 @@ public class ShooterDesiredRPM extends CommandBase {
     this.feedforward = new SimpleMotorFeedforward(Control.FLYWHEEL_KSV[0], Control.FLYWHEEL_KSV[1]);
     this.controller = new PIDController(Control.FLYWHEEL_PID[0], Control.FLYWHEEL_PID[1], Control.FLYWHEEL_PID[2]);
     this.desiredRPM = desiredRPM;
-    //this.table = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+    this.table = NetworkTableInstance.getDefault().getTable("SmartDashboard");
     //table.getEntry("SHOOTER DESIRED RPM").setDouble(0.0);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -47,7 +47,7 @@ public class ShooterDesiredRPM extends CommandBase {
   @Override
   public void execute() {
     //double desiredRPM = table.getEntry("SHOOTER DESIRED RPM").getDouble(0);
-    double volts = feedforward.calculate(desiredRPM);
+    double volts = feedforward.calculate(desiredRPM + Math.abs(table.getEntry("Turret Degrees").getDouble(0) * 5));
     //SmartDashboard.putNumber("FLYWHEEL VOLTS", volts);
     double errorFix = controller.calculate(shooter.getVelocity(), desiredRPM);
     shooter.flyVolt(volts + errorFix);

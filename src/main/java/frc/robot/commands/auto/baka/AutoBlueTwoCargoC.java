@@ -29,7 +29,7 @@ public class AutoBlueTwoCargoC extends SequentialCommandGroup {
     addCommands(
       new IntakeChomp(intake),
       new ParallelRaceGroup(
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSide")),
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")),
         new IntakeEat(intake)),
       new AutoShootCargo(shooter, feeder, loader)
     );

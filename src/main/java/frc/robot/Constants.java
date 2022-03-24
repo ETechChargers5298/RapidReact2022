@@ -144,7 +144,7 @@ public final class Constants {
 
         public static final int REACH_START = 10;
         public static final int REACH_BAR = 87;
-        public static final int CLIMB_START = 200;
+        public static final int CLIMB_START = 114;
         public static final int CLIMB_DONE = 285;
 
         public static final int CLIMBER_LIMIT_PORT = 5;

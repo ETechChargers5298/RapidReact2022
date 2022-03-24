@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogEncoder;
@@ -26,7 +27,7 @@ public class Turret extends SubsystemBase {
   private TurretState currentStatus;
   
   // declares encoder & limit switches
-  private AnalogEncoder encoderTurret;
+  private RelativeEncoder encoderTurret;
   private DigitalInput limitSwitchLeft;
   private DigitalInput limitSwitchRight;
 
@@ -42,7 +43,7 @@ public class Turret extends SubsystemBase {
     motorTurret.setInverted(Shooters.TURRET_INVERSION);
 
     // creates the encoder for turret
-    encoderTurret = new AnalogEncoder(Shooters.TURRET_ENCODER_PORT);
+    encoderTurret = motorTurret.getEncoder();
     
     // limit switch limits
     limitSwitchLeft = new DigitalInput(Shooters.TURRET_LEFT_LIMIT_PORT);
@@ -50,6 +51,8 @@ public class Turret extends SubsystemBase {
 
     currentStatus = TurretState.OFF;
     manual = true;
+
+    encoderTurret.setPosition(0.0);
   }
 
   public void moveTurret(double speed){
@@ -71,7 +74,7 @@ public class Turret extends SubsystemBase {
   }
 
   public double getTurretPosition() {
-    return Shooters.TURRET_ENCODER_MULTIPLIER * encoderTurret.get();
+    return Shooters.TURRET_ENCODER_MULTIPLIER * encoderTurret.getPosition();
   }
 
   public void setState(TurretState state) {
@@ -92,11 +95,16 @@ public class Turret extends SubsystemBase {
     return manual;
   }
 
+  public double getTurretDegrees() {
+    return getTurretPosition() / 1.148;
+  }
+
   public void updateTelemetry() {
     Limelight.updateTelemetry();
     SmartDashboard.putBoolean("Right Turret Limit", leftLimit());
     SmartDashboard.putBoolean("Left Turret Limit", rightLimit());
     SmartDashboard.putNumber("Turret Position", getTurretPosition());
+    SmartDashboard.putNumber("Turret Degrees", getTurretDegrees());
     SmartDashboard.putBoolean("Turret Manual", getManual());
   }
 

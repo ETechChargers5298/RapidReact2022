@@ -7,6 +7,7 @@ package frc.robot.commands.auto.baka;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.auto.AutoTwoCargoC;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.shoot.TurretAuto;
@@ -30,8 +31,8 @@ public class AutoBlueFourCargoC extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder),
-      new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickup")),
+      new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter),
+      new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickupCurve")),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitTop)),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitBottom)),
       new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalReverse")),

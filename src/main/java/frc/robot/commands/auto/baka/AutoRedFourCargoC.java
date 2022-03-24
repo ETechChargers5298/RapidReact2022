@@ -31,8 +31,7 @@ public class AutoRedFourCargoC extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder),
-      new TurretAuto(turret),
-      new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickup")),
+      new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickupCurve")),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitTop)),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitBottom)),
       new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalReverse")),
