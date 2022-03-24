@@ -26,10 +26,10 @@ import frc.robot.subsystems.Shooter;
 
 // NOTE:  For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoTwoCargoC extends SequentialCommandGroup {
+public class AutoTwoCargoA extends SequentialCommandGroup {
 
 
-  public AutoTwoCargoC(Drivetrain drivetrain, Intake intake, Loader loader, Feeder feeder, Turret turret, Shooter shooter) {
+  public AutoTwoCargoA(Drivetrain drivetrain, Intake intake, Loader loader, Feeder feeder, Turret turret, Shooter shooter) {
 
     addCommands(
 

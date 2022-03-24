@@ -118,7 +118,7 @@ public class TrajectoryCommand {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             Arrays.asList(
                 new Pose2d(0, 0, new Rotation2d()),
-                new Pose2d(-1.1, 0, new Rotation2d())),
+                new Pose2d(-2, 0, new Rotation2d())),
                 configPresetBackward);
         Transform2d transform = starting.minus(trajectory.getInitialPose());
         Trajectory newTraj = trajectory.transformBy(transform);
@@ -131,10 +131,16 @@ public class TrajectoryCommand {
         return createTrajCommand(moddTraj);
     }
     
-    // public Command turnAround(Pose2d starting) {
-    //     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-    //         Arrays.asList(), config)
-    // }
+    public Command turnAround(Pose2d starting) {
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            Arrays.asList(
+                new Pose2d(0, 0, new Rotation2d()), 
+                new Pose2d(0, 0, Rotation2d.fromDegrees(180))), 
+                configPresetForward);
+        Transform2d transform = starting.minus(trajectory.getInitialPose());
+        Trajectory newTraj = trajectory.transformBy(transform);
+        return createTrajCommand(newTraj);
+    }
 
     public static HashMap<String, Trajectory> getPaths() { 
         String[] paths = Filesystem.getDeployDirectory().toPath().resolve("paths").toFile().list();
