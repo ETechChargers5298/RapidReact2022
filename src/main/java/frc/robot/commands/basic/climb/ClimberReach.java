@@ -12,11 +12,14 @@ public class ClimberReach extends CommandBase {
 
   // declares the climber
   private Climber climber;
+  private double direction;
 
   /** Creates a new ClimberReach. */
-  public ClimberReach(Climber climber) {
+  public ClimberReach(Climber climber, double direction) {
     // stores climber
     this.climber = climber;
+
+    this.direction = direction;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
@@ -33,7 +36,7 @@ public class ClimberReach extends CommandBase {
   @Override
   public void execute() {
     // reaches out climber motor
-    climber.climberMove(Climbers.CLIMBER_MOTOR_SPEED);
+    climber.climberMove(Climbers.CLIMBER_MOTOR_SPEED * direction);
   }
 
   // Called once the command ends or is interrupted.

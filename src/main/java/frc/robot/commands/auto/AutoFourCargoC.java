@@ -8,17 +8,21 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
+import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
+import frc.robot.commands.closedloop.TurretScan;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Turret;
+import frc.robot.utils.Limelight;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  For more information, see:
@@ -48,6 +52,8 @@ public class AutoFourCargoC extends SequentialCommandGroup {
 
       new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalReverse")), // runs till path is done
       new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoFinalStretch")), // runs till path is done
+      new TurretAuto(turret),
+      new ParallelRaceGroup(new TurretScan(turret, -1.0), new WaitUntilCommand(Limelight::isValidTarget)),
       new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
 
     ); 

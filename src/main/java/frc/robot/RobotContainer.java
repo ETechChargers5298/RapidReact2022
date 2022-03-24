@@ -51,6 +51,7 @@ import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
 import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberButtonMove;
+import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.climb.ClimberReach;
 import frc.robot.commands.basic.climb.ToggleClimber;
 import frc.robot.commands.basic.drive.ArcadeDrive;
@@ -135,7 +136,7 @@ public class RobotContainer {
 
   private final HalfSpeed halfspeed = new HalfSpeed(drivetrain);
 
-  //private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
   private final DisableStatus killLights = new DisableStatus();
 
@@ -221,8 +222,8 @@ public class RobotContainer {
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberButtonMove(climber, -1));
-    new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberButtonMove(climber));
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1));
+    new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberReach(climber, 1));
 
     new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
     new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
@@ -250,11 +251,15 @@ public class RobotContainer {
     new TurretScanMove(turret, () -> operatorController.getRightX());
 
     // Sets the test bed to always move the test motor
-    //climber.setDefaultCommand(climbMove);
+    climber.setDefaultCommand(climbMove);
   }
 
   public void resetDrivetrain() {
     drivetrain.resetOdometry();
+  }
+
+  public void climberReset() {
+    climber.resetEncoder();
   }
 
   public void autoChooser() {
@@ -265,7 +270,6 @@ public class RobotContainer {
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
 
-    
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeEat;
+import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
