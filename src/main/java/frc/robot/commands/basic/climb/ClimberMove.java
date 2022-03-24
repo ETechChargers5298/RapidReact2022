@@ -39,6 +39,9 @@ public class ClimberMove extends CommandBase {
   public void execute() {
     // Robot will move depending on left joystick 
     double val = speed.getAsDouble();
+    if (val < 0.2) {
+      val = 0;
+    }
     climber.climberMove(val);
   }
 

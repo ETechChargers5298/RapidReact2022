@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeEat;
+import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.trajectory.TrajectoryCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
@@ -30,11 +31,12 @@ public class AutoRedFourCargoC extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder),
+      new TurretAuto(turret),
       new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickup")),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitTop)),
       new ParallelRaceGroup(new IntakeEat(intake), new WaitUntilCommand(loader::getCargoLimitBottom)),
       new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalReverse")),
-      new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalFinalStretch")),
+      new TrajectoryCommand(drivetrain).trajTransform(new Pose2d(1, 1, Rotation2d.fromDegrees(0)), TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoFinalStretch")),
       new AutoShootCargo(shooter, feeder, loader)
     );
   }

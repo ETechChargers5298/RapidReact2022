@@ -118,7 +118,7 @@ public class TrajectoryCommand {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             Arrays.asList(
                 new Pose2d(0, 0, new Rotation2d()),
-                new Pose2d(-2, 0, new Rotation2d())),
+                new Pose2d(-1.1, 0, new Rotation2d())),
                 configPresetBackward);
         Transform2d transform = starting.minus(trajectory.getInitialPose());
         Trajectory newTraj = trajectory.transformBy(transform);
