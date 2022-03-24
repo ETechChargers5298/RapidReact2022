@@ -29,6 +29,7 @@ import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
+import frc.robot.commands.auto.AutoTwoCargoA;
 import frc.robot.commands.auto.AutoTwoCargoC;
 import frc.robot.commands.auto.AutoFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueFourCargoC;
@@ -259,33 +260,35 @@ public class RobotContainer {
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
 
+    autoChooser.addOption("SoloShootC", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
     autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
 
     
-    autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo C", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo C", new AutoRedTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue TwoCargo C", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo C", new AutoRedTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo D", new AutoBlueTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo D", new AutoRedTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue TwoCargo D", new AutoBlueTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo D", new AutoRedTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }

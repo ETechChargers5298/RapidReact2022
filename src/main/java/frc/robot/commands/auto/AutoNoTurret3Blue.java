@@ -17,22 +17,21 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Shooter;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// NOTE:  Consider using this command1qwsx inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoReal3CargoRed extends SequentialCommandGroup {
+public class AutoNoTurret3Blue extends SequentialCommandGroup {
   /** Creates a new AutoReal2Cargo. */
-  public AutoReal3CargoRed(Intake intake, Shooter shooter, Feeder feeder, Drivetrain drivetrain, Loader loader) {
+  public AutoNoTurret3Blue(Intake intake, Shooter shooter, Feeder feeder, Drivetrain drivetrain, Loader loader) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new IntakeChomp(intake), //Drop intake
-      new AutoShootCargo(shooter, feeder, loader), //Pew Pew 
       new ParallelCommandGroup(
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoAuto")), //Follow Traj
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("")), //Follow Traj
         new SequentialCommandGroup(
-          new AutoIntakeToLoad(intake, loader), //Eat first ball
-          new AutoIntakeToLoad(intake, loader))), //Eat the other
+          new AutoIntakeToLoad(intake, loader) //Eat first ball
+          )), 
       new AutoShootCargo(shooter, feeder, loader) //Now we Pew Pew again
       );
   }

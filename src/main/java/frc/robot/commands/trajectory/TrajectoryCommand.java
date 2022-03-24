@@ -130,6 +130,11 @@ public class TrajectoryCommand {
         Trajectory moddTraj = traj.transformBy(transform);
         return createTrajCommand(moddTraj);
     }
+    
+    // public Command turnAround(Pose2d starting) {
+    //     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    //         Arrays.asList(), config)
+    // }
 
     public static HashMap<String, Trajectory> getPaths() { 
         String[] paths = Filesystem.getDeployDirectory().toPath().resolve("paths").toFile().list();
