@@ -263,12 +263,15 @@ public class RobotContainer {
   }
 
   public void autoChooser() {
-    autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
+    autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraight(2.0));
 
-    autoChooser.addOption("SoloShootC", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
+
     autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+
 
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
