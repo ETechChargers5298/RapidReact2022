@@ -29,6 +29,7 @@ import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
+import frc.robot.commands.auto.AutoTurnShoot;
 import frc.robot.commands.auto.AutoTwoCargoA;
 import frc.robot.commands.auto.AutoTwoCargoC;
 import frc.robot.commands.auto.AutoFourCargoC;
@@ -258,7 +259,11 @@ public class RobotContainer {
     drivetrain.resetOdometry();
   }
 
-  public void climberReset() {
+  public void resetGyro() {
+    drivetrain.resetIMU();
+  }
+
+  public void resetClimber() {
     climber.resetEncoder();
   }
 
@@ -269,13 +274,15 @@ public class RobotContainer {
     autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
-    autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader));
+    autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader, turret));
+    autoChooser.addOption("Solo ONLY Shoot", new AutoShootCargo(shooter, feeder, loader));
     autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-
+    autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 180));
+    autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
 
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-
+   
     // autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
 

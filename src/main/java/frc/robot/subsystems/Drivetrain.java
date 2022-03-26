@@ -180,7 +180,7 @@ public class Drivetrain extends SubsystemBase {
     encoderRight.reset();
   }
   
-  private void resetIMU() {
+  public void resetIMU() {
     navX.reset();
   }
   

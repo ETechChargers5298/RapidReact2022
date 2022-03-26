@@ -77,12 +77,8 @@ public class TurretAimbot extends CommandBase {
       turret.stopTurret();
     }
 
-    if(Math.abs(input.getAsDouble()) > 0.5) {
-      if(input.getAsDouble() < -0.5) {
-        turret.moveTurret(-Shooters.TURRET_SPEED);
-      } else {
-        turret.moveTurret(Shooters.TURRET_SPEED);
-      }
+    if(Math.abs(input.getAsDouble()) > 0.3) {
+        turret.moveTurret(input.getAsDouble() * Shooters.TURRET_SPEED);
     }
   }
 

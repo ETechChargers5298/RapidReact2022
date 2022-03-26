@@ -36,13 +36,13 @@ public class AutoTwoCargoA extends SequentialCommandGroup {
       new IntakeChomp(intake),  // drops the intake immediately
       
       new ParallelCommandGroup(
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")), // runs till path is done
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoASideCurve")), // runs till path is done
         new AutoIntakeToLoad(intake, loader)),  // runs intake as same time as path
       
       //new TurretAuto(turret),
-      new AutoShootCargoRPM(4900, shooter, feeder, loader)
-      //new TurretAuto(turret),  // shoots at the end
-      //new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
+      //new AutoShootCargoRPM(3900, shooter, feeder, loader)
+      new TurretAuto(turret),  // shoots at the end
+      new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
       
       //new TurretManual(turret)
       

@@ -36,7 +36,9 @@ public class ClimberReach extends CommandBase {
   @Override
   public void execute() {
     // reaches out climber motor
-    climber.climberMove(Climbers.CLIMBER_MOTOR_SPEED * direction);
+    if(climber.getPosition() < Climbers.CLIMB_START) {
+      climber.climberMove(Climbers.CLIMBER_MOTOR_SPEED * direction);
+    }
   }
 
   // Called once the command ends or is interrupted.
