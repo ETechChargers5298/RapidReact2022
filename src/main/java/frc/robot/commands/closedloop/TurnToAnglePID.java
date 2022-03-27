@@ -5,6 +5,7 @@
 package frc.robot.commands.closedloop;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.Control;
 import frc.robot.subsystems.Drivetrain;
@@ -25,14 +26,22 @@ public class TurnToAnglePID extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         () -> angle,
         // This uses the output
-        output -> drivetrain.arcadeDrive(0, Utils.clamp(-output, -0.75, 0.75)),
+        output -> drivetrain.arcadeDrive(0, Utils.clamp(output, -0.75, 0.75)),
         
         drivetrain
         );
     // Use addRequirements() here to declare subsystem dependencies.
     getController().enableContinuousInput(-180, 180);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(5, 10);
+    getController().setTolerance(30, 1);
+  }
+
+  @Override
+  public void execute() {
+  
+    SmartDashboard.putNumber("calculated val", super.m_controller.calculate(super.m_measurement.getAsDouble()));
+    SmartDashboard.putNumber("raw val", super.m_measurement.getAsDouble());
+    super.execute();
   }
 
   // Returns true when the command should end.

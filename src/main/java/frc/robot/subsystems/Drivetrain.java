@@ -126,6 +126,7 @@ public class Drivetrain extends SubsystemBase {
    
     return newSpark;
   }
+
   
   // collection of movement control methods
   public void arcadeDrive(double linear, double rotational) {
@@ -179,7 +180,7 @@ public class Drivetrain extends SubsystemBase {
     encoderRight.reset();
   }
   
-  private void resetIMU() {
+  public void resetIMU() {
     navX.reset();
   }
   

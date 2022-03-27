@@ -73,14 +73,14 @@ public final class Constants {
         public static final double FLYWHEEL_SPIN_VOLTAGE = 8.8;
         public static final double FLYWHEEL_UNJAM_SPEED = 0.5;
 
-        public static final double SHOOTER_DELAY = 2;
+        public static final double SHOOTER_DELAY = 0.3;
         public static final int DESIRED_RPM = 1000;
 
         //LIMELIGHT CALIBRATION: Use the following spreadsheet to update:
         // https://docs.google.com/spreadsheets/d/1iPU959t94BVSs3WeV6B7CTpsvuazmbZ9hkCMrusiKfc/edit#gid=711731178
 
         // public static final double[] DESIRED_RPM_K = {20, 2147};
-        public static final double[] DESIRED_RPM_K = {8.91, 3102};    //new values from 3/19
+        public static final double[] DESIRED_RPM_K = {8.91, 3177};    //new values from 3/19
         
         // public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
         public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -6.27, 112};  //new linear values from 3/19
@@ -105,7 +105,7 @@ public final class Constants {
     
     public static final class Loading {
         public static final int CARGO_UNO_LIMIT_PORT = 1;
-        public static final int CARGO_DOS_LIMIT_PORT = 2;
+        public static final int CARGO_DOS_LIMIT_PORT = 0; //shorting at 2
         
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;
@@ -140,18 +140,18 @@ public final class Constants {
     public static final class Climbers {
         public static final int CLIMBER_MOTOR_PORT = 12;
         public static final boolean CLIMBER_MOTOR_INVERSION = false;
-        public static final double CLIMBER_MOTOR_SPEED = 0.75;
+        public static final double CLIMBER_MOTOR_SPEED = 1;
 
         public static final int REACH_START = 10;
         public static final int REACH_BAR = 87;
-        public static final int CLIMB_START = 200;
+        public static final int CLIMB_START = 318;
         public static final int CLIMB_DONE = 285;
 
         public static final int CLIMBER_LIMIT_PORT = 5;
     }
 
     public static final class Control {
-        public static final double TURN_TO_ANGLE_P = 10;
+        public static final double TURN_TO_ANGLE_P = 0.003;
         public static final double TURN_TO_ANGLE_I = 0;
         public static final double TURN_TO_ANGLE_D = 0;
         public static final double[] TURN_TO_ANGLE_PID = {TURN_TO_ANGLE_P, TURN_TO_ANGLE_I, TURN_TO_ANGLE_D};

@@ -6,7 +6,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.DriveTrain;
+//import frc.robot.Constants.DriveTrain;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
@@ -28,10 +28,8 @@ public class AutoReal3CargoBlue extends SequentialCommandGroup {
     addCommands(
       new IntakeChomp(intake), //Drop intake
       new AutoShootCargo(shooter, feeder, loader), //Pew Pew 
-
       new ParallelCommandGroup(
-       
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("5CargoP1")), //Follow Traj
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoAuto")), //Follow Traj
         new SequentialCommandGroup(
           new AutoIntakeToLoad(intake, loader), //Eat first ball
           new AutoIntakeToLoad(intake, loader))), //Eat the other
