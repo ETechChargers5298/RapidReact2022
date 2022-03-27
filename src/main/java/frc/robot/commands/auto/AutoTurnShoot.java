@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
@@ -33,8 +35,9 @@ public class AutoTurnShoot extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new TrajectoryCommand(drivetrain).driveStraight(1.5),
         new AutoIntakeToLoad(intake, loader)),
-      new IntakeRetract(intake),
+      new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d()), 0.75),
       new TurnToAnglePID(drivetrain, 180),
+      new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d()), 0.75),
       new TurretAuto(turret),
       new AutoShootCargo(shooter, feeder, loader)
     );

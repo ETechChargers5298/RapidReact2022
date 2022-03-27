@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.autoFunctions.AutoShootCargoRPM;
@@ -36,11 +37,11 @@ public class AutoTwoCargoC extends SequentialCommandGroup {
       new IntakeChomp(intake),  // drops the intake immediately
       
       new ParallelCommandGroup(
-        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")), // runs till path is done
-        new AutoIntakeToLoad(intake, loader)),  // runs intake as same time as path
+        new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")),
+        new ParallelRaceGroup(new AutoIntakeToLoad(intake, loader), new WaitCommand(10))), // runs till path is done),  // runs intake as same time as path
       
       //new TurretAuto(turret),
-      new AutoShootCargoRPM(4900, shooter, feeder, loader)
+      new AutoShootCargoRPM(5100, shooter, feeder, loader)
       //new TurretAuto(turret),  // shoots at the end
       //new AutoShootCargo(shooter, feeder, loader)   // shoots at the end
       
