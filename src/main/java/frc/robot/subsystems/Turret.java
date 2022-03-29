@@ -62,23 +62,11 @@ public class Turret extends SubsystemBase {
 
   // right and left have been inverted in the telemetry the entire time so we did it like this to save the hassle 
   public boolean leftLimit() {
-    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Right Turret Limit Enabled").getBoolean(false)) {
-    //   return limitSwitchLeft.get();
-    // }
-    //  else {
-    //    return false;
-    //  } 
-    return false;
+    return getTurretDegrees() < -90;
   }
 
   public boolean rightLimit() {
-    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Left Turret Limit Enabled").getBoolean(false)) {
-    //   return limitSwitchRight.get();
-    // }
-    //   else {
-    //     return false;
-    //   }
-    return false;
+    return getTurretDegrees() > 90;
   }
 
   public double getTurretPosition() {
@@ -105,6 +93,10 @@ public class Turret extends SubsystemBase {
 
   public double getTurretDegrees() {
     return getTurretPosition() / 1.148;
+  }
+
+  public void setTurretDegrees(double degrees) {
+    encoderTurret.setPosition(degrees * 1.148);
   }
 
   public void updateTelemetry() {

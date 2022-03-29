@@ -65,12 +65,14 @@ import frc.robot.commands.basic.shoot.SetShootMode;
 import frc.robot.commands.basic.shoot.ShooterUnJam;
 import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.basic.shoot.TurretManual;
+import frc.robot.commands.closedloop.BetterTurretBotAim;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
 import frc.robot.commands.closedloop.ShooterDistanceShot;
 import frc.robot.commands.closedloop.ShooterLimelightRPM;
 import frc.robot.commands.closedloop.ShooterOdoShot;
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
+import frc.robot.commands.closedloop.TurretDefault;
 import frc.robot.commands.closedloop.TurretScan;
 import frc.robot.commands.closedloop.TurretScanMove;
 import frc.robot.commands.test.ShooterCalib;
@@ -144,6 +146,10 @@ public class RobotContainer {
   private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getLeftX());
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
+
+  private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1);
+  private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1);
+  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getLeftX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
@@ -226,8 +232,8 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1));
     new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberReach(climber, 1));
 
-    new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
-    new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
+    new DPad(operatorController, DPad.POV_LEFT).whileHeld(aimBotLeft, true);
+    new DPad(operatorController, DPad.POV_RIGHT).whileHeld(aimBotRight, true);
     
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
@@ -247,7 +253,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    turret.setDefaultCommand(asuna);
+    //turret.setDefaultCommand(asuna);
+
+    turret.setDefaultCommand(turretDefault);
 
     new TurretScanMove(turret, () -> operatorController.getRightX());
 
