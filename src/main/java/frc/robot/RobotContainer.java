@@ -29,6 +29,8 @@ import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
+import frc.robot.commands.auto.AutoTurnShoot;
+import frc.robot.commands.auto.AutoTwoCargoA;
 import frc.robot.commands.auto.AutoTwoCargoC;
 import frc.robot.commands.auto.AutoFourCargoC;
 import frc.robot.commands.auto.baka.AutoBlueFourCargoC;
@@ -50,6 +52,7 @@ import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
 import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberButtonMove;
+import frc.robot.commands.basic.climb.ClimberMove;
 import frc.robot.commands.basic.climb.ClimberReach;
 import frc.robot.commands.basic.climb.ToggleClimber;
 import frc.robot.commands.basic.drive.ArcadeDrive;
@@ -134,7 +137,7 @@ public class RobotContainer {
 
   private final HalfSpeed halfspeed = new HalfSpeed(drivetrain);
 
-  //private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
   private final DisableStatus killLights = new DisableStatus();
 
@@ -220,8 +223,8 @@ public class RobotContainer {
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
     new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberButtonMove(climber, -1));
-    new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberButtonMove(climber));
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1));
+    new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberReach(climber, 1));
 
     new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
     new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
@@ -249,43 +252,57 @@ public class RobotContainer {
     new TurretScanMove(turret, () -> operatorController.getRightX());
 
     // Sets the test bed to always move the test motor
-    //climber.setDefaultCommand(climbMove);
+    climber.setDefaultCommand(climbMove);
   }
 
   public void resetDrivetrain() {
     drivetrain.resetOdometry();
   }
 
+  public void resetGyro() {
+    drivetrain.resetIMU();
+  }
+
+  public void resetClimber() {
+    climber.resetEncoder();
+  }
+
   public void autoChooser() {
-    autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraightTest());
+    autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraight(2.0));
+
 
     autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader, turret));
+    autoChooser.addOption("Solo ONLY Shoot", new AutoShootCargo(shooter, feeder, loader));
+    autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 180));
+    autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
 
-    
-    autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+   
+    // autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo A", new AutoBlueTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo A", new AutoRedTwoCargoA(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue TwoCargo C", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo C", new AutoRedTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo C", new AutoBlueTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo C", new AutoRedTwoCargoC(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue TwoCargo D", new AutoBlueTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Red TwoCargo D", new AutoRedTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
 
-    autoChooser.addOption("Blue TwoCargo D", new AutoBlueTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
-    autoChooser.addOption("Red TwoCargo D", new AutoRedTwoCargoD(drivetrain, intake, shooter, turret, loader, feeder));
+    // autoChooser.addOption("Blue Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot A", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot B", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
-    autoChooser.addOption("Blue Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot C", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-
-    autoChooser.addOption("Blue Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Red Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Blue Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
+    // autoChooser.addOption("Red Solo Shoot D", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
 
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }

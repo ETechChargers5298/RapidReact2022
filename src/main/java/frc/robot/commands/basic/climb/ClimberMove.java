@@ -25,13 +25,13 @@ public class ClimberMove extends CommandBase {
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     climber.climberStop();
-    climber.resetEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +39,9 @@ public class ClimberMove extends CommandBase {
   public void execute() {
     // Robot will move depending on left joystick 
     double val = speed.getAsDouble();
+    if (Math.abs(val) < 0.2) {
+      val = 0;
+    }
     climber.climberMove(val);
   }
 

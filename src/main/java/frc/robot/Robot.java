@@ -102,6 +102,8 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.resetClimber();
+    m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -120,6 +122,8 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_robotContainer.resetClimber();
+    m_robotContainer.resetGyro();
     m_robotContainer.resetDrivetrain();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

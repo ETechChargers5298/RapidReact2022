@@ -79,6 +79,17 @@ public class TrajectoryCommand {
         return createTrajCommand(trajectory);
     }
 
+    public Command driveStraight(double howFarMeters) {
+
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d()), 
+            Arrays.asList(), 
+            new Pose2d(howFarMeters, 0, new Rotation2d()), 
+            configPresetForward);
+        
+        return createTrajCommand(trajectory);
+    }
+
     public Command driveCurvedTest() {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             Arrays.asList(
@@ -118,7 +129,18 @@ public class TrajectoryCommand {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             Arrays.asList(
                 new Pose2d(0, 0, new Rotation2d()),
-                new Pose2d(-2, 0, new Rotation2d())),
+                new Pose2d(-1.6, 0, new Rotation2d())),
+                configPresetBackward);
+        Transform2d transform = starting.minus(trajectory.getInitialPose());
+        Trajectory newTraj = trajectory.transformBy(transform);
+        return createTrajCommand(newTraj);
+    }
+
+    public Command driveBack(Pose2d starting, double howMuchBackMeters) {
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            Arrays.asList(
+                new Pose2d(0, 0, new Rotation2d()),
+                new Pose2d(-howMuchBackMeters, 0, new Rotation2d())),
                 configPresetBackward);
         Transform2d transform = starting.minus(trajectory.getInitialPose());
         Trajectory newTraj = trajectory.transformBy(transform);
@@ -129,6 +151,17 @@ public class TrajectoryCommand {
         Transform2d transform = starting.minus(traj.getInitialPose());
         Trajectory moddTraj = traj.transformBy(transform);
         return createTrajCommand(moddTraj);
+    }
+    
+    public Command turnAround(Pose2d starting) {
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            Arrays.asList(
+                new Pose2d(0, 0, new Rotation2d()), 
+                new Pose2d(0, 0, Rotation2d.fromDegrees(180))), 
+                configPresetForward);
+        Transform2d transform = starting.minus(trajectory.getInitialPose());
+        Trajectory newTraj = trajectory.transformBy(transform);
+        return createTrajCommand(newTraj);
     }
 
     public static HashMap<String, Trajectory> getPaths() { 

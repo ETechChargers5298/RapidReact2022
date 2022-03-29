@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,8 +30,6 @@ public class Turret extends SubsystemBase {
   
   // declares encoder & limit switches
   private RelativeEncoder encoderTurret;
-  private DigitalInput limitSwitchLeft;
-  private DigitalInput limitSwitchRight;
 
   private boolean manual;
   
@@ -45,14 +45,11 @@ public class Turret extends SubsystemBase {
     // creates the encoder for turret
     encoderTurret = motorTurret.getEncoder();
     
-    // limit switch limits
-    limitSwitchLeft = new DigitalInput(Shooters.TURRET_LEFT_LIMIT_PORT);
-    limitSwitchRight = new DigitalInput(Shooters.TURRET_RIGHT_LIMIT_PORT);
-
     currentStatus = TurretState.OFF;
     manual = true;
 
     encoderTurret.setPosition(0.0);
+
   }
 
   public void moveTurret(double speed){
@@ -63,14 +60,25 @@ public class Turret extends SubsystemBase {
     motorTurret.set(0);
   }
 
+  // right and left have been inverted in the telemetry the entire time so we did it like this to save the hassle 
   public boolean leftLimit() {
-    return limitSwitchLeft.get();
-    //return false;
+    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Right Turret Limit Enabled").getBoolean(false)) {
+    //   return limitSwitchLeft.get();
+    // }
+    //  else {
+    //    return false;
+    //  } 
+    return false;
   }
 
   public boolean rightLimit() {
-    return limitSwitchRight.get();
-    //return false;
+    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Left Turret Limit Enabled").getBoolean(false)) {
+    //   return limitSwitchRight.get();
+    // }
+    //   else {
+    //     return false;
+    //   }
+    return false;
   }
 
   public double getTurretPosition() {
@@ -101,8 +109,8 @@ public class Turret extends SubsystemBase {
 
   public void updateTelemetry() {
     Limelight.updateTelemetry();
-    SmartDashboard.putBoolean("Right Turret Limit", leftLimit());
-    SmartDashboard.putBoolean("Left Turret Limit", rightLimit());
+    SmartDashboard.putBoolean("Left Turret Limit", leftLimit());
+    SmartDashboard.putBoolean("Right Turret Limit", rightLimit());
     SmartDashboard.putNumber("Turret Position", getTurretPosition());
     SmartDashboard.putNumber("Turret Degrees", getTurretDegrees());
     SmartDashboard.putBoolean("Turret Manual", getManual());
