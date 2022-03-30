@@ -7,11 +7,13 @@ package frc.robot.commands.closedloop;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.Limelight;
+import frc.robot.utils.Rumble;
 import frc.robot.utils.Utils;
 import frc.robot.utils.State.TurretState;
 
@@ -21,10 +23,15 @@ public class BetterTurretBotAim extends CommandBase {
   private PIDController controller;
   private double startingDirection;
   private double currentDirection; 
-  
+  private XboxController poopPad;
+  private Rumble leftRumble;
+  private Rumble rightRumble;
 
   /** Creates a new BetterTurretBotAim. */
-  public BetterTurretBotAim(Turret turret, double startingDirection) {
+  public BetterTurretBotAim(Turret turret, double startingDirection, XboxController poopPad) {
+    this.leftRumble = new Rumble(poopPad, true);
+    this.rightRumble = new Rumble(poopPad, false);
+    this.poopPad = poopPad;
     this.turret = turret;
     this.controller = new PIDController(Control.TURRET_AIM_PID[0], Control.TURRET_AIM_PID[1], Control.TURRET_AIM_PID[2]);
     this.startingDirection = startingDirection;
@@ -68,6 +75,13 @@ public class BetterTurretBotAim extends CommandBase {
       turret.moveTurret(currentDirection * Shooters.TURRET_SPEED);
     } 
 
+    if(controller.atSetpoint()) {
+      leftRumble.rumbleOn();
+      rightRumble.rumbleOn();
+    } else{
+      leftRumble.rumbleOff();
+      rightRumble.rumbleOff();
+    }
     
   }
 
@@ -76,13 +90,13 @@ public class BetterTurretBotAim extends CommandBase {
   public void end(boolean interrupted) {
 
     turret.stopTurret();
-    
+    leftRumble.rumbleOff();
+    rightRumble.rumbleOff();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    controller.atSetpoint();
     return false;
   }
 }

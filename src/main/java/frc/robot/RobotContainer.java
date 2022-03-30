@@ -50,6 +50,7 @@ import frc.robot.commands.basic.cargo.IntakeRetract;
 import frc.robot.commands.basic.cargo.IntakeSpit;
 import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
+import frc.robot.commands.basic.cargo.RumbleLoad;
 import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberButtonMove;
 import frc.robot.commands.basic.climb.ClimberMove;
@@ -88,6 +89,7 @@ import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
 import frc.robot.utils.MLCam;
+import frc.robot.utils.Rumble;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -141,14 +143,16 @@ public class RobotContainer {
 
   private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
 
+  private final RumbleLoad rumbleLoad = new RumbleLoad(loader, operatorController);
+
   private final DisableStatus killLights = new DisableStatus();
 
   private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getLeftX());
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
-  private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1);
-  private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1);
+  private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
+  private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
   private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getLeftX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
@@ -249,6 +253,8 @@ public class RobotContainer {
    * Maps joystick axes to commands 
    */
   private void configureAxes() {
+
+    loader.setDefaultCommand(rumbleLoad);
     // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
 
