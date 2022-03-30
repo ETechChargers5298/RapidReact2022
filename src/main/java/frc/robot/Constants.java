@@ -60,7 +60,7 @@ public final class Constants {
        
         public static final int TURRET_MOTOR_PORT = 10;
         public static final boolean TURRET_INVERSION = false;
-        public static final double TURRET_SPEED = 0.60;
+        public static final double TURRET_SPEED = 0.30;
 
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;

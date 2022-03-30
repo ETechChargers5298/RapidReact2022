@@ -59,10 +59,12 @@ public class BetterTurretBotAim extends CommandBase {
 
       turret.moveTurret(speed);
     } else {
-
-      if(turret.leftLimit() || turret.rightLimit()){
-        currentDirection = currentDirection * -1;
+      if(turret.leftLimit()) {
+        currentDirection = 1;
+      } else if(turret.rightLimit()) {
+        currentDirection = -1;
       }
+
       turret.moveTurret(currentDirection * Shooters.TURRET_SPEED);
     } 
 
