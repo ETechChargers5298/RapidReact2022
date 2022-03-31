@@ -10,21 +10,23 @@ public class Cargo {
     private String color;
     private int x;
     private int y;
-    private float confidence;
+    private double confidence;
+    private double area;
 
-    public Cargo(String label, int xmin, int xmax, int ymin, int ymax, float confidence) {
+    public Cargo(String label, int xmin, int xmax, int ymin, int ymax, double confidence) {
 
         color = label;
         this.x = (xmax - xmin);
         this.y = (ymax - ymin);
         this.confidence = confidence;
+        this.area = (x * y);
     }
 
     public String getColor() {
         return color;
     }
 
-    public float getConfidence() {
+    public double getConfidence() {
         return confidence;
     }
 
@@ -35,9 +37,20 @@ public class Cargo {
         return baka;
     }
 
+    public double[] getRelativeXY() {
+        double[] baka = new double[2];
+        baka[0] = ((double) x - ((double) MLCam.getMlImageWidth() / 2)) / ((double) MLCam.getMlImageWidth() / 2);
+        baka[1] = ((double) y - ((double) MLCam.getMlImageHeight() / 2)) / ((double) MLCam.getMlImageHeight() / 2);
+        return baka;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
     public String toString() {
 
-        return "C: " + color + "XY: " + x + ", " + y + "c:" + confidence;
+        return "C: " + color + " XY: " + x + ", " + y + " c:" + confidence;
 
 
 

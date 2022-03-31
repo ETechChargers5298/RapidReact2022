@@ -174,6 +174,7 @@ public class RobotContainer {
     // Sends the auto routines
     autoChooser();
 
+    rumbleLoad.schedule();
     SmartDashboard.putBoolean("startrev", false);
   }
 /*
@@ -254,7 +255,7 @@ public class RobotContainer {
    */
   private void configureAxes() {
 
-    loader.setDefaultCommand(rumbleLoad);
+    //loader.setDefaultCommand(rumbleLoad);
     // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
 

@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Control;
 import frc.robot.Constants.Shooters;
@@ -36,6 +37,8 @@ public class BetterTurretBotAim extends CommandBase {
     this.controller = new PIDController(Control.TURRET_AIM_PID[0], Control.TURRET_AIM_PID[1], Control.TURRET_AIM_PID[2]);
     this.startingDirection = startingDirection;
     this.currentDirection = startingDirection;
+    SmartDashboard.putBoolean("AIMBOT At Setpoint", controller.atSetpoint());
+    SmartDashboard.putBoolean("AIMBOT RUMBLE", false);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -65,7 +68,21 @@ public class BetterTurretBotAim extends CommandBase {
       }
 
       turret.moveTurret(speed);
+
+      SmartDashboard.putBoolean("AIMBOT RUMBLE", Math.abs(offset) < 1.5);
+
+      if(Math.abs(offset) < 1.5) {
+        leftRumble.rumbleOn();
+        rightRumble.rumbleOn();
+      } else{
+        leftRumble.rumbleOff();
+        rightRumble.rumbleOff();
+      }
+
     } else {
+      leftRumble.rumbleOff();
+      rightRumble.rumbleOff();
+
       if(turret.leftLimit()) {
         currentDirection = 1;
       } else if(turret.rightLimit()) {
@@ -73,16 +90,9 @@ public class BetterTurretBotAim extends CommandBase {
       }
 
       turret.moveTurret(currentDirection * Shooters.TURRET_SPEED);
-    } 
-
-    if(controller.atSetpoint()) {
-      leftRumble.rumbleOn();
-      rightRumble.rumbleOn();
-    } else{
-      leftRumble.rumbleOff();
-      rightRumble.rumbleOff();
     }
     
+    SmartDashboard.putBoolean("At Setpoint", controller.atSetpoint());
   }
 
   // Called once the command ends or is interrupted.
