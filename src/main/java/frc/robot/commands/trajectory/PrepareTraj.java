@@ -27,6 +27,7 @@ public class PrepareTraj extends InstantCommand {
   @Override
   public void initialize() {
     drivetrain.resetOdometry(traj.getInitialPose());
+    drivetrain.shiftSpeed();
     drivetrain.setTraj(traj);
   }
 }

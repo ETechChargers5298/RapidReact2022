@@ -38,10 +38,10 @@ public final class Constants {
         public static final boolean LEFT_INVERTED = true;
         public static final boolean RIGHT_INVERTED = false;
 
-        public static final int ENCODER_LEFT_PORT_A = 9;
-        public static final int ENCODER_LEFT_PORT_B = 8;
-        public static final int ENCODER_RIGHT_PORT_A = 7;
-        public static final int ENCODER_RIGHT_PORT_B = 6;
+        public static final int ENCODER_RIGHT_PORT_A = 0;
+        public static final int ENCODER_RIGHT_PORT_B = 1;
+        public static final int ENCODER_LEFT_PORT_A = 2;
+        public static final int ENCODER_LEFT_PORT_B = 3;
 
         public static final int COUNTS_PER_REVOLUTION = 8192;
         public static final int ENCODER_ENCODING = 4;
@@ -104,8 +104,8 @@ public final class Constants {
     }
     
     public static final class Loading {
-        public static final int CARGO_UNO_LIMIT_PORT = 1;
-        public static final int CARGO_DOS_LIMIT_PORT = 0; //shorting at 2
+        public static final int CARGO_UNO_LIMIT_PORT = 8;
+        public static final int CARGO_DOS_LIMIT_PORT = 9; //shorting at 2
         
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;
