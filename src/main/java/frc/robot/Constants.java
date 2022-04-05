@@ -38,10 +38,10 @@ public final class Constants {
         public static final boolean LEFT_INVERTED = true;
         public static final boolean RIGHT_INVERTED = false;
 
-        public static final int ENCODER_LEFT_PORT_A = 9;
-        public static final int ENCODER_LEFT_PORT_B = 8;
-        public static final int ENCODER_RIGHT_PORT_A = 7;
-        public static final int ENCODER_RIGHT_PORT_B = 6;
+        public static final int ENCODER_RIGHT_PORT_A = 0;
+        public static final int ENCODER_RIGHT_PORT_B = 1;
+        public static final int ENCODER_LEFT_PORT_A = 2;
+        public static final int ENCODER_LEFT_PORT_B = 3;
 
         public static final int COUNTS_PER_REVOLUTION = 8192;
         public static final int ENCODER_ENCODING = 4;
@@ -60,13 +60,13 @@ public final class Constants {
        
         public static final int TURRET_MOTOR_PORT = 10;
         public static final boolean TURRET_INVERSION = false;
-        public static final double TURRET_SPEED = 0.60;
+        public static final double TURRET_SPEED = 0.30;
 
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
 
-        public static final int TURRET_LEFT_LIMIT_PORT = 3;
-        public static final int TURRET_RIGHT_LIMIT_PORT = 4;
+        public static final int TURRET_LEFT_LIMIT_PORT = 32;
+        public static final int TURRET_RIGHT_LIMIT_PORT = 33;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
@@ -83,7 +83,7 @@ public final class Constants {
         public static final double[] DESIRED_RPM_K = {8.91, 3177};    //new values from 3/19
         
         // public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
-        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -6.27, 112};  //new linear values from 3/19
+        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 3/19
 
         public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
         public static final double GOAL_X_INCHES = Units.metersToInches(8.3);
@@ -104,8 +104,8 @@ public final class Constants {
     }
     
     public static final class Loading {
-        public static final int CARGO_UNO_LIMIT_PORT = 1;
-        public static final int CARGO_DOS_LIMIT_PORT = 0; //shorting at 2
+        public static final int CARGO_UNO_LIMIT_PORT = 8;
+        public static final int CARGO_DOS_LIMIT_PORT = 9; //shorting at 2
         
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;
@@ -116,7 +116,7 @@ public final class Constants {
         public static final double INTAKE_SPEED = 0.75;
 
         public static final int INTAKE_CHOMP_PORT = 3;
-        public static final int INTAKE_RETRACT_PORT = 2;
+        public static final int INTAKE_AHHH_PORT = 2;
     }
   
     public static final class Gamepad {
@@ -147,7 +147,6 @@ public final class Constants {
         public static final int CLIMB_START = 318;
         public static final int CLIMB_DONE = 285;
 
-        public static final int CLIMBER_LIMIT_PORT = 5;
     }
 
     public static final class Control {

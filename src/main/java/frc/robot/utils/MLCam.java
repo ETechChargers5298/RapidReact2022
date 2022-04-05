@@ -6,12 +6,15 @@ package frc.robot.utils;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 /** Add your docs here. */
 public class MLCam {
@@ -21,76 +24,60 @@ public class MLCam {
     private static NetworkTableInstance instance = NetworkTableInstance.getDefault();
     private static NetworkTable table = instance.getTable("ML");
     private static ArrayList<Cargo> bakaList;
-    private static int mlImageWidth = 800;
-    private static int mlImageHeight = 600;
-    //private static String allianceColor = "Blue";
+    private static int mlImageWidth = 160;
+    private static int mlImageHeight = 120;
 
+public static int getMlImageWidth() {
+    return mlImageWidth;
+}
 
+    public static int getMlImageHeight() {
+        return mlImageHeight;
+    }
+    
+    
 
 
     public static void updateTelemetry() {
-
+        // All Cargo Has Been Found and Organized
         findBakas();
-        String name = "Baka";
+
+    }
+
+
+    
+    public static void findBakas() {
+        String data = table.getEntry("detections").getString("[]");
+  
+        findBaka = new JSONArray(data);
+        new PrintCommand("LENGTH: " + findBaka.length()).schedule();
+        new PrintCommand(data).schedule();
+
+        bakaList = new ArrayList<Cargo>();
 
         for (int i = 0; i < findBaka.length(); i++) {
-            name += i;
-            SmartDashboard.putString(name, findBaka.getString(i));
-            //SmartDashboard.putString(name, "hi");
+            JSONObject baka = findBaka.getJSONObject(i);
+            
+            String ll = baka.getString("label");
 
-            SmartDashboard.putNumber("Horizontal Offset", horizontalOffsetToCargo(bakaList.get(i)));
-            SmartDashboard.putNumber("Vertical Offset", verticalOffsetToCargo(bakaList.get(i)));
+            JSONObject box = baka.getJSONObject("box");
+            int ymin = box.getInt("ymin");
+            int xmin = box.getInt("xmin");
+            int ymax = box.getInt("ymax");
+            int xmax = box.getInt("xmax");
+
+            double confidence = baka.getDouble("confidence");
+
+            Cargo bakas = new Cargo(ll, xmin, xmax, ymin, ymax, confidence);
+            new PrintCommand(bakas.getRelativeXY()[0] + " " + bakas.getRelativeXY()[1]).schedule();
+            new PrintCommand(bakas.toString()).schedule();
+            bakaList.add(bakas);
 
 
-            name = "Baka";
-        } 
-        
-        SmartDashboard.putString("Closest Cargo", findClosestCargo(FMSData.getAllianceColor()).toString());
-        
+        }
 
+        new PrintCommand("Baka List: " + bakaList.toString()).schedule();
     }
-
-
- 
- public static void findBakas() {
- 
-    String hello = NetworkTableInstance.getDefault().getTable("ML").getEntry("detections").getString("[]");
-    SmartDashboard.putString("Hello", hello);
-  
-    findBaka = new JSONArray(hello);
-    SmartDashboard.putNumber("Yes", findBaka.length());
- 
-    bakaList = new ArrayList<Cargo>();
-
-   // String[] objectsFound = table.getEntry("detections").getStringArray(new String[0]);
-    
-        // Loops through each cargo that was found
-     for(int i = 0; i < findBaka.length(); i++) {
-       // Gets the JSON for one cargo
-       //JSONObject currentCargo = new JSONObject();
-        JSONObject currentCargo = findBaka.getJSONObject(i);
-
-       // Obtains the label of the cargo
-       String label = currentCargo.getString("label");
- 
-       // Obtains confidence of the cargo
-       float confidence =(float) currentCargo.getDouble("confidence");
- 
-       // Obtains the box
-       JSONObject boundingBox = currentCargo.getJSONObject("box");
- 
-       // Gets each dimension of bounding box
-       int xmin = boundingBox.getInt("xmin");
-       int ymin = boundingBox.getInt("ymin");
-       int xmax = boundingBox.getInt("xmax");
-       int ymax = boundingBox.getInt("ymax");
- 
-       Cargo baka = new Cargo(label, ymin, xmin, ymax, xmax, confidence);
-       bakaList.add(baka);
- 
-    }
- 
- }
 
 
 

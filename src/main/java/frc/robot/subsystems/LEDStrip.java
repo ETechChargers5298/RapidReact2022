@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Robot;
 import frc.robot.utils.LEDColors;
@@ -60,6 +61,7 @@ public class LEDStrip extends SubsystemBase {
   }
 
   public static void setPattern(double ledPattern) {
+    new PrintCommand("CURRENT LED PATTERN VALUE BEING SET: " + ledPattern).schedule();
     LED.set(ledPattern);
   }
 
@@ -68,14 +70,18 @@ public class LEDStrip extends SubsystemBase {
   }
   
   public static void request(LightFlag priority, double status) {
+    new PrintCommand("REQUEST MAKER: " + priority.toString()).schedule();
+    new PrintCommand("STATUS BEING SAVED: " + status).schedule();
     if (priority.getPriority() < yourDesires) {
       yourDesires = priority.getPriority();
+      new PrintCommand("TOP DOG RIGHT NOW: " + yourDesires);
     }
     statuses[priority.getPriority()] = status; 
   }
   
   public static void setStatus() {
     if (yourDesires < statuses.length) {
+      new PrintCommand("STATUS BEING SET RIGHT NOW").schedule();
       setPattern(statuses[yourDesires]);
     }
     else {
@@ -93,6 +99,7 @@ public class LEDStrip extends SubsystemBase {
       }
     }
 
+    new PrintCommand("BEING SET TO DEFAULT AGAIN?").schedule();
     yourDesires = LightFlag.DEFAULT.getPriority();
   } 
   

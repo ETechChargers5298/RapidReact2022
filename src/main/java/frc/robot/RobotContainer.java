@@ -50,6 +50,7 @@ import frc.robot.commands.basic.cargo.IntakeRetract;
 import frc.robot.commands.basic.cargo.IntakeSpit;
 import frc.robot.commands.basic.cargo.LoaderLoad;
 import frc.robot.commands.basic.cargo.LoaderUnload;
+import frc.robot.commands.basic.cargo.RumbleLoad;
 import frc.robot.commands.basic.cargo.Vomit;
 import frc.robot.commands.basic.climb.ClimberButtonMove;
 import frc.robot.commands.basic.climb.ClimberMove;
@@ -65,12 +66,14 @@ import frc.robot.commands.basic.shoot.SetShootMode;
 import frc.robot.commands.basic.shoot.ShooterUnJam;
 import frc.robot.commands.basic.shoot.TurretAuto;
 import frc.robot.commands.basic.shoot.TurretManual;
+import frc.robot.commands.closedloop.BetterTurretBotAim;
 import frc.robot.commands.closedloop.ShooterDesiredRPM;
 import frc.robot.commands.closedloop.ShooterDistanceShot;
 import frc.robot.commands.closedloop.ShooterLimelightRPM;
 import frc.robot.commands.closedloop.ShooterOdoShot;
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.closedloop.TurretAimbot;
+import frc.robot.commands.closedloop.TurretDefault;
 import frc.robot.commands.closedloop.TurretScan;
 import frc.robot.commands.closedloop.TurretScanMove;
 import frc.robot.commands.test.ShooterCalib;
@@ -86,6 +89,7 @@ import frc.robot.subsystems.Shooter;
 
 import frc.robot.utils.DPad;
 import frc.robot.utils.MLCam;
+import frc.robot.utils.Rumble;
 import frc.robot.utils.TriggerButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -125,7 +129,7 @@ public class RobotContainer {
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
   private final IntakeChomp intakeChomp = new IntakeChomp(intake);
-  private final IntakeRetract intakeRetract = new IntakeRetract(intake);
+  private final IntakeRetract intakeAhhh = new IntakeRetract(intake);
 
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
@@ -137,13 +141,20 @@ public class RobotContainer {
 
   private final HalfSpeed halfspeed = new HalfSpeed(drivetrain);
 
-  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getLeftY());
+
+  private final RumbleLoad rumbleLoad = new RumbleLoad(loader, operatorController);
 
   private final DisableStatus killLights = new DisableStatus();
 
   private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getLeftX());
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
+
+  private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
+  private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
+
+  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getLeftX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
@@ -164,8 +175,11 @@ public class RobotContainer {
     // Sends the auto routines
     autoChooser();
 
+    rumbleLoad.schedule();
     SmartDashboard.putBoolean("startrev", false);
   }
+
+
 /*
   public void testRunner() {
     LiveWindow.setEnabled(false);
@@ -221,13 +235,13 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
-    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
+    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeAhhh);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1));
+    //new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1)); //don't want to confuse with "wrong" way to climb
     new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberReach(climber, 1));
 
-    new DPad(operatorController, DPad.POV_LEFT).whenPressed(new TurretAuto(turret));
-    new DPad(operatorController, DPad.POV_RIGHT).whenPressed(new TurretManual(turret));
+    new DPad(operatorController, DPad.POV_LEFT).whileHeld(aimBotLeft, true);
+    new DPad(operatorController, DPad.POV_RIGHT).whileHeld(aimBotRight, true);
     
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
@@ -243,11 +257,15 @@ public class RobotContainer {
    * Maps joystick axes to commands 
    */
   private void configureAxes() {
+
+    //loader.setDefaultCommand(rumbleLoad);
     // Sets driving to be the default thing drivetrain does
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    turret.setDefaultCommand(asuna);
+    //turret.setDefaultCommand(asuna);
+
+    turret.setDefaultCommand(turretDefault);
 
     new TurretScanMove(turret, () -> operatorController.getRightX());
 

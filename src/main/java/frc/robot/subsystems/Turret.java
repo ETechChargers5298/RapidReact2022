@@ -8,12 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.LEDStrip.LightFlag;
 import frc.robot.utils.Limelight;
@@ -62,23 +64,11 @@ public class Turret extends SubsystemBase {
 
   // right and left have been inverted in the telemetry the entire time so we did it like this to save the hassle 
   public boolean leftLimit() {
-    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Right Turret Limit Enabled").getBoolean(false)) {
-    //   return limitSwitchLeft.get();
-    // }
-    //  else {
-    //    return false;
-    //  } 
-    return false;
+    return getTurretDegrees() < -45;
   }
 
   public boolean rightLimit() {
-    // if(NetworkTableInstance.getDefault().getTable("SmartDashboard").getEntry("Left Turret Limit Enabled").getBoolean(false)) {
-    //   return limitSwitchRight.get();
-    // }
-    //   else {
-    //     return false;
-    //   }
-    return false;
+    return getTurretDegrees() > 45;
   }
 
   public double getTurretPosition() {
@@ -105,6 +95,10 @@ public class Turret extends SubsystemBase {
 
   public double getTurretDegrees() {
     return getTurretPosition() / 1.148;
+  }
+
+  public void setTurretDegrees(double degrees) {
+    encoderTurret.setPosition(degrees * 1.148);
   }
 
   public void updateTelemetry() {
