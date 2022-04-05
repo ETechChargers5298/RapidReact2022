@@ -129,7 +129,7 @@ public class RobotContainer {
   private final IntakeEat intakeEat = new IntakeEat(intake);
   private final IntakeSpit intakeSpit = new IntakeSpit(intake);
   private final IntakeChomp intakeChomp = new IntakeChomp(intake);
-  private final IntakeRetract intakeRetract = new IntakeRetract(intake);
+  private final IntakeRetract intakeAhhh = new IntakeRetract(intake);
 
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
@@ -141,7 +141,7 @@ public class RobotContainer {
 
   private final HalfSpeed halfspeed = new HalfSpeed(drivetrain);
 
-  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getRightY());
+  private final ClimberMove climbMove = new ClimberMove(climber, () -> operatorController.getLeftY());
 
   private final RumbleLoad rumbleLoad = new RumbleLoad(loader, operatorController);
 
@@ -153,6 +153,7 @@ public class RobotContainer {
 
   private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
   private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
+
   private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getLeftX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
@@ -234,9 +235,9 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
-    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeRetract);
+    new DPad(operatorController, DPad.POV_UP).whenPressed(intakeAhhh);
 
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1));
+    //new JoystickButton(operatorController, Button.kLeftBumper.value).whenHeld(new ClimberReach(climber, -1)); //don't want to confuse with "wrong" way to climb
     new TriggerButton(operatorController, TriggerButton.Left).whenHeld(new ClimberReach(climber, 1));
 
     new DPad(operatorController, DPad.POV_LEFT).whileHeld(aimBotLeft, true);

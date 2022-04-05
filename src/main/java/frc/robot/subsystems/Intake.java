@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase {
     motor.setInverted(Loading.INTAKE_INVERSION);
 
     // creates solenoid for lifting and dropping intake
-    chomp = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Loading.INTAKE_CHOMP_PORT, Loading.INTAKE_RETRACT_PORT); 
+    chomp = new DoubleSolenoid(Robot.PNEUMATICS_PORT, PneumaticsModuleType.REVPH, Loading.INTAKE_CHOMP_PORT, Loading.INTAKE_AHHH_PORT); 
 
     currentStatus = IntakeState.OFF;
     chompStatus = IntakeState.UNCHOMPED;

@@ -65,8 +65,8 @@ public final class Constants {
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
 
-        public static final int TURRET_LEFT_LIMIT_PORT = 3;
-        public static final int TURRET_RIGHT_LIMIT_PORT = 4;
+        public static final int TURRET_LEFT_LIMIT_PORT = 32;
+        public static final int TURRET_RIGHT_LIMIT_PORT = 33;
 
         public static final int FLYWHEEL_MOTOR_PORT = 11;
         public static final boolean FLYWHEEL_INVERSION = true;
@@ -116,7 +116,7 @@ public final class Constants {
         public static final double INTAKE_SPEED = 0.75;
 
         public static final int INTAKE_CHOMP_PORT = 3;
-        public static final int INTAKE_RETRACT_PORT = 2;
+        public static final int INTAKE_AHHH_PORT = 2;
     }
   
     public static final class Gamepad {
@@ -147,7 +147,6 @@ public final class Constants {
         public static final int CLIMB_START = 318;
         public static final int CLIMB_DONE = 285;
 
-        public static final int CLIMBER_LIMIT_PORT = 5;
     }
 
     public static final class Control {
