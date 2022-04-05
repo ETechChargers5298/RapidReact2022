@@ -180,19 +180,19 @@ public class RobotContainer {
   }
 
 
-/*
-  public void testRunner() {
-    LiveWindow.setEnabled(false);
-    if(shooterCalib.isEnabled()) {
-      SmartDashboard.putString("Boo", "Scheduling");
-      shooterCalib.schedule();
-    }
-    if(SmartDashboard.getBoolean("startrev", false)){
-      SmartDashboard.putString("Boo1", "Scheduling");
-      new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
-    }
-  }
-*/
+
+  // public void testRunner() {
+  //   LiveWindow.setEnabled(false);
+  //   if(shooterCalib.isEnabled()) {
+  //     SmartDashboard.putString("Boo", "Scheduling");
+  //     shooterCalib.schedule();
+  //   }
+  //   if(SmartDashboard.getBoolean("startrev", false)){
+  //     SmartDashboard.putString("Boo1", "Scheduling");
+  //     new ParallelRaceGroup(new FeedLoad(feeder, loader), new WaitCommand(1)).schedule();
+  //   }
+  // }
+
 
 
   // public void testRunner() {
@@ -250,6 +250,8 @@ public class RobotContainer {
 
     new JoystickButton(operatorController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.LIMELIGHT));
     new JoystickButton(operatorController, Button.kBack.value).whenPressed(new SetShootMode(shooter, ShootMode.ODOMETRY));
+   // new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(new ShooterCalib(shooter));
+    
     new JoystickButton(driveController, Button.kStart.value).whenPressed(new SetShootMode(shooter, ShootMode.POGSHOTS));
   }
   
@@ -277,10 +279,14 @@ public class RobotContainer {
     drivetrain.resetOdometry();
   }
 
+  public void resetTurret() {
+    turret.resetTurret();
+  }
+
   public void resetGyro() {
     drivetrain.resetIMU();
   }
-
+  
   public void resetClimber() {
     climber.resetEncoder();
   }
