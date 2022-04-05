@@ -38,21 +38,18 @@ public class AutoGenerator {
         }   
     }
 
-    public enum AutoRoutine {
-        AUTO_TWO_CARGO,
-        AUTO_FOUR_CARGO,
-        AUTO_TURN180_CARGO,
-        AUTO_BACK_SHOOT;  
+    // public enum AutoRoutine {
+    //     AUTO_TWO_CARGO,
+    //     AUTO_FOUR_CARGO,
+    //     AUTO_TURN180_CARGO,
+    //     AUTO_BACK_SHOOT;  
 
-        private TrajectoryCommand trajCommand;
-        private Drivetrain drivetrain;
-        private Pose2d currentStarting = Starting.getPose();
+    //     private TrajectoryCommand trajCommand;
+    //     private Drivetrain drivetrain;
 
-        private TrajectoryCommand getTraj(String traj) {
-            new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
-           
-            return trajTransform(currentStarting, TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
-        }
+    //     private TrajectoryCommand getTraj(String traj) {
+    //         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
+    //     }
         
-    }   
+    // }   
 }
