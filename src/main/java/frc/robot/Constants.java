@@ -49,8 +49,8 @@ public final class Constants {
         public static final boolean ENCODER_LEFT_INVERTED = false;
         public static final boolean ENCODER_RIGHT_INVERTED = true;
         
-        public static final int GEAR_SHIFT_TORQUE_PORT = 1;
-        public static final int GEAR_SHIFT_SPEED_PORT = 0;
+        public static final int GEAR_SHIFT_TORQUE_PORT = 5;
+        public static final int GEAR_SHIFT_SPEED_PORT = 4;
     }
     
     public static final class Shooters {
@@ -115,8 +115,8 @@ public final class Constants {
         public static final boolean INTAKE_INVERSION = false;
         public static final double INTAKE_SPEED = 0.75;
 
-        public static final int INTAKE_CHOMP_PORT = 3;
-        public static final int INTAKE_AHHH_PORT = 2;
+        public static final int INTAKE_CHOMP_PORT = 6;
+        public static final int INTAKE_AHHH_PORT = 7;
     }
   
     public static final class Gamepad {
@@ -143,8 +143,8 @@ public final class Constants {
         public static final double CLIMBER_MOTOR_SPEED = 1;
 
         public static final int REACH_START = 10;
-        public static final int REACH_BAR = 87;
-        public static final int CLIMB_START = 318;
+        public static final int REACH_BAR = 135;
+        public static final int CLIMB_START = 160;
         public static final int CLIMB_DONE = 285;
 
     }
