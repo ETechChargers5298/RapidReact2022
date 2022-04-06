@@ -104,6 +104,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     m_robotContainer.resetClimber();
     m_robotContainer.resetGyro();
+    // m_robotContainer.resetTurret();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -125,6 +126,7 @@ public class Robot extends LoggedRobot {
     m_robotContainer.resetClimber();
     m_robotContainer.resetGyro();
     m_robotContainer.resetDrivetrain();
+    m_robotContainer.resetTurret();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

@@ -56,7 +56,8 @@ public class BetterTurretBotAim extends CommandBase {
   public void execute() {
     
     if(Limelight.isValidTarget()) {
-      double offset = Limelight.getHorizontalOffset();
+      //double offset = Limelight.getHorizontalOffset();
+      double offset = turret.getTurretError();
       double speed = -controller.calculate(offset);
 
       if(turret.leftLimit()){

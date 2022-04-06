@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
+import frc.robot.commands.autoFunctions.AutoShootCargoRPM;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeEat;
 import frc.robot.commands.basic.shoot.TurretAuto;
@@ -37,10 +39,11 @@ public class AutoFourCargoC extends SequentialCommandGroup {
       
       new ParallelCommandGroup(
         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("TwoCargoCSideCurve")), // runs till path is done
-        new AutoIntakeToLoad(intake, loader)  // runs intake as same time as path to Eat Cargo C
-      ),
+        new ParallelRaceGroup(new AutoIntakeToLoad(intake, loader), new WaitCommand(2 ))),  // runs intake as same time as path to Eat Cargo C
 
-      new AutoShootCargo(shooter, feeder, loader),   // shoots sideways 2x after eating Cargo
+      //new AutoShootCargo(shooter, feeder, loader),   // shoots sideways 2x after eating Cargo
+      new AutoShootCargoRPM(5100, shooter, feeder, loader),
+
 
       new ParallelCommandGroup(
         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get("FourCargoTerminalPickupCurve")), // runs till path is done

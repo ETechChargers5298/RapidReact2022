@@ -75,6 +75,14 @@ public class Turret extends SubsystemBase {
     return Shooters.TURRET_ENCODER_MULTIPLIER * encoderTurret.getPosition();
   }
 
+  public double getTurretError() {
+    return -getTurretDegrees() * 0.1 + Limelight.getHorizontalOffset();
+  }
+
+  public void resetTurret() {
+    encoderTurret.setPosition(0.0);
+  }
+
   public void setState(TurretState state) {
     currentStatus = state;
   }
