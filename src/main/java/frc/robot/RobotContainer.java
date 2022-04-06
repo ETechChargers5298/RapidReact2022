@@ -147,14 +147,14 @@ public class RobotContainer {
 
   private final DisableStatus killLights = new DisableStatus();
 
-  private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getLeftX());
+  private final TurretAimbot asuna = new TurretAimbot(turret, () -> operatorController.getRightX());
 
   private final TurnToAnglePID turnToAnglePID = new TurnToAnglePID(drivetrain, 90);
 
   private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
   private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
 
-  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getLeftX());
+  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getRightX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
@@ -265,9 +265,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    //turret.setDefaultCommand(asuna);
+    turret.setDefaultCommand(asuna);
 
-    turret.setDefaultCommand(turretDefault);
+    //turret.setDefaultCommand(turretDefault);
 
     new TurretScanMove(turret, () -> operatorController.getRightX());
 
