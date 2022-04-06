@@ -44,24 +44,12 @@ public class AutoGenerator {
     //     AUTO_TURN180_CARGO,
     //     AUTO_BACK_SHOOT;  
 
-<<<<<<< HEAD
-        // private TrajectoryCommand trajCommand;
-        // private Drivetrain drivetrain;
-        // private Pose2d currentStarting = Starting.getPose();
-
-        // private TrajectoryCommand getTraj(String traj) {
-        //     new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
-           
-        //     return trajTransform(currentStarting, TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
-        //}
-=======
     //     private TrajectoryCommand trajCommand;
     //     private Drivetrain drivetrain;
 
     //     private TrajectoryCommand getTraj(String traj) {
     //         new TrajectoryCommand(drivetrain).createTrajCommand(TrajectoryCommand.PATH_WEAVER_PATHS.get(traj));
     //     }
->>>>>>> 1881d4dbd961d7a65a669b3de49c25faa296927d
         
     // }   
 }
