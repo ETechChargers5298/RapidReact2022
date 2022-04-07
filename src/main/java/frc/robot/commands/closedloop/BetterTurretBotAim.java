@@ -60,11 +60,10 @@ public class BetterTurretBotAim extends CommandBase {
       double offset = turret.getTurretError();
       double speed = -controller.calculate(offset);
 
+      // hitting the soft limits
       if(turret.leftLimit()){
         speed = Utils.clamp(speed, Shooters.TURRET_SPEED, 0.0);
-      }
-
-      if(turret.rightLimit()){
+      } else if(turret.rightLimit()){
         speed = Utils.clamp(speed, 0.0, -Shooters.TURRET_SPEED);
       }
 
@@ -72,15 +71,19 @@ public class BetterTurretBotAim extends CommandBase {
 
       SmartDashboard.putBoolean("AIMBOT RUMBLE", Math.abs(offset) < 1.5);
 
+      // rumble when we have a good shot
       if(Math.abs(offset) < 1.5) {
-        leftRumble.rumbleOn();
+        leftRumble.rumbleOn(); 
         rightRumble.rumbleOn();
       } else{
         leftRumble.rumbleOff();
         rightRumble.rumbleOff();
       }
 
-    } else {
+    } 
+
+    //NO VALID TARGET --> SEEK
+    else {
       leftRumble.rumbleOff();
       rightRumble.rumbleOff();
 

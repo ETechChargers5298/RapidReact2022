@@ -46,6 +46,8 @@ public class TurretScan extends CommandBase {
     else if (turret.rightLimit()) {
       direction = LEFT;
     }
+
+    
     turret.moveTurret(direction * Shooters.TURRET_SPEED);
   }
 
@@ -55,6 +57,10 @@ public class TurretScan extends CommandBase {
     turret.stopTurret();
     turret.setState(TurretState.FOUND);
   }
+
+  // public void newTurretLimits(){
+  //   direction;
+  // }
 
   // Returns true when the command should end.
   @Override

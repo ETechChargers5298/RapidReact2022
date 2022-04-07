@@ -64,11 +64,11 @@ public class Turret extends SubsystemBase {
 
   // right and left have been inverted in the telemetry the entire time so we did it like this to save the hassle 
   public boolean leftLimit() {
-    return getTurretDegrees() < -45;
+    return getTurretDegrees() < -100;
   }
 
   public boolean rightLimit() {
-    return getTurretDegrees() > 45;
+    return getTurretDegrees() > 100;
   }
 
   public double getTurretPosition() {
@@ -116,6 +116,7 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("Turret Position", getTurretPosition());
     SmartDashboard.putNumber("Turret Degrees", getTurretDegrees());
     SmartDashboard.putBoolean("Turret Manual", getManual());
+    SmartDashboard.putNumber("Turret Error", getTurretError());
   }
 
   @Override

@@ -154,7 +154,7 @@ public class RobotContainer {
   private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
   private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
 
-  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getRightX());
+ // private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getRightX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
