@@ -60,7 +60,7 @@ public final class Constants {
        
         public static final int TURRET_MOTOR_PORT = 10;
         public static final boolean TURRET_INVERSION = false;
-        public static final double TURRET_SPEED = 0.30;
+        public static final double TURRET_SPEED = 0.85;
 
         public static final int TURRET_ENCODER_PORT = 0;
         public static final double TURRET_ENCODER_MULTIPLIER = 1;
@@ -81,9 +81,11 @@ public final class Constants {
 
         // public static final double[] DESIRED_RPM_K = {20, 2147};
         public static final double[] DESIRED_RPM_K = {8.91, 3177 + 75};    //new values from 3/19
+        //public static final double[] DESIRED_RPM_K = {8.91, 3177 + 75};    //new values from 4/8
         
         // public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
         public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 3/19
+        //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 4/8
 
         public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
         public static final double GOAL_X_INCHES = Units.metersToInches(8.3);
