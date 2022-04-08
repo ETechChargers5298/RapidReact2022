@@ -28,6 +28,7 @@ import frc.robot.Constants.Gamepad;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
 import frc.robot.commands.auto.Auto2CargoD;
+import frc.robot.commands.auto.Auto2CargoDThing;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTurnShoot;
@@ -306,6 +307,7 @@ public class RobotContainer {
     autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 180));
     autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("Safer2Cargo", new Auto2CargoD(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
+    autoChooser.addOption("Auto2CargoD", new Auto2CargoDThing(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
 
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));

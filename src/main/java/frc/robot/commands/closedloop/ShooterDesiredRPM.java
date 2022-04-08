@@ -47,7 +47,7 @@ public class ShooterDesiredRPM extends CommandBase {
   @Override
   public void execute() {
     //double desiredRPM = table.getEntry("SHOOTER DESIRED RPM").getDouble(0);
-    double volts = feedforward.calculate(desiredRPM + Math.abs(table.getEntry("Turret Degrees").getDouble(0) * 5));
+    double volts = feedforward.calculate(desiredRPM + Math.abs(table.getEntry("Turret Degrees").getDouble(0) * 1));
     //SmartDashboard.putNumber("FLYWHEEL VOLTS", volts);
     double errorFix = controller.calculate(shooter.getVelocity(), desiredRPM);
     shooter.flyVolt(volts + errorFix);

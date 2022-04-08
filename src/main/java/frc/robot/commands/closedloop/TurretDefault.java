@@ -39,7 +39,12 @@ public class TurretDefault extends CommandBase {
 
     if(Math.abs(rotational.getAsDouble()) > 0.2) {
       turret.moveTurret(rotational.getAsDouble() * Shooters.TURRET_SPEED);
+    } else{
+      turret.moveTurret(0);
+      turret.stopTurret();
     }
+
+
   }
 
   // Called once the command ends or is interrupted.
