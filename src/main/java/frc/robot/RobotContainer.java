@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
+import frc.robot.commands.auto.Auto2CargoD;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTurnShoot;
@@ -304,6 +305,7 @@ public class RobotContainer {
     autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
     autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 180));
     autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("Safer2Cargo", new Auto2CargoD(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
 
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
