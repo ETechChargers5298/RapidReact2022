@@ -80,12 +80,12 @@ public final class Constants {
         // https://docs.google.com/spreadsheets/d/1iPU959t94BVSs3WeV6B7CTpsvuazmbZ9hkCMrusiKfc/edit#gid=711731178
 
         // public static final double[] DESIRED_RPM_K = {20, 2147};
-        public static final double[] DESIRED_RPM_K = {8.91, 3177 + 75};    //new values from 3/19
+        public static final double[] DESIRED_RPM_K = {8.91, 3177 + 70};    //new values from 3/19
         //public static final double[] DESIRED_RPM_K = {8.91, 3177 + 75};    //new values from 4/8
         
         // public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
-        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 3/19
-        //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 4/8
+        //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 3/19
+        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.68, 118};  //new linear values from 4/8
 
         public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
         public static final double GOAL_X_INCHES = Units.metersToInches(8.3);

@@ -18,7 +18,12 @@ public class ShooterDistanceShot extends ShooterDesiredRPM {
   @Override
   public void execute() {
     // Equation using limelight distance goes here
-    desiredRPM = shooter.getRpmFromDistance(Limelight.getEstimatedDistance());
+    if (Limelight.getEstimatedDistance() < 110) {
+      desiredRPM = shooter.getRpmFromDistance(Limelight.getEstimatedDistance());
+    }
+    else {
+      desiredRPM = 6000;
+    }
     super.execute();
   }
 }

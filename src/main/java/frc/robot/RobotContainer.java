@@ -61,6 +61,7 @@ import frc.robot.commands.basic.drive.HalfSpeed;
 import frc.robot.commands.basic.drive.ShiftSpeed;
 import frc.robot.commands.basic.drive.ShiftTorque;
 import frc.robot.commands.basic.lights.DisableStatus;
+import frc.robot.commands.basic.shoot.Feed;
 import frc.robot.commands.basic.shoot.FeedLoad;
 import frc.robot.commands.basic.shoot.SetShootMode;
 import frc.robot.commands.basic.shoot.ShooterUnJam;
@@ -134,7 +135,7 @@ public class RobotContainer {
   private final LoaderLoad loaderLoad = new LoaderLoad(loader);
   private final LoaderUnload loaderUnload = new LoaderUnload(loader);
 
-  private final FeedLoad feedLoad = new FeedLoad(feeder, loader);
+  private final Feed feedLoad = new Feed(feeder);
 
   private final ShooterDesiredRPM rpm = new ShooterDesiredRPM(shooter, 0);
   private final ShooterLimelightRPM rpm2 = new ShooterLimelightRPM(shooter); 
@@ -154,7 +155,7 @@ public class RobotContainer {
   private final BetterTurretBotAim aimBotLeft = new BetterTurretBotAim(turret, -1, operatorController);
   private final BetterTurretBotAim aimBotRight = new BetterTurretBotAim(turret, 1, operatorController);
 
- // private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getRightX());
+  private final TurretDefault turretDefault = new TurretDefault(turret, () -> operatorController.getRightX());
 
   //private final ShooterCalib shooterCalib = new ShooterCalib(shooter);
 
@@ -265,9 +266,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(arcadeDrive);
 
     // Sets the test bed to always move the test motor
-    turret.setDefaultCommand(asuna);
+    //turret.setDefaultCommand(asuna);
 
-    //turret.setDefaultCommand(turretDefault);
+    turret.setDefaultCommand(turretDefault);
 
     new TurretScanMove(turret, () -> operatorController.getRightX());
 
