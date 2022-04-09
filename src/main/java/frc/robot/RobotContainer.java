@@ -248,6 +248,7 @@ public class RobotContainer {
     
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
+    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(intakeEat);
 
     new JoystickButton(operatorController, Button.kY.value).whileHeld(new ShooterUnJam(shooter, feeder), true);
 
