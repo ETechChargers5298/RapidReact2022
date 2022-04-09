@@ -27,7 +27,7 @@ public class AutoBackShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new TrajectoryCommand(drivetrain).driveBack(starting),
-      new TurretAuto(turret),
+      //new TurretAuto(turret),
       new AutoShootCargo(shooter, feeder, loader)
     );
   }

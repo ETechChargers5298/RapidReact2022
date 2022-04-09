@@ -233,8 +233,8 @@ public class RobotContainer {
     new DPad(driveController, DPad.POV_DOWN).whenHeld(new TurnToAnglePID(drivetrain, 180));
 
     new JoystickButton(operatorController, Button.kA.value).whenHeld(new FancyShot(shooter, drivetrain), true);
-    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new TeleShoot(shooter, feeder, loader, drivetrain), true);
-
+    //new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new TeleShoot(shooter, feeder, loader, drivetrain), true);
+    new TriggerButton(operatorController, TriggerButton.Right).whileHeld(new IntakeEat(intake));
     new JoystickButton(operatorController, Button.kRightBumper.value).whileHeld(feedLoad, true);
 
     new DPad(operatorController, DPad.POV_DOWN).whenPressed(intakeChomp);
@@ -248,7 +248,7 @@ public class RobotContainer {
     
     new JoystickButton(operatorController, Button.kB.value).whileHeld(loaderUnload, true);
     new JoystickButton(operatorController, Button.kX.value).whileHeld(loaderLoad, true);
-    new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(intakeEat);
+    //new JoystickButton(operatorController, Button.kLeftBumper.value).whileHeld(intakeEat);
 
     new JoystickButton(operatorController, Button.kY.value).whileHeld(new ShooterUnJam(shooter, feeder), true);
 
@@ -305,7 +305,7 @@ public class RobotContainer {
     autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader, turret));
     autoChooser.addOption("Solo ONLY Shoot", new AutoShootCargo(shooter, feeder, loader));
     autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
-    autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 180));
+    autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 150));
     autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("Safer2Cargo", new Auto2CargoD(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
     autoChooser.addOption("Auto2CargoD", new Auto2CargoDThing(drivetrain, intake, loader, feeder, turret, shooter, operatorController));

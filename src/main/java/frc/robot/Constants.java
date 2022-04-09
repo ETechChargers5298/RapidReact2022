@@ -107,8 +107,8 @@ public final class Constants {
     }
     
     public static final class Loading {
-        public static final int CARGO_UNO_LIMIT_PORT = 8;
-        public static final int CARGO_DOS_LIMIT_PORT = 9; //shorting at 2
+        public static final int CARGO_UNO_LIMIT_PORT = 9;
+        public static final int CARGO_DOS_LIMIT_PORT = 8; //shorting at 2
         
         public static final int LOADER_MOTOR_PORT = 8;
         public static final boolean LOADER_INVERSION = false;

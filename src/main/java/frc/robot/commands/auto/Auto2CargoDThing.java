@@ -11,6 +11,7 @@ import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
 import frc.robot.commands.basic.cargo.IntakeRetract;
+import frc.robot.commands.basic.drive.StopMotor;
 import frc.robot.commands.closedloop.BetterTurretBotAim;
 import frc.robot.commands.closedloop.TurnToAnglePID;
 import frc.robot.commands.trajectory.TrajectoryCommand;
@@ -34,11 +35,12 @@ public class Auto2CargoDThing extends SequentialCommandGroup {
       new IntakeChomp(intake),
       // drive forward + picking up cargo 
       new ParallelCommandGroup(
-        new TrajectoryCommand(drivetrain).driveStraight(2.0),
+        new TrajectoryCommand(drivetrain).driveStraight(1.6),
         new AutoIntakeToLoad(intake, loader)),
       // turn180
       new IntakeRetract(intake),
-      new TurnToAnglePID(drivetrain, 180),
+      new TurnToAnglePID(drivetrain, 150),
+      new StopMotor(drivetrain),
       // turret scan + shoot
       new ParallelCommandGroup(
         new BetterTurretBotAim(turret, -1.0, controller),
