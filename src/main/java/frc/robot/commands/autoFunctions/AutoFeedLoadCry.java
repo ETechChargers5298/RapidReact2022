@@ -13,13 +13,20 @@ import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utils.Limelight;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoFeedLoadCry extends SequentialCommandGroup {
   /** Creates a new AutoFeedLoadCry. */
+
+  private Shooter shooter;
+
   public AutoFeedLoadCry(Shooter shooter, Loader loader, Feeder feeder) {
+    
+    this.shooter = shooter;
+    
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -34,6 +41,9 @@ public class AutoFeedLoadCry extends SequentialCommandGroup {
   }
   
   public boolean shooterSetpoint() {
+    if (Limelight.getEstimatedDistance() > 120) {
+      return shooter.getVelocity() > 5000;
+    }
     return SmartDashboard.getBoolean("AT SETPOINT SHOOTER", false);
   }
 }
