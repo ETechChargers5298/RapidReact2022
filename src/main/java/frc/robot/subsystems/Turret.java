@@ -64,11 +64,11 @@ public class Turret extends SubsystemBase {
 
   // right and left have been inverted in the telemetry the entire time so we did it like this to save the hassle 
   public boolean leftLimit() {
-    return getTurretDegrees() < -100;
+    return getTurretDegrees() < -20;
   }
 
   public boolean rightLimit() {
-    return getTurretDegrees() > 100;
+    return getTurretDegrees() > 20;
   }
 
   public double getTurretPosition() {
