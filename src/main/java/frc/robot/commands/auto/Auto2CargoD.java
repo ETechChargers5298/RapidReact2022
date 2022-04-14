@@ -6,12 +6,11 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoFunctions.AutoIntakeToLoad;
 import frc.robot.commands.autoFunctions.AutoShootCargo;
 import frc.robot.commands.basic.cargo.IntakeChomp;
+import frc.robot.commands.basic.cargo.IntakeRetract;
 import frc.robot.commands.basic.drive.StopMotor;
 import frc.robot.commands.closedloop.BetterTurretBotAim;
 import frc.robot.commands.closedloop.TurnToAnglePID;
@@ -37,14 +36,16 @@ public class Auto2CargoD extends SequentialCommandGroup {
       // drive forward + picking up cargo 
       new ParallelCommandGroup(
         new TrajectoryCommand(drivetrain).driveStraight(1.6),
-        new ParallelRaceGroup(new AutoIntakeToLoad(intake, loader), new WaitCommand(7))),
+        new AutoIntakeToLoad(intake, loader)),
       // turn180
+      new IntakeRetract(intake),
       new TurnToAnglePID(drivetrain, 150),
-      new TrajectoryCommand(drivetrain).driveStraight(0.5),
       new StopMotor(drivetrain),
       // turret scan + shoot
-      new BetterTurretBotAim(turret, -1.0, controller),
-      new AutoShootCargo(shooter, feeder, loader)
+      new ParallelCommandGroup(
+        new BetterTurretBotAim(turret, -1.0, controller),
+        new AutoShootCargo(shooter, feeder, loader)
+      )
     );
   }
 }

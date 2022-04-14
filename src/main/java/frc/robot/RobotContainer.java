@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Gamepad;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auto.Auto2BallDrift;
+import frc.robot.commands.auto.Safer2Cargo;
 import frc.robot.commands.auto.Auto2CargoD;
-import frc.robot.commands.auto.Auto2CargoDThing;
 import frc.robot.commands.auto.AutoBackShoot;
 import frc.robot.commands.auto.AutoReal3CargoBlue;
 import frc.robot.commands.auto.AutoTurnShoot;
@@ -298,17 +298,20 @@ public class RobotContainer {
   public void autoChooser() {
     autoChooser.setDefaultOption("Drive Straight", new TrajectoryCommand(drivetrain).driveStraight(2.0));
 
-
-    autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("4CargoC", new AutoFourCargoC(drivetrain, intake, loader, feeder, turret, shooter));
-    autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
+    
     autoChooser.addOption("Back & Shoot", new AutoBackShoot(new Pose2d(1, 1, new Rotation2d()), intake, shooter, feeder, drivetrain, loader, turret));
-    autoChooser.addOption("Solo ONLY Shoot", new AutoShootCargo(shooter, feeder, loader));
+    
     autoChooser.addOption("Solo Shoot", new TrajectoryCommand(drivetrain).driveBack(new Pose2d(1, 1, new Rotation2d())));
     autoChooser.addOption("Turn180", new TurnToAnglePID(drivetrain, 150));
+    autoChooser.addOption("Solo ONLY Shoot", new AutoShootCargo(shooter, feeder, loader));
+
+    // primary autos
+    autoChooser.addOption("2CargoC", new AutoTwoCargoC(drivetrain, intake, loader, feeder, turret, shooter));
+    autoChooser.addOption("2CargoA", new AutoTwoCargoA(drivetrain, intake, loader, feeder, turret, shooter));
     autoChooser.addOption("Turn180Shoot", new AutoTurnShoot(drivetrain, intake, loader, feeder, turret, shooter));
-    autoChooser.addOption("Safer2Cargo", new Auto2CargoD(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
-    autoChooser.addOption("Auto2CargoD", new Auto2CargoDThing(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
+    autoChooser.addOption("Safer2Cargo", new Safer2Cargo(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
+    autoChooser.addOption("Auto2CargoD", new Auto2CargoD(drivetrain, intake, loader, feeder, turret, shooter, operatorController));
 
     // autoChooser.addOption("Blue FourCargo", new AutoBlueFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
     // autoChooser.addOption("Red FourCargo", new AutoRedFourCargoC(drivetrain, intake, shooter, turret, loader, feeder));
