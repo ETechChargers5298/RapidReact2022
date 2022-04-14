@@ -43,10 +43,8 @@ public class Auto2CargoD extends SequentialCommandGroup {
       new TrajectoryCommand(drivetrain).driveStraight(0.5),
       new StopMotor(drivetrain),
       // turret scan + shoot
-      new ParallelCommandGroup(
-        new BetterTurretBotAim(turret, -1.0, controller),
-        new AutoShootCargo(shooter, feeder, loader)
-      )
+      new BetterTurretBotAim(turret, -1.0, controller),
+      new AutoShootCargo(shooter, feeder, loader)
     );
   }
 }
