@@ -36,15 +36,17 @@ public class Safer2Cargo extends SequentialCommandGroup {
       new IntakeChomp(intake),
       // drive forward + picking up cargo 
       new ParallelCommandGroup(
-         new TrajectoryCommand(drivetrain).driveStraight(1.6),
+        new TrajectoryCommand(drivetrain).driveStraight(1.6),
         new ParallelRaceGroup(new AutoIntakeToLoad(intake, loader), new WaitCommand(7))),
       // turn180
       new TurnToAnglePID(drivetrain, 150),
       new TrajectoryCommand(drivetrain).driveStraight(0.5),
       new StopMotor(drivetrain),
       // turret scan + shoot
-      new BetterTurretBotAim(turret, -1.0, controller),
+      new ParallelRaceGroup(
+        new BetterTurretBotAim(turret, -1.0, controller),
+        new WaitCommand(1)),
       new AutoShootCargo(shooter, feeder, loader)
-    );
+    );  
   }
 }

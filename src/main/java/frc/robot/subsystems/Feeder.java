@@ -36,12 +36,14 @@ public class Feeder extends SubsystemBase {
    * @author raymond
    */
   public void feed() {
-    feedMotor.set(Shooters.FEEDER_SPEED);
+    //feedMotor.set(Shooters.FEEDER_SPEED); 
+    feedMotor.setVoltage(9.0);
     currentStatus = FeederState.FEEDING;
   }
 
   public void unfeed() {
-    feedMotor.set(-Shooters.FEEDER_SPEED);
+   // feedMotor.set(-Shooters.FEEDER_SPEED);
+   feedMotor.setVoltage(-9.0);
   }
 
   /**

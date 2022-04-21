@@ -101,6 +101,6 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     
     updateTelemetry();
-    MLCam.updateTelemetry();  //causing NPE errors
+    //MLCam.updateTelemetry();  //causing NPE errors
   }
 }

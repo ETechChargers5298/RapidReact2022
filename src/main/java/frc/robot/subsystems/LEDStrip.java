@@ -70,18 +70,18 @@ public class LEDStrip extends SubsystemBase {
   }
   
   public static void request(LightFlag priority, double status) {
-    new PrintCommand("REQUEST MAKER: " + priority.toString()).schedule();
-    new PrintCommand("STATUS BEING SAVED: " + status).schedule();
+    //new PrintCommand("REQUEST MAKER: " + priority.toString()).schedule();
+    //new PrintCommand("STATUS BEING SAVED: " + status).schedule();
     if (priority.getPriority() < yourDesires) {
       yourDesires = priority.getPriority();
-      new PrintCommand("TOP DOG RIGHT NOW: " + yourDesires);
+      //new PrintCommand("TOP DOG RIGHT NOW: " + yourDesires);
     }
     statuses[priority.getPriority()] = status; 
   }
   
   public static void setStatus() {
     if (yourDesires < statuses.length) {
-      new PrintCommand("STATUS BEING SET RIGHT NOW").schedule();
+      //new PrintCommand("STATUS BEING SET RIGHT NOW").schedule();
       setPattern(statuses[yourDesires]);
     }
     else {

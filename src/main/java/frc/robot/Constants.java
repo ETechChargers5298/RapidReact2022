@@ -86,7 +86,8 @@ public final class Constants {
         // public static final double[] LIMELIGHT_DISTANCE_K = {0.1118, -3.7151, 24.573};
         //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.61, 119};  //new linear values from 3/19
         //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.68, 118};  //new linear values from 4/8
-        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.63, 97.8}; //new linear values from 4/8
+        //public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -5.63, 97.8}; //new linear values from 4/8
+        public static final double[] LIMELIGHT_DISTANCE_K = {0.0, -4.88, 104}; //new linear values from 4/20
 
         public static final double GOAL_RADIUS_INCHES = Units.metersToInches(0.2);
         public static final double GOAL_X_INCHES = Units.metersToInches(8.3);
